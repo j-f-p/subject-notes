@@ -13,15 +13,23 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)  # define a configured session class
 
 
+@app.route('/topics/')
+def contents():
+    session = DBSession()  # open session
+    topics = session.query(Topic).all()
+    session.close()
+    return render_template('contents.html', topics=topics)
+
+
 # Route (GET Request) for returning a topic's contents
-@app.route('/')
 @app.route('/topics/<int:topic_id>/')
 def topicContents(topic_id):
     session = DBSession()  # open session
     topic = session.query(Topic).filter_by(id=topic_id).one()
     sections = session.query(Section).filter_by(topic_id=topic.id)
     session.close()
-    return render_template('contents.html', topic=topic, sections=sections)
+    return render_template('topicContents.html',
+                           topic=topic, sections=sections)
 
 
 if __name__ == '__main__':
