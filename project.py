@@ -21,7 +21,7 @@ def contents():
     return render_template('contents.html', topics=topics)
 
 
-# Route (GET Request) for returning a topic's contents
+# Route for returning a topic's contents (GET Request)
 @app.route('/topics/<int:topic_id>/')
 def topicContents(topic_id):
     session = DBSession()  # open session
@@ -30,6 +30,26 @@ def topicContents(topic_id):
     session.close()
     return render_template('topicContents.html',
                            topic=topic, sections=sections)
+
+
+# Route for adding a new topic section
+@app.route('/topics/<int:topic_id>/new/', methods=['GET', 'POST'])
+def newSection(topic_id):
+    if request.method == 'POST':
+        session = DBSession()
+        newSection = Section(
+            name=request.form['name'], notes=request.form['notes'],
+            topic_id=topic_id)
+        session.add(newSection)
+        session.commit()
+        session.close()
+        flash('A new section was added.')
+        return redirect(url_for('topicContents', topic_id=topic_id))
+    else:
+        session = DBSession()
+        topic = session.query(Topic).filter_by(id=topic_id).one()
+        session.close()
+        return render_template('newSection.html', topic=topic)
 
 
 if __name__ == '__main__':
