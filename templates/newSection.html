@@ -5,14 +5,21 @@
   </head>
   <body>
     <h1 class="new_section">New Section for {{topic.name}}</h1>
-    <p>Section Name:</p>
-    <form action="{{url_for('newSection', topic_id=topic.id)}}" method="POST">
-      <input type="text" size="30" name="name">
-      <input type="submit" value="create">
-    </form>
     <form action="{{url_for('topicContents', topic_id=topic.id)}}"
         style="display:inline-block">
       <input type="submit" value="cancel">
+    </form>
+    <form action="{{url_for('newSection', topic_id=topic.id)}}" method="POST">
+      <label for="nsName">Name</label><br>
+      <input id="nsName" type="text" name="name" size="30" autofocus required
+        minlength="1" maxlength="30" placeholder="1 to 30 chars"><br><br>
+      <label for="nsNotes">Notes</label><br>
+      <textarea id="nsNotes" name="notes" rows="10" cols="80"
+        minlength="6" maxlength="800"
+        placeholder="6 to 800 chars"></textarea><br><br>
+        <!--maxlength of 800 is set for development. maxlength would be set to a
+          higher number for exhibition or publication-->
+      <input type="submit" value="create">
     </form>
   </body>
 </html>
