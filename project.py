@@ -43,13 +43,36 @@ def newSection(topic_id):
         session.add(newSection)
         session.commit()
         session.close()
-        flash('A new section was added.')
+        flash('Added section: "{}"'.format(newSection.name))
         return redirect(url_for('topicContents', topic_id=topic_id))
     else:
         session = DBSession()
         topic = session.query(Topic).filter_by(id=topic_id).one()
         session.close()
         return render_template('newSection.html', topic=topic)
+
+
+# Route for updating a topic section
+@app.route('/topics/<int:topic_id>/<int:section_id>/edit/',
+           methods=['GET', 'POST'])
+def editSection(topic_id, section_id):
+    if request.method == 'POST':
+        session = DBSession()
+        section = session.query(Section).filter_by(id=section_id).one()
+        section.name = request.form['name']
+        section.notes = request.form['notes']
+        session.add(section)
+        session.commit()
+        session.close()
+        flash('{} was updated.'.format(section.name))
+        return redirect(url_for('topicContents', topic_id=topic_id))
+    else:
+        session = DBSession()
+        topic = session.query(Topic).filter_by(id=topic_id).one()
+        section = session.query(Section).filter_by(id=section_id).one()
+        session.close()
+        return render_template(
+            'editSection.html', topic=topic, section=section)
 
 
 if __name__ == '__main__':
