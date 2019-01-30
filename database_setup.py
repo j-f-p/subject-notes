@@ -16,8 +16,8 @@ class Topic(Base):
 
 class Section(Base):
     __tablename__ = 'section'
-    name = Column(String(80), nullable=False)
-    notes = Column(String(250))
+    name = Column(String(50), nullable=False)
+    notes = Column(String(800))
     id = Column(Integer, primary_key=True)
     topic_id = Column(Integer, ForeignKey('topic.id'))
     topic = relationship(Topic)
