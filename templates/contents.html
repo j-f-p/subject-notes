@@ -4,11 +4,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
   </head>
   <body>
-    <h1>Deep Learning</h1>
+    <h1>{{subject}}</h1>
 {% for t in topics %}
-    <div>
-      <p>{{t.name}}</p>
-    </div>
+    <h2>{{t.name}}</h2>
 {% endfor %}
   </body>
 </html>

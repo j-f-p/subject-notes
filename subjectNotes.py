@@ -13,12 +13,19 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)  # define a configured session class
 
 
+# Subject string constant
+#   Defined as a string literal return value to ensure that it is constant.
+#   Value not in database, until feature is added to enable user to specify it.
+def subject():
+    return "Deep Learning"
+
+
 @app.route('/topics/')
 def contents():
     session = DBSession()  # open session
     topics = session.query(Topic).all()
     session.close()
-    return render_template('contents.html', topics=topics)
+    return render_template('contents.html', subject=subject(), topics=topics)
 
 
 # Route for returning a topic's contents (GET Request)
@@ -28,7 +35,7 @@ def topicContents(topic_id):
     topic = session.query(Topic).filter_by(id=topic_id).one()
     sections = session.query(Section).filter_by(topic_id=topic.id)
     session.close()
-    return render_template('topicContents.html',
+    return render_template('topicContents.html', subject=subject(),
                            topic=topic, sections=sections)
 
 
@@ -59,7 +66,8 @@ def viewSection(topic_id, section_id):
     topic = session.query(Topic).filter_by(id=topic_id).one()
     section = session.query(Section).filter_by(id=section_id).one()
     session.close()
-    return render_template('viewSection.html', topic=topic, section=section)
+    return render_template('viewSection.html', subject=subject(), topic=topic,
+                           section=section)
 
 
 # Route for updating a topic section
