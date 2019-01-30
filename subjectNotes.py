@@ -52,6 +52,16 @@ def newSection(topic_id):
         return render_template('newSection.html', topic=topic)
 
 
+# Route for viewing a topic section (GET Request)
+@app.route('/topics/<int:topic_id>/<int:section_id>/')
+def viewSection(topic_id, section_id):
+    session = DBSession()  # open session
+    topic = session.query(Topic).filter_by(id=topic_id).one()
+    section = session.query(Section).filter_by(id=section_id).one()
+    session.close()
+    return render_template('viewSection.html', topic=topic, section=section)
+
+
 # Route for updating a topic section
 @app.route('/topics/<int:topic_id>/<int:section_id>/edit/',
            methods=['GET', 'POST'])
