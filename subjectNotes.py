@@ -13,6 +13,13 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)  # define a configured session class
 
 
+# This app employs the following terms to label its contents in hierarchical
+# order: subect, topic, section and note. A note is some string literal or
+# component thereof, defined by the user. A section comprises one or more
+# notes. A topic comprises one or more sections. And the subject comprises one
+# or more topics.
+
+
 # Subject string constant
 #   Defined as a string literal return value to ensure that it is constant.
 #   Value not in database, until feature is added to enable user to specify it.
@@ -20,6 +27,7 @@ def subject():
     return "Deep Learning"
 
 
+# Route for viewing the subject's contents in terms of topics
 @app.route('/topics/')
 def contents():
     session = DBSession()  # open session
@@ -28,7 +36,7 @@ def contents():
     return render_template('contents.html', subject=subject(), topics=topics)
 
 
-# Route for returning a topic's contents (GET Request)
+# Route for viewing a topic's contents in terms of sections (GET Request)
 @app.route('/topics/<int:topic_id>/')
 def topicContents(topic_id):
     session = DBSession()  # open session
@@ -91,6 +99,27 @@ def editSection(topic_id, section_id):
         session.close()
         return render_template(
             'editSection.html', topic=topic, section=section)
+
+
+# Route for deleting a topic section
+@app.route('/topics/<int:topic_id>/<int:section_id>/delete/',
+           methods=['GET', 'POST'])
+def deleteSection(topic_id, section_id):
+    if request.method == 'POST':
+        session = DBSession()  # open session
+        section = session.query(Section).filter_by(id=section_id).one()
+        session.delete(section)
+        session.commit()
+        session.close()
+        flash('Section "{}" was deleted.'.format(section.name))
+        return redirect(url_for('topicContents', topic_id=topic_id))
+    else:
+        session = DBSession()  # open session
+        topic = session.query(Topic).filter_by(id=topic_id).one()
+        section = session.query(Section).filter_by(id=section_id).one()
+        session.close()
+        return render_template(
+            'deleteSection.html', topic=topic, section=section)
 
 
 if __name__ == '__main__':

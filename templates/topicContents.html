@@ -1,13 +1,17 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <title>Subject Notes - Topic Sections</title>
   </head>
   <body>
     <h1>{{subject}}</h1>
     <h2>{{topic.name}}</h2>
 {% for s in sections %}
-    <h3 class="topic_contents_h3">{{s.name}}</h3>
+    <h3 class="indent_1">{{s.name}}</h3>
 {% endfor %}
   </body>
 </html>

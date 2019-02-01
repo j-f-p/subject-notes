@@ -3,10 +3,15 @@ body {
   background-color: gainsboro;
 }
 
-.section_form_h1 {
-  font-size: 1.5em;
+.indent_1 { /* This spacing is based on the standard list indent size. */
+  margin-left: 40px;
 }
 
-.topic_contents_h3 {
-  margin-left: 40px;
+.section_NE_h1 { /* NE stands for new or edit form page. */
+  font-size: 1.5em;
+
+}
+
+.section_form_margin_top {
+  margin-top: 1.2em;
 }
