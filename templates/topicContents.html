@@ -10,8 +10,19 @@
   <body>
     <h1>{{subject}}</h1>
     <h2>{{topic.name}}</h2>
-{% for s in sections %}
+  {% for s in sections %}
     <h3 class="indent_1">{{s.name}}</h3>
-{% endfor %}
+  {% endfor %}
+    <div class="flash">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul>
+      {% for message in messages %}
+        <li style="color: green"><strong>{{message}}</strong> </li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+    {% endwith %}
+    </div>
   </body>
 </html>
