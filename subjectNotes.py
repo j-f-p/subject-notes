@@ -52,13 +52,14 @@ def topicContents(topic_id):
 def newSection(topic_id):
     if request.method == 'POST':
         session = DBSession()
-        newSection = Section(
+        new_section = Section(
             name=request.form['name'], notes=request.form['notes'],
             topic_id=topic_id)
-        session.add(newSection)
+        session.add(new_section)
         session.commit()
+        flashMessage = 'Added section: "{}"'.format(new_section.name)
         session.close()
-        flash('Added section: "{}"'.format(newSection.name))
+        flash(flashMessage)
         return redirect(url_for('topicContents', topic_id=topic_id))
     else:
         session = DBSession()
@@ -89,8 +90,9 @@ def editSection(topic_id, section_id):
         section.notes = request.form['notes']
         session.add(section)
         session.commit()
+        flashMessage = '{} was updated.'.format(section.name)
         session.close()
-        flash('{} was updated.'.format(section.name))
+        flash(flashMessage)
         return redirect(url_for('topicContents', topic_id=topic_id))
     else:
         session = DBSession()
@@ -110,6 +112,8 @@ def deleteSection(topic_id, section_id):
         section = session.query(Section).filter_by(id=section_id).one()
         session.delete(section)
         session.commit()
+        # At this point, section is not tied to a session and can be employed
+        # outside the session.
         session.close()
         flash('Section "{}" was deleted.'.format(section.name))
         return redirect(url_for('topicContents', topic_id=topic_id))
