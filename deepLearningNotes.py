@@ -42,7 +42,7 @@ session.add_all([Section(name="Changing Names", topic_id=1),
                  Section(name="Conditioning", topic_id=4),
                  Section(name="The Task", topic_id=5),
                  Section(name="Performance Measure", topic_id=5),
-                 Section(name="Experience", topic_id=5)])
+                 Section(name="Experience", topic_id=5)])  # 15th Section
 session.commit()
 
 # Section notes

@@ -3,15 +3,32 @@ body {
   background-color: gainsboro;
 }
 
-.indent_1 { /* This spacing is based on the standard list indent size. */
-  margin-left: 40px;
+h3 {
+  margin: 1.17rem 0; /*
+  This value is the h3 default margin recommended by W3C. Also, see comment in
+  .section_form_margin_top. */
+}
+
+.indent_1 {
+  padding-left: 40px;
+  /* This value is the ol and ul default padding-left recommended by W3C. */
 }
 
 .section_NE_h1 { /* NE stands for new or edit form page. */
-  font-size: 1.5em;
-
+  font-size: 1.5rem; /*
+  This value is the h2 default font-size recommended by W3C. This is a way to
+  have a smaller main heading and comply with accessibility standards. */
 }
 
 .section_form_margin_top {
-  margin-top: 1.2em;
+  margin-top: 1.17rem; /*
+  This value is employed to match h3 margin-top positioned below the cancel
+  button button in the delete section form page. Use of rem units ensures the
+  intended outcome on Chrome Firefox and Edge. */
 }
+
+/*
+Reference
+
+W3C recommended html default CSS values
+  https://www.w3schools.com/cssref/css_default_values.asp */
