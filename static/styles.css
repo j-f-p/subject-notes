@@ -1,3 +1,12 @@
+/*
+This style sheet is configured for a "desktop" browser view, ideally having a
+screen width greater than 639 px. */
+
+html {
+  min-width: 640px;
+  max-width: 1280px;
+}
+
 body {
   font-family: Roboto, Arial, sans-serif;
   background-color: gainsboro;
@@ -7,6 +16,33 @@ h3 {
   margin: 1.17rem 0; /*
   This value is the h3 default margin recommended by W3C. Also, see comment in
   .section_form_margin_top. */
+}
+
+header {
+  border-bottom: 2px solid black;
+}
+
+main {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.topics {
+  border-right: 2px solid black;
+  padding-right: 8px;
+  width: 198px; /*
+  Width of topics section is set to a constant. It is set to one-third of the
+  body content-width:
+    width = floor( (html min-width - default body margin)/3 )
+            - border-right - topics padding-right
+          = 208 - 2 - 8  px
+  Box-sizing is the default content-box, thus, border and padding is subtracted
+  in this calculation. */
+}
+
+.latest_sections {
+  padding-left: 8px;
+  flex: auto;
 }
 
 .indent_1 {

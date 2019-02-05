@@ -8,9 +8,19 @@
     <title>Subject Notes - Topics</title>
   </head>
   <body>
-    <h1>{{subject}}</h1>
-  {% for t in topics %}
-    <h2>{{t.name}}</h2>
-  {% endfor %}
+    <header>
+      <h1>{{subject}} Notes</h1>
+    </header>
+    <main>
+      <section class="topics">
+        <h2>Topics</h2>
+      {% for t in topics %}
+        <h3>{{t.name}}</h3>
+      {% endfor %}
+      </section>
+      <section class="latest_sections">
+        <h2>Latest Sections</h2>
+      </section>
+    </main>
   </body>
 </html>
