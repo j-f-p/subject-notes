@@ -8,21 +8,27 @@
     <title>Subject Notes - Topic Sections</title>
   </head>
   <body>
-    <h1>{{subject}}</h1>
-    <h2>{{topic.name}}</h2>
-  {% for s in sections %}
-    <h3 class="indent_1">{{s.name}}</h3>
-  {% endfor %}
-    <div class="flash">
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <ul>
-      {% for message in messages %}
-        <li style="color: green"><strong>{{message}}</strong> </li>
+    <header>
+      <h1>{{subject}} Notes</h1>
+      <div class="flash">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="flash_ul">
+        {% for message in messages %}
+          <li class="flash_li">{{message}}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+      {% endwith %}
+      </div>
+    </header>
+    <main>
+      <section class="sections">
+        <h2>{{topic.name}}</h2>
+      {% for s in sections %}
+        <h3>{{s.name}}</h3>
       {% endfor %}
-      </ul>
-      {% endif %}
-    {% endwith %}
-    </div>
+      </section>
+    </main>
   </body>
 </html>

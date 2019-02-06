@@ -27,6 +27,7 @@ main {
   justify-content: flex-start;
 }
 
+/* Classes specific to contents.html, which has URL .../topics/ */
 .topics {
   border-right: 2px solid black;
   padding-right: 8px;
@@ -45,6 +46,26 @@ main {
   flex: auto;
 }
 
+/* Classes specific to topicContents.html, which has URL .../topics/#/ */
+.flash_ul {
+  background-color: black; /* banner color */
+  margin: 0; /* remove default: 16px 0; */
+  padding: 8px 0; /* banner spacing, replace default: 0 0 0 40px; */
+}
+
+.flash_li {
+  color: gainsboro;
+  list-style-type: none; /* remove default: disc; */
+  text-align: center;
+}
+
+.sections {
+  border-right: 2px solid black;
+  padding-right: 8px;
+  width: 198px;
+}
+
+/* other classes */
 .indent_1 {
   padding-left: 40px;
   /* This value is the ol and ul default padding-left recommended by W3C. */
