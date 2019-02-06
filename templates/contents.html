@@ -19,7 +19,11 @@
       {% endfor %}
       </section>
       <section class="latest_sections">
-        <h2>Latest Sections</h2>
+        <h2>Latest Five Sections</h2>
+      {% for s in latest_sections %}
+        <h3>{{s[0]}} ({{s[1]}})</h3>
+        <!-- Section Name (Topic Name) -->
+      {% endfor %}
       </section>
     </main>
   </body>

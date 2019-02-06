@@ -32,8 +32,14 @@ def subject():
 def contents():
     session = DBSession()  # open session
     topics = session.query(Topic).all()
+    # latest_sections is an array of doubles: [(sname, tname), ..., (...)].
+    # Each double is a section name and its associated topic name.
+    latest_sections = session.query(Section.name, Topic.name).\
+        filter(Section.topic_id == Topic.id).\
+        order_by(Section.id.desc())[0:5]
     session.close()
-    return render_template('contents.html', subject=subject(), topics=topics)
+    return render_template('contents.html', subject=subject(), topics=topics,
+                           latest_sections=latest_sections)
 
 
 # Route for viewing a topic's contents in terms of sections (GET Request)
