@@ -4,30 +4,38 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
     <title>Subject Notes - Topic Sections</title>
   </head>
   <body>
     <header>
       <h1>{{subject}} Notes</h1>
-      <div class="flash">
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul class="flash_ul">
-        {% for message in messages %}
-          <li class="flash_li">{{message}}</li>
-        {% endfor %}
-        </ul>
-        {% endif %}
-      {% endwith %}
-      </div>
     </header>
+    <div class="flash">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul class="flash_ul">
+      {% for message in messages %}
+        <li class="flash_li">{{message}}</li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+    {% endwith %}
+    </div>
     <main>
-      <section class="sections">
-        <h2>{{topic.name}}</h2>
+      <section class="nav_pane">
+        <h2>Sections of Topic<br>{{topic.name}}</h2>
       {% for s in sections %}
         <h3>{{s.name}}</h3>
       {% endfor %}
+      </section>
+      <section class="content_pane">
+        <h2>{{sections[-1].name}}<br>
+          <span class="h2_subtitle">(Latest Section of Topic)</span></h2>
+        <p>{{sections [-1].notes}}</p>
       </section>
     </main>
   </body>

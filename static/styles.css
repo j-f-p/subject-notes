@@ -8,18 +8,41 @@ html {
 }
 
 body {
-  font-family: Roboto, Arial, sans-serif;
+  font-family: Roboto, sans-serif;
   background-color: gainsboro;
 }
 
+h1,
+h2,
 h3 {
-  margin: 1.17rem 0; /*
-  This value is the h3 default margin recommended by W3C. Also, see comment in
+  font-weight: normal;
+}
+
+.h1_subtitle {
+  font-size: 1.5rem; /*
+  This value is the h2 default font-size recommended by W3C. Note that this is a
+  way to have a smaller main heading and comply with accessibility standards.
+  The new and edit form titles have entirely this style.*/
+}
+
+.h2_subtitle {
+  font-size: 1.17rem; /* h3 default, see comment for h3 */
+}
+
+h3 { /*
+  These value are the h3 default margin recommended by W3C. Also, see comment in
   .section_form_margin_top. */
+  font-size: 1.17rem;
+  margin: 1.17rem 0;
 }
 
 header {
   border-bottom: 2px solid black;
+  padding-left: 8px;
+}
+
+header > h1 {
+  font-family: Montserrat, sans-serif;
 }
 
 main {
@@ -27,23 +50,32 @@ main {
   justify-content: flex-start;
 }
 
-/* Classes specific to contents.html, which has URL .../topics/ */
-.topics {
+.nav_pane {
   border-right: 2px solid black;
-  padding-right: 8px;
-  width: 198px; /*
+  padding: 0 8px;
+  flex: none;
+  width: 190px; /*
   Width of topics section is set to a constant. It is set to one-third of the
   body content-width:
     width = floor( (html min-width - default body margin)/3 )
             - border-right - topics padding-right
-          = 208 - 2 - 8  px
+          = 208 - 2 - 16  px
   Box-sizing is the default content-box, thus, border and padding is subtracted
   in this calculation. */
 }
 
-.latest_sections {
+.nav_pane > h2,
+.nav_pane > h3 {
+  font-family: "Roboto Condensed", sans-serif;
+}
+
+.content_pane {
   padding-left: 8px;
   flex: auto;
+}
+
+.content_pane > p {
+  font-family: "Roboto Slab", serif;
 }
 
 /* Classes specific to topicContents.html, which has URL .../topics/#/ */
@@ -59,29 +91,17 @@ main {
   text-align: center;
 }
 
-.sections {
-  border-right: 2px solid black;
-  padding-right: 8px;
-  width: 198px;
-}
-
 /* other classes */
 .indent_1 {
   padding-left: 40px;
   /* This value is the ol and ul default padding-left recommended by W3C. */
 }
 
-.section_NE_h1 { /* NE stands for new or edit form page. */
-  font-size: 1.5rem; /*
-  This value is the h2 default font-size recommended by W3C. This is a way to
-  have a smaller main heading and comply with accessibility standards. */
-}
-
 .section_form_margin_top {
   margin-top: 1.17rem; /*
   This value is employed to match h3 margin-top positioned below the cancel
-  button button in the delete section form page. Use of rem units ensures the
-  intended outcome on Chrome Firefox and Edge. */
+  button button in the delete section form page. Use of rem units ensures a
+  result that is browser self-consistent, tested on Chrome, Firefox and Edge.*/
 }
 
 /*
