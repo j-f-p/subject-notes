@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300">
     <title>Subject Notes - Topic Sections</title>
   </head>
   <body>
@@ -24,8 +24,8 @@
       {% endif %}
     {% endwith %}
     </div>
-    <main>
-      <section class="nav_pane">
+    <main class="pane_row">
+      <nav class="nav_pane pane_padding">
         <h2>Sections of Topic<br>{{topic.name}}</h2>
       {% for s in sections %}
         {% if s.id == section.id %}
@@ -34,8 +34,8 @@
         <h3 class="hover">{{s.name}}</h3>
         {% endif %}
       {% endfor %}
-      </section>
-      <section class="content_pane">
+      </nav>
+      <section class="content_pane pane_padding">
         <h2>{{section.name}}</h2>
         <p>{{section.notes}}</p>
       </section>

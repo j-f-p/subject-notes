@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300">
     <title>Subject Notes - Topic Sections</title>
   </head>
   <body>
@@ -24,8 +24,8 @@
       {% endif %}
     {% endwith %}
     </div>
-    <main>
-      <section class="nav_pane">
+    <main class="pane_row">
+      <nav class="nav_pane pane_padding">
         <h2>Sections of Topic<br>{{topic.name}}</h2>
       {% if sections|length > 1 %}
         {% for index in range(sections|length - 1) %}
@@ -35,11 +35,11 @@
       {% if sections|length > 0 %}
         <h3 class="selected">{{sections[-1].name}}</h3>
       {% endif %}
-      </section>
+      </nav>
     {% if sections|length > 0 %}
-      <section class="content_pane">
+      <section class="content_pane pane_padding">
         <h2>{{sections[-1].name}}<br>
-          <span class="h2_subtitle">(Latest Section of Topic)</span></h2>
+          <span class="h3_font_size">(Latest Section of Topic)</span></h2>
         <p>{{sections[-1].notes}}</p>
       </section>
     {% endif %}

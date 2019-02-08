@@ -12,17 +12,17 @@
     <header>
       <h1>{{subject}} Notes</h1>
     </header>
-    <main>
-      <section class="nav_pane">
+    <main class="pane_row">
+      <nav class="nav_pane pane_padding">
         <h2>Topics</h2>
       {% for t in topics %}
         <h3 class="hover">{{t.name}}</h3>
       {% endfor %}
-      </section>
-      <section class="content_pane">
+      </nav>
+      <section class="content_pane pane_padding">
         <h2>Latest Five Topic Sections</h2>
       {% for s in latest_sections %}
-        <h3>{{s[0]}} ({{s[1]}})</h3>
+        <h3><span class="hover">{{s[0]}} ({{s[1]}})</span></h3>
         <!-- Section Name (Topic Name) -->
       {% endfor %}
       </section>

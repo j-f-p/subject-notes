@@ -7,52 +7,62 @@ html {
   max-width: 1280px;
 }
 
-body {
+body,
+.body_font_fam {
   font-family: Roboto, sans-serif;
+}
+
+body {
   background-color: gainsboro;
 }
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
   font-weight: normal;
 }
 
-.h1_subtitle {
-  font-size: 1.5rem; /*
-  This value is the h2 default font-size recommended by W3C. Note that this is a
-  way to have a smaller main heading and comply with accessibility standards.
-  The new and edit form titles have entirely this style.*/
+h1 {
+  font-family: Montserrat, sans-serif;
 }
 
-.h2_subtitle {
-  font-size: 1.17rem; /* h3 default, see comment for h3 */
+h3,
+.h3_font_size {
+  font-size: 1.17rem; /* This is the h3 specification by W3C. */
 }
 
-h3 { /*
-  These value are the h3 default margin recommended by W3C. Also, see comment in
-  .section_form_margin_top. */
-  font-size: 1.17rem;
+h3,
+.h3_margin { /*
+  h3 font-size and margin are set to known values, those specified by W3C, so
+  that other spacing can be set based on them. Use of rem units ensures a result
+  that is browser self-consistent, tested on Chrome, Firefox and Edge. */
   margin: 1.17rem 0;
+}
+
+p,
+.p_font {
+  font-family: "Roboto Slab", serif;
+  font-size: 1rem; /* Based on the default p size by major browsers. */
+  font-weight: 300;
 }
 
 header {
   border-bottom: 2px solid black;
-  padding-left: 8px;
+  padding: 0 8px;
 }
 
-header > h1 {
-  font-family: Montserrat, sans-serif;
-}
-
-main {
+.pane_row {
   display: flex;
   justify-content: flex-start;
 }
 
+.pane_padding {
+  padding: 0 8px;
+}
+
 .nav_pane {
   border-right: 2px solid black;
-  padding: 0 8px;
   flex: none;
   width: 216px; /*
   Width of topics section is set to a constant. It is set to one-third of the
@@ -64,18 +74,8 @@ main {
   in this calculation. */
 }
 
-.nav_pane > h2,
-.nav_pane > h3 {
-  font-family: "Roboto", sans-serif;
-}
-
 .content_pane {
-  padding-left: 8px;
   flex: auto;
-}
-
-.content_pane > p {
-  font-family: "Roboto Slab", serif;
 }
 
 /* Classes specific to topicContents.html, which has URL .../topics/#/ */
@@ -101,38 +101,24 @@ main {
 }
 
 /* other classes */
-.indent_1 {
-  padding-left: 40px;
-  /* This value is the ol and ul default padding-left recommended by W3C. */
-}
-
-.section_form_margin_top {
-  margin-top: 1.17rem; /*
-  This value is employed to match h3 margin-top positioned below the cancel
-  button button in the delete section form page. Use of rem units ensures a
-  result that is browser self-consistent, tested on Chrome, Firefox and Edge.*/
-}
-
-.text_line {
-  font-family: Roboto, sans-serif;
-  font-size: 1.17rem; /* Based on the h3 specification by WC3. */
-}
-
 .text_area {
-  width: 704px; /* Based on the min body width. */
-  font-family: "Roboto Slab", serif;
-  font-size: 1rem; /* Based on the default p size by major browsers. */
-  /* This area can hold about 77 characters per line. */
-}
-
-.delete_section {
-  display: inline-block;
+  width: 100%;
+  font-weight: 400;
+  /* At html min-width, this area can hold about 75 characters per line. */
 }
 
 .row_2buttons {
-  width: 704px;
   display: flex;
   justify-content: space-between;
+}
+
+.delete_section_button {
+  display: inline-block;
+}
+
+.indent_1 {
+  padding-left: 40px;
+  /* This value is the ol and ul default padding-left recommended by W3C. */
 }
 
 /*

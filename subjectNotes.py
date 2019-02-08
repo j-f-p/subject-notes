@@ -73,7 +73,8 @@ def newSection(topic_id):
         session = DBSession()
         topic = session.query(Topic).filter_by(id=topic_id).one()
         session.close()
-        return render_template('newSection.html', topic=topic)
+        return render_template('newSection.html', subject=subject(),
+                               topic=topic)
 
 
 # Route for viewing a topic section (GET Request)
@@ -108,8 +109,8 @@ def editSection(topic_id, section_id):
         topic = session.query(Topic).filter_by(id=topic_id).one()
         section = session.query(Section).filter_by(id=section_id).one()
         session.close()
-        return render_template(
-            'editSection.html', topic=topic, section=section)
+        return render_template('editSection.html',
+                               subject=subject(), topic=topic, section=section)
 
 
 # Route for deleting a topic section
@@ -134,8 +135,8 @@ def deleteSection(topic_id, section_id):
         topic = session.query(Topic).filter_by(id=topic_id).one()
         section = session.query(Section).filter_by(id=section_id).one()
         session.close()
-        return render_template(
-            'deleteSection.html', topic=topic, section=section)
+        return render_template('deleteSection.html',
+                               subject=subject(), topic=topic, section=section)
 
 
 if __name__ == '__main__':
