@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <title>Subject Notes - Topics</title>
   </head>
@@ -17,7 +16,7 @@
       <section class="nav_pane">
         <h2>Topics</h2>
       {% for t in topics %}
-        <h3>{{t.name}}</h3>
+        <h3 class="hover">{{t.name}}</h3>
       {% endfor %}
       </section>
       <section class="content_pane">

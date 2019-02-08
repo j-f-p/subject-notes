@@ -4,13 +4,41 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
-    <title>Subject Notes - Section</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
+    <title>Subject Notes - Topic Sections</title>
   </head>
   <body>
-    <h1>{{subject}}</h1>
-    <h2>{{topic.name}}</h2>
-    <h3>{{section.name}}</h3>
-    <p>{{section.notes}}</p>
+    <header>
+      <h1>{{subject}} Notes</h1>
+    </header>
+    <div class="flash">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul class="flash_ul">
+      {% for message in messages %}
+        <li class="flash_li">{{message}}</li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+    {% endwith %}
+    </div>
+    <main>
+      <section class="nav_pane">
+        <h2>Sections of Topic<br>{{topic.name}}</h2>
+      {% for s in sections %}
+        {% if s.id == section.id %}
+        <h3 class="selected">{{s.name}}</h3>
+        {% else %}
+        <h3 class="hover">{{s.name}}</h3>
+        {% endif %}
+      {% endfor %}
+      </section>
+      <section class="content_pane">
+        <h2>{{section.name}}</h2>
+        <p>{{section.notes}}</p>
+      </section>
+    </main>
   </body>
 </html>

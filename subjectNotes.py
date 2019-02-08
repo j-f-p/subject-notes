@@ -47,7 +47,7 @@ def contents():
 def topicContents(topic_id):
     session = DBSession()  # open session
     topic = session.query(Topic).filter_by(id=topic_id).one()
-    sections = session.query(Section).filter_by(topic_id=topic.id)
+    sections = session.query(Section).filter_by(topic_id=topic.id).all()
     session.close()
     return render_template('topicContents.html', subject=subject(),
                            topic=topic, sections=sections)
@@ -81,10 +81,11 @@ def newSection(topic_id):
 def viewSection(topic_id, section_id):
     session = DBSession()  # open session
     topic = session.query(Topic).filter_by(id=topic_id).one()
+    sections = session.query(Section).filter_by(topic_id=topic.id)
     section = session.query(Section).filter_by(id=section_id).one()
     session.close()
     return render_template('viewSection.html', subject=subject(), topic=topic,
-                           section=section)
+                           sections=sections, section=section)
 
 
 # Route for updating a topic section

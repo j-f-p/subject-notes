@@ -4,27 +4,37 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
     <title>Subject Notes - Edit</title>
   </head>
   <body>
     <h1 class="h1_subtitle">Edit Section for {{topic.name}}</h1>
-    <form action="{{url_for('topicContents', topic_id=topic.id)}}">
-      <input type="submit" value="cancel">
+    <form action="{{url_for('viewSection', topic_id=topic.id,
+                            section_id=section.id)}}">
+      <input type="submit" value="cancel edit">
     </form>
-    <form class="section_form_margin_top" method="POST"
+    <form id="edit" class="section_form_margin_top" method="POST"
         action="{{url_for('editSection', topic_id=topic.id,
                           section_id=section.id)}}">
       <label for="nsName">Name</label><br>
       <input id="nsName" type="text" name="name" size="50" autofocus required
-        minlength="1" maxlength="50" placeholder="{{section.name}}"><br><br>
+        minlength="1" maxlength="50" placeholder="{{section.name}}"
+        class="text_line"><br><br>
       <label for="nsNotes">Notes</label><br>
-      <textarea id="nsNotes" name="notes" rows="10" cols="80"
-        minlength="6" maxlength="800"
-        placeholder="{{section.notes}}"></textarea><br><br>
+      <textarea id="nsNotes" name="notes" rows="11"
+        minlength="6" maxlength="800" placeholder="{{section.notes}}"
+        class="text_area"></textarea><br><br>
         <!--maxlength of 800 is set for development. maxlength would be set to a
           higher number for exhibition or publication.-->
-      <input type="submit" value="edit">
+      <!-- <input type="submit" value="submit edit"> -->
     </form>
+    <div class="row_2buttons">
+      <button type="submit" form="edit">submit edit</button>
+      <form action="{{url_for('deleteSection', topic_id=topic.id,
+                              section_id=section.id)}}" class="delete_section">
+        <input type="submit" value="delete section">
+      </form>
+    </div>
   </body>
 </html>

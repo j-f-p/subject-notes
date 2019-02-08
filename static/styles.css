@@ -1,9 +1,9 @@
 /*
 This style sheet is configured for a "desktop" browser view, ideally having a
-screen width greater than 639 px. */
+screen width greater than 719 px. */
 
 html {
-  min-width: 640px;
+  min-width: 720px;
   max-width: 1280px;
 }
 
@@ -54,19 +54,19 @@ main {
   border-right: 2px solid black;
   padding: 0 8px;
   flex: none;
-  width: 190px; /*
+  width: 216px; /*
   Width of topics section is set to a constant. It is set to one-third of the
   body content-width:
     width = floor( (html min-width - default body margin)/3 )
             - border-right - topics padding-right
-          = 208 - 2 - 16  px
+          = 234 - 2 - 16  px
   Box-sizing is the default content-box, thus, border and padding is subtracted
   in this calculation. */
 }
 
 .nav_pane > h2,
 .nav_pane > h3 {
-  font-family: "Roboto Condensed", sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .content_pane {
@@ -91,6 +91,15 @@ main {
   text-align: center;
 }
 
+.selected {
+  background-color: silver;
+}
+
+.hover:hover {
+  background-color: silver;
+  cursor: pointer;
+}
+
 /* other classes */
 .indent_1 {
   padding-left: 40px;
@@ -102,6 +111,28 @@ main {
   This value is employed to match h3 margin-top positioned below the cancel
   button button in the delete section form page. Use of rem units ensures a
   result that is browser self-consistent, tested on Chrome, Firefox and Edge.*/
+}
+
+.text_line {
+  font-family: Roboto, sans-serif;
+  font-size: 1.17rem; /* Based on the h3 specification by WC3. */
+}
+
+.text_area {
+  width: 704px; /* Based on the min body width. */
+  font-family: "Roboto Slab", serif;
+  font-size: 1rem; /* Based on the default p size by major browsers. */
+  /* This area can hold about 77 characters per line. */
+}
+
+.delete_section {
+  display: inline-block;
+}
+
+.row_2buttons {
+  width: 704px;
+  display: flex;
+  justify-content: space-between;
 }
 
 /*

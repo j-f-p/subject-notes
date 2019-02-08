@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
     <title>Subject Notes - Topic Sections</title>
@@ -28,15 +27,22 @@
     <main>
       <section class="nav_pane">
         <h2>Sections of Topic<br>{{topic.name}}</h2>
-      {% for s in sections %}
-        <h3>{{s.name}}</h3>
-      {% endfor %}
+      {% if sections|length > 1 %}
+        {% for index in range(sections|length - 1) %}
+        <h3 class="hover">{{sections[index].name}}</h3>
+        {% endfor %}
+      {% endif %}
+      {% if sections|length > 0 %}
+        <h3 class="selected">{{sections[-1].name}}</h3>
+      {% endif %}
       </section>
+    {% if sections|length > 0 %}
       <section class="content_pane">
         <h2>{{sections[-1].name}}<br>
           <span class="h2_subtitle">(Latest Section of Topic)</span></h2>
-        <p>{{sections [-1].notes}}</p>
+        <p>{{sections[-1].notes}}</p>
       </section>
+    {% endif %}
     </main>
   </body>
 </html>
