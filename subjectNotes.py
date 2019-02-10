@@ -32,9 +32,9 @@ def subject():
 def contents():
     session = DBSession()  # open session
     topics = session.query(Topic).all()
-    # latest_sections is an array of doubles: [(sname, tname), ..., (...)].
-    # Each double is a section name and its associated topic name.
-    latest_sections = session.query(Section.name, Topic.name).\
+    # latest_sections is an array of doubles: [(section, tname), ..., (...)].
+    # Each double is a section and its associated topic name.
+    latest_sections = session.query(Section, Topic.name).\
         filter(Section.topic_id == Topic.id).\
         order_by(Section.id.desc())[0:5]
     session.close()
@@ -96,14 +96,18 @@ def editSection(topic_id, section_id):
     if request.method == 'POST':
         session = DBSession()
         section = session.query(Section).filter_by(id=section_id).one()
-        section.name = request.form['name']
-        section.notes = request.form['notes']
-        session.add(section)
-        session.commit()
-        flashMessage = '{} was updated.'.format(section.name)
+        if request.form['name']!="" or request.form['notes']!="":
+            if request.form['name']!="":
+                section.name = request.form['name']
+            if request.form['notes']!="":
+                section.notes = request.form['notes']
+            session.add(section)
+            session.commit()
+            flashMessage = '{} was updated.'.format(section.name)
+            flash(flashMessage)
         session.close()
-        flash(flashMessage)
-        return redirect(url_for('topicContents', topic_id=topic_id))
+        return redirect(url_for('viewSection', topic_id=topic_id,
+                                section_id=section_id))
     else:
         session = DBSession()
         topic = session.query(Topic).filter_by(id=topic_id).one()

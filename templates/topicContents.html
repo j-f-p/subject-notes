@@ -11,7 +11,7 @@
   </head>
   <body>
     <header>
-      <h1>{{subject}} Notes</h1>
+      <h1><a href="{{url_for('contents')}}">{{subject}} Notes</a></h1>
     </header>
     <div class="flash">
     {% with messages = get_flashed_messages() %}
@@ -29,7 +29,12 @@
         <h2>Sections of Topic<br>{{topic.name}}</h2>
       {% if sections|length > 1 %}
         {% for index in range(sections|length - 1) %}
-        <h3 class="hover">{{sections[index].name}}</h3>
+        <h3 class="hover">
+          <a href="{{url_for('viewSection', topic_id=topic.id,
+                             section_id=sections[index].id)}}">
+            {{sections[index].name}}
+          </a>
+        </h3>
         {% endfor %}
       {% endif %}
       {% if sections|length > 0 %}
@@ -40,7 +45,11 @@
       <section class="content_pane pane_padding">
         <h2>{{sections[-1].name}}<br>
           <span class="h3_font_size">(Latest Section of Topic)</span></h2>
+      {% if sections[-1].notes == None %}
+        <p>&#8212;This section has no notes.&#8212;</p>
+      {% else %}
         <p>{{sections[-1].notes}}</p>
+      {% endif %}
       </section>
     {% endif %}
     </main>

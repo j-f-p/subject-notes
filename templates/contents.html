@@ -16,13 +16,20 @@
       <nav class="nav_pane pane_padding">
         <h2>Topics</h2>
       {% for t in topics %}
-        <h3 class="hover">{{t.name}}</h3>
+        <h3 class="hover">
+          <a href="{{url_for('topicContents', topic_id=t.id)}}">{{t.name}}</a>
+        </h3>
       {% endfor %}
       </nav>
       <section class="content_pane pane_padding">
         <h2>Latest Five Topic Sections</h2>
       {% for s in latest_sections %}
-        <h3><span class="hover">{{s[0]}} ({{s[1]}})</span></h3>
+        <h3><span class="hover">
+          <a href="{{url_for('viewSection', topic_id=s[0].topic_id,
+                             section_id=s[0].id)}}">
+            {{s[0].name}} ({{s[1]}})
+          </a>
+        </span></h3>
         <!-- Section Name (Topic Name) -->
       {% endfor %}
       </section>
