@@ -1,6 +1,9 @@
 #!/usr/bin/env python
-from flask import Flask, render_template, url_for, request, redirect, flash
-from flask import jsonify
+import random
+import string
+from flask import Flask, render_template, url_for
+from flask import request, redirect, flash, jsonify
+from flask import session as login_session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Topic, Section
@@ -25,6 +28,18 @@ DBSession = sessionmaker(bind=engine)  # define a configured session class
 #   Value not in database, until feature is added to enable user to specify it.
 def subject():
     return "Deep Learning"
+
+
+# Route for authentication form
+#   login_session['state'] is a token that adds a layer of security against a
+#   request forgery.
+@app.route('/login/')
+def viewLogin():
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                    for x in xrange(32))
+    login_session['state'] = state
+    return "The current session state token is \"%s\"." %\
+        login_session['state']
 
 
 # Route for viewing the subject's contents in terms of topics
@@ -96,10 +111,10 @@ def editSection(topic_id, section_id):
     if request.method == 'POST':
         session = DBSession()
         section = session.query(Section).filter_by(id=section_id).one()
-        if request.form['name']!="" or request.form['notes']!="":
-            if request.form['name']!="":
+        if request.form['name'] != "" or request.form['notes'] != "":
+            if request.form['name'] != "":
                 section.name = request.form['name']
-            if request.form['notes']!="":
+            if request.form['notes'] != "":
                 section.notes = request.form['notes']
             session.add(section)
             session.commit()
