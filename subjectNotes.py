@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-import random
-import string
+import hashlib
+import os
 from flask import Flask, render_template, url_for
 from flask import request, redirect, flash, jsonify
 from flask import session as login_session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Topic, Section
+from app_consts import gpd, subject
 
 app = Flask(__name__)
 
-engine = create_engine('sqlite:///deepLearningNotes.db')
+engine = create_engine('sqlite:///test.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)  # define a configured session class
@@ -23,23 +24,15 @@ DBSession = sessionmaker(bind=engine)  # define a configured session class
 # or more topics.
 
 
-# Subject string constant
-#   Defined as a string literal return value to ensure that it is constant.
-#   Value not in database, until feature is added to enable user to specify it.
-def subject():
-    return "Deep Learning"
-
-
 # Route for authentication form
 #   login_session['state'] is a token that adds a layer of security against a
 #   request forgery.
 @app.route('/login/')
 def viewLogin():
-    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
-                    for x in xrange(32))
+    state = hashlib.sha256(os.urandom(1024)).hexdigest()
     login_session['state'] = state
-    return "The current session state token is \"%s\"." %\
-        login_session['state']
+    return "state: {}<br>client: {}".\
+        format(login_session['state'], gpd()['web']['client_id'])
 
 
 # Route for viewing the subject's contents in terms of topics

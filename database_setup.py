@@ -31,6 +31,6 @@ class Section(Base):
         }
 
 
-engine = create_engine('sqlite:///deepLearningNotes.db')
+engine = create_engine('sqlite:///test.db')
 Base.metadata.create_all(engine)
 # EOF

@@ -2,5 +2,7 @@
 \*.*~
 \*.*swp
 \database_setup.pyc
-\deepLearningNotes.db
+\test.db
 \__pycache__
+\gapiProject.dat
+\client_secret*
