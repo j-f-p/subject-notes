@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import random
 import string
 from flask import Flask, render_template, url_for
@@ -110,6 +110,7 @@ def viewSection(topic_id, section_id):
 def editSection(topic_id, section_id):
     if request.method == 'POST':
         session = DBSession()
+        topic = session.query(Topic).filter_by(id=topic_id).one()
         section = session.query(Section).filter_by(id=section_id).one()
         if request.form['name'] != "" or request.form['notes'] != "":
             if request.form['name'] != "":
@@ -118,7 +119,8 @@ def editSection(topic_id, section_id):
                 section.notes = request.form['notes']
             session.add(section)
             session.commit()
-            flashMessage = '{} was updated.'.format(section.name)
+            flashMessage = 'Section "{}" of topic "{}" was updated.'\
+                .format(section.name, topic.name)
             flash(flashMessage)
         session.close()
         return redirect(url_for('viewSection', topic_id=topic_id,
