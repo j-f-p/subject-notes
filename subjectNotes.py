@@ -24,16 +24,15 @@ DBSession = sessionmaker(bind=engine)  # define a configured session class
 # or more topics.
 
 
-# Route for authentication form
-#   login_session['state'] is a token that adds a layer of security against a
-#   request forgery.
-@app.route('/login/')
-def viewLogin():
-    state = hashlib.sha256(os.urandom(1024)).hexdigest()
-    login_session['state'] = state
-    return "state: {}<br>client: {}".\
-        format(login_session['state'], gpd()['web']['client_id'])
+# Route for sign in desk
+@app.route('/signindesk/')
+def signInDesk():
+    return render_template('signInDesk.html', subject=subject())
 
+# Route for authentication
+@app.route('/authenticate/')
+def authenticate():
+    return "TODO: implement authentication"
 
 # Route for viewing the subject's contents in terms of topics
 @app.route('/topics/')
