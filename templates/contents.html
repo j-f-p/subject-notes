@@ -12,6 +12,17 @@
     <header>
       <h1>{{subject}} Notes</h1>
     </header>
+    <div class="flash">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul class="flash_ul">
+      {% for message in messages %}
+        <li class="flash_li">{{message}}</li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+    {% endwith %}
+    </div>
     <main class="pane_row">
       <nav class="nav_pane pane_padding">
         <h2>Topics</h2>

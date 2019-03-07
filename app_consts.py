@@ -1,21 +1,20 @@
-import json
-
 # App Constants
 #   Each is defined as a function return value so that it remains constant.
 
-# Extract Google API project data (GPD) from file and store in dict.
-with open('gapiProject.dat', 'r') as gpdFile:
-    GPD = json.load(gpdFile)
+
+# Google API project data file name
+def gpdFileName():
+    return 'gapiProject.dat'
 
 
-# gpd
-#  Returns the project's associated Google API data in a dict.
-def gpd():
-    return GPD
+# Google API user permission scopes for Google Sign-In
+def gapiGSIscopes():
+    return ['https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email', 'openid']
 
 
-# subject
-#   Returns the subject of the notes as a string. This string is not defined in
-#   database, until a feature is added to enable user to specify it.
+# Main subject of notes
+#   Return the subject of the notes as a string. This string is not defined in
+#   the database, until a feature is added to enable an admin to specify it.
 def subject():
     return "Deep Learning"
