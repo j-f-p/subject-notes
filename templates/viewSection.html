@@ -11,7 +11,12 @@
   </head>
   <body>
     <header>
-      <h1><a href="{{url_for('contents')}}">{{subject}} Notes</a></h1>
+      <h1>
+        <a href="{{url_for('contents')}}">&nbsp;{{subject}} Notes&nbsp;</a>
+      </h1>
+      <form action="{{url_for('signInDesk')}}">
+        <input type="submit" value="Sign In">
+      </form>
     </header>
     <div class="flash">
     {% with messages = get_flashed_messages() %}

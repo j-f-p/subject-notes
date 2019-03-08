@@ -11,7 +11,12 @@
   </head>
   <body>
     <header>
-      <h1><a href="{{url_for('contents')}}">{{subject}} Notes</a></h1>
+      <h1>
+        <a href="{{url_for('contents')}}">&nbsp;{{subject}} Notes&nbsp;</a>
+      </h1>
+      <form action="{{url_for('signInDesk')}}">
+        <input type="submit" value="Sign In">
+      </form>
     </header>
     <div class="flash">
     {% with messages = get_flashed_messages() %}
@@ -26,7 +31,7 @@
     </div>
     <main class="pane_row">
       <nav class="nav_pane pane_padding">
-        <h2>Sections of Topic<br>{{topic.name}}</h2>
+        <h2>Sections of Topic<br><mark>{{topic.name}}</mark></h2>
       {% if sections|length > 1 %}
         {% for index in range(sections|length - 1) %}
         <h3 class="hover">

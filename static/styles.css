@@ -27,6 +27,16 @@ h1 {
   font-family: Montserrat, sans-serif;
 }
 
+h1 > mark,
+h1 > a:hover {
+  background-color: #eee;
+}
+
+h2 > mark,
+h2 > a:hover {
+  background-color: #eee;
+}
+
 h3,
 .h3_font_size {
   font-size: 1.17rem; /* This is the h3 specification by W3C. */
@@ -55,6 +65,12 @@ a {
 header {
   border-bottom: 2px solid black;
   padding: 0 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+header > form {
+  align-self: center;
 }
 
 .pane_row {
@@ -97,11 +113,11 @@ header {
 }
 
 .selected {
-  background-color: silver;
+  background-color: #eee;
 }
 
 .hover:hover {
-  background-color: silver;
+  background-color: #eee;
   cursor: pointer;
 }
 
