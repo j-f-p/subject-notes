@@ -11,7 +11,7 @@
   </head>
   <body>
     <header>
-      <h1>&nbsp;{{subject}} Notes&nbsp;</h1>
+      <h1>{{subject}} Notes</h1>
     </header>
     <main class="pane_padding">
       <h2>Delete Section from {{topic.name}}</h2>
@@ -22,7 +22,11 @@
       <h3>Section to delete:</h3>
       <div class="indent_1">
         <h4 class="h3_font_size">{{section.name}}</h4>
+      {% if section.notes == None %}
+        <p>&#8212;This section has no notes.&#8212;</p>
+      {% else %}
         <p>{{section.notes}}</p>
+      {% endif %}
         <form action="{{url_for('deleteSection', topic_id=topic.id,
                                 section_id=section.id)}}" method="POST">
           <input type="submit" value="confirm delete">

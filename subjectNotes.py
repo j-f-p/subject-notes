@@ -7,7 +7,7 @@ from flask import request, redirect, flash, jsonify
 from flask import session as signed_session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Topic, Section
+from database_setup import Base, Topic, Section, maxSectionsPerTopic
 from app_consts import gapiGSIscopes, gpdFileName, subject
 
 app = Flask(__name__)
@@ -145,11 +145,17 @@ def newSection(topic_id):
 def viewSection(topic_id, section_id):
     session = DBSession()  # open session
     topic = session.query(Topic).filter_by(id=topic_id).one()
-    sections = session.query(Section).filter_by(topic_id=topic.id)
+    sections = session.query(Section).filter_by(topic_id=topic.id).all()
     section = session.query(Section).filter_by(id=section_id).one()
     session.close()
-    return render_template('viewSection.html', subject=subject(), topic=topic,
-                           sections=sections, section=section)
+    if section.id == sections[0].id:
+        # It's possible that an intro section is selected from the contents
+        # view. Then, render the associated topic contents view.
+        return render_template('topicContents.html', subject=subject(),
+                               topic=topic, sections=sections)
+    else:
+        return render_template('viewSection.html', subject=subject(),
+                               topic=topic, sections=sections, section=section)
 
 
 # Route for updating a topic section

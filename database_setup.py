@@ -12,6 +12,12 @@ class Topic(Base):
     __tablename__ = 'topic'
     name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
+    # Each topic must have an intro section.
+
+
+# Max number of sections a topic can have
+def maxSectionsPerTopic():
+    return 10
 
 
 class Section(Base):

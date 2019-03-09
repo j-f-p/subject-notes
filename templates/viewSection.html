@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300">
-    <title>Subject Notes - Topic Sections</title>
+    <title>Subject Notes - View Section</title>
   </head>
   <body>
     <header>
       <h1>
-        <a href="{{url_for('contents')}}">&nbsp;{{subject}} Notes&nbsp;</a>
+        <a href="{{url_for('contents')}}">{{subject}} Notes</a>
       </h1>
       <form action="{{url_for('signInDesk')}}">
         <input type="submit" value="Sign In">
@@ -36,14 +36,14 @@
             {{topic.name}}
           </a>
         </h2>
-      {% for s in sections %}
-        {% if s.id == section.id %}
-        <h3 class="selected">{{s.name}}</h3>
+      {% for index in range(1, sections|length) %}
+        {% if sections[index].id == section.id %}
+        <h3 class="selected">{{section.name}}</h3>
         {% else %}
         <h3 class="hover">
           <a href="{{url_for('viewSection', topic_id=topic.id,
-                             section_id=s.id)}}">
-            {{s.name}}
+                             section_id=sections[index].id)}}">
+            {{sections[index].name}}
           </a>
         </h3>
         {% endif %}

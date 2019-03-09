@@ -12,7 +12,7 @@
   <body>
     <header>
       <h1>
-        <a href="{{url_for('contents')}}">&nbsp;{{subject}} Notes&nbsp;</a>
+        <a href="{{url_for('contents')}}">{{subject}} Notes</a>
       </h1>
       <form action="{{url_for('signInDesk')}}">
         <input type="submit" value="Sign In">
@@ -33,7 +33,7 @@
       <nav class="nav_pane pane_padding">
         <h2>Sections of Topic<br><mark>{{topic.name}}</mark></h2>
       {% if sections|length > 1 %}
-        {% for index in range(sections|length - 1) %}
+        {% for index in range(1, sections|length) %}
         <h3 class="hover">
           <a href="{{url_for('viewSection', topic_id=topic.id,
                              section_id=sections[index].id)}}">
@@ -42,21 +42,17 @@
         </h3>
         {% endfor %}
       {% endif %}
-      {% if sections|length > 0 %}
-        <h3 class="selected">{{sections[-1].name}}</h3>
-      {% endif %}
       </nav>
-    {% if sections|length > 0 %}
       <section class="content_pane pane_padding">
-        <h2>{{sections[-1].name}}<br>
-          <span class="h3_font_size">(Latest Section of Topic)</span></h2>
-      {% if sections[-1].notes == None %}
+      <!-- Every topic must have one section, something like an intro section.
+           Render a topic's first section here. -->
+        <h2>{{sections[0].name}}</h2>
+      {% if sections[0].notes == None %}
         <p>&#8212;This section has no notes.&#8212;</p>
       {% else %}
-        <p>{{sections[-1].notes}}</p>
+        <p>{{sections[0].notes}}</p>
       {% endif %}
       </section>
-    {% endif %}
     </main>
   </body>
 </html>
