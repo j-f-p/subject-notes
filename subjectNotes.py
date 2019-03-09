@@ -85,9 +85,9 @@ def oauth2callback():
         #              credentials in a persistent database instead.
         signed_session['credentials'] = credentials_to_dict(flow.credentials)
 
-        flash("Sign in approved.")
+        flash('Sign in approved.')
     else:
-        flash("Sign in aborted.")
+        flash('Sign in aborted.')
     return redirect(url_for('contents'))
 
 # Route for viewing the subject's contents in terms of topics
@@ -122,9 +122,11 @@ def newSection(topic_id):
     if request.method == 'POST':
         session = DBSession()
         topic = session.query(Topic).filter_by(id=topic_id).one()
+        lastTopicSec_id = session.query(Section).\
+            filter_by(topic_id=topic_id).order_by(Section.id.desc()).first().id
         new_section = Section(
             name=request.form['name'], notes=request.form['notes'],
-            topic_id=topic_id)
+            topic_id=topic_id, id=lastTopicSec_id+1)
         session.add(new_section)
         session.commit()
         flashMessage = 'Section "{}" was added to topic "{}".'\
@@ -134,10 +136,15 @@ def newSection(topic_id):
         return redirect(url_for('topicContents', topic_id=topic_id))
     else:
         session = DBSession()
-        topic = session.query(Topic).filter_by(id=topic_id).one()
-        session.close()
-        return render_template('newSection.html', subject=subject(),
-                               topic=topic)
+        nTopSecs = session.query(Section).filter_by(topic_id=topic_id).count()
+        if nTopSecs == maxSectionsPerTopic():
+            flash('Number of sections of topic is at maximum.')
+            return redirect(url_for('topicContents', topic_id=topic_id))
+        else:
+            topic = session.query(Topic).filter_by(id=topic_id).one()
+            session.close()
+            return render_template('newSection.html', subject=subject(),
+                                   topic=topic)
 
 
 # Route for viewing a topic section (GET Request)
