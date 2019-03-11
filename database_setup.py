@@ -13,6 +13,7 @@ class Topic(Base):
     name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
     # Each topic must have an intro section.
+    # TODO: Add property serialize.
 
 
 # Max number of sections a topic can have
