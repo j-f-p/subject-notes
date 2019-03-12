@@ -1,3 +1,5 @@
+import json
+
 # App Constants
 #   Each is defined as a function return value so that it remains constant.
 
@@ -7,10 +9,22 @@ def gpdFileName():
     return 'gapiProject.dat'
 
 
-# Google API user permission scopes for Google Sign-In
-def gapiGSIscopes():
-    return ['https://www.googleapis.com/auth/userinfo.profile',
-            'https://www.googleapis.com/auth/userinfo.email', 'openid']
+# Extract Google API project data (GPD) from file and store it in a dictionary.
+with open(gpdFileName(), 'r') as gpdFile:
+    GPD = json.load(gpdFile)
+
+
+# gpd
+#  Returns the project's associated Google API data in a dictionary.
+def gpd():
+    return GPD
+
+
+# Google API user permission scopes for Google authentication and Oauth2 API.
+def gapiScopes():
+    return ['openid',
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email']
 
 
 # Main subject of notes

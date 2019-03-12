@@ -8,7 +8,7 @@ from flask import session as signed_session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Topic, Section, maxSectionsPerTopic
-from app_consts import gapiGSIscopes, gpdFileName, subject
+from app_consts import gapiScopes, gpd, gpdFileName, subject
 
 app = Flask(__name__)
 
@@ -46,10 +46,10 @@ def signInDesk():
 def authenticate():
     # Initialize flow instance for managing the protocol flow.
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-        gpdFileName(), scopes=gapiGSIscopes())
+        gpdFileName(), scopes=gapiScopes())
 
     # Set redirect URI to that set in the Google API Console.
-    flow.redirect_uri = url_for('oauth2callback', _external=True)
+    flow.redirect_uri = gpd()['web']['redirect_uris'][0]
 
     authorization_url, state = flow.authorization_url(
         # Enable incremental authorization. Recommended as a best practice.
@@ -71,10 +71,11 @@ def oauth2callback():
     if request.args.get('code'):
         # Re-initialize flow instance with verification of session state.
         flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-            gpdFileName(), scopes=gapiGSIscopes(),
+            gpdFileName(), scopes=gapiScopes(),
             state=signed_session['state'])
 
-        flow.redirect_uri = url_for('oauth2callback', _external=True)
+        # This is part of the re-initialization, by API design.
+        flow.redirect_uri = gpd()['web']['redirect_uris'][0]
 
         # Use the authorization server's response to fetch the OAuth 2.0
         # tokens. This response is flask.request.url.
