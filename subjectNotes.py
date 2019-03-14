@@ -3,6 +3,8 @@ import hashlib
 import os
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
+import google.oauth2.credentials
+import requests
 from flask import Flask, render_template, url_for
 from flask import request, redirect, flash, jsonify
 from flask import session as signed_session
@@ -42,7 +44,7 @@ def signInDesk():
     return render_template('signInDesk.html', subject=subject())
 
 
-# Route for starting authentication by OAuth 2 framework protocol flow.
+# Route for starting authentication by OAuth 2 framework protocol flow
 @app.route('/authenticate/')
 def authenticate():
     # Initialize flow instance for managing the protocol flow.
@@ -64,6 +66,7 @@ def authenticate():
     return redirect(authorization_url)
 
 
+# Route for handling Google Sign-In response
 # Handle authorization code or error from Google Sign-In response. If response
 # is an authorization code, exchange it for refresh and access tokens and
 # access Google API project credentials. Otherwise, abort sign in.
@@ -101,6 +104,42 @@ def oauth2callback():
     else:
         flash('Sign in aborted.')
     return redirect(url_for('contents'))
+
+
+# Route for sigining out
+@app.route('/signout/')
+def signOut():
+    if 'credentials' in signed_session:
+        credentials = google.oauth2.credentials.Credentials(
+            **signed_session['credentials'])
+
+        # Revoke credentials
+        revoke = requests.post(
+            'https://accounts.google.com/o/oauth2/revoke',
+            params={'token': credentials.token},
+            headers={'content-type': 'application/x-www-form-urlencoded'})
+
+        revoke_status_code = getattr(revoke, 'status_code')
+
+        # Clear credentials and user info from session
+        del signed_session['credentials']
+        del signed_session['userinfo']
+        session_cleared = True
+
+        if 'credentials' in signed_session or 'userinfo' in signed_session:
+            session_cleared = False
+
+        if revoke_status_code == 200 and session_cleared:
+            flash('You\'ve successfully signed out.')
+        else:
+            flash('An error occurred.')
+    # else user is not signed-in and method returns quietly
+
+    if request.referrer is not None:
+        return redirect(request.referrer)
+    else:
+        return redirect(url_for('contents'))
+
 
 # Route for viewing the subject's contents in terms of topics
 @app.route('/topics/')
