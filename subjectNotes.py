@@ -2,13 +2,14 @@
 import hashlib
 import os
 import google_auth_oauthlib.flow
+import googleapiclient.discovery
 from flask import Flask, render_template, url_for
 from flask import request, redirect, flash, jsonify
 from flask import session as signed_session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Topic, Section, maxSectionsPerTopic
-from app_consts import gapiScopes, gpd, gpdFileName, subject
+from app_consts import gapiOauth, gapiScopes, gpd, gpdFileName, subject
 
 app = Flask(__name__)
 
@@ -81,12 +82,22 @@ def oauth2callback():
         # tokens. This response is flask.request.url.
         flow.fetch_token(authorization_response=request.url)
 
-        # Store credentials in the session.
-        # ACTION ITEM: In a production app, you likely want to save these
-        #              credentials in a persistent database instead.
+        # Store credentials in session.
+        # TODO: For production, store credentials encrypted in a persistent
+        #       database.
         signed_session['credentials'] = credentials_to_dict(flow.credentials)
 
-        flash('Sign in approved.')
+        oauth2 = googleapiclient.discovery.build(
+            gapiOauth()['name'], gapiOauth()['version'],
+            credentials=flow.credentials)
+
+        # Store userinfo in session.
+        # TODO: For production, store userinfo encrypted in a persistent
+        #       database.
+        signed_session['userinfo'] = oauth2.userinfo().get().execute()
+
+        flash('Sign in approved. Welcome {}.'.
+              format(signed_session['userinfo']['given_name']))
     else:
         flash('Sign in aborted.')
     return redirect(url_for('contents'))
