@@ -109,6 +109,8 @@ def oauth2callback():
 # Route for sigining out
 @app.route('/signout/')
 def signOut():
+    # Since 'userinfo' depends on 'credentials', only a check for 'credentials'
+    # is made.
     if 'credentials' in signed_session:
         credentials = google.oauth2.credentials.Credentials(
             **signed_session['credentials'])
@@ -132,7 +134,7 @@ def signOut():
         if revoke_status_code == 200 and session_cleared:
             flash('You\'ve successfully signed out.')
         else:
-            flash('An error occurred.')
+            flash('A sign-out error occurred.')
     # else user is not signed-in and method returns quietly
 
     if request.referrer is not None:
@@ -170,6 +172,13 @@ def topicContents(topic_id):
 # Route for adding a new topic section
 @app.route('/topics/<int:topic_id>/new/', methods=['GET', 'POST'])
 def newSection(topic_id):
+    if 'credentials' not in signed_session:
+        flash('Please sign in.')
+        if request.referrer is not None:
+            return redirect(request.referrer)
+        else:
+            return redirect(url_for('contents'))
+
     if request.method == 'POST':
         session = DBSession()
         topic = session.query(Topic).filter_by(id=topic_id).one()
@@ -220,6 +229,13 @@ def viewSection(topic_id, section_id):
 @app.route('/topics/<int:topic_id>/<int:section_id>/edit/',
            methods=['GET', 'POST'])
 def editSection(topic_id, section_id):
+    if 'credentials' not in signed_session:
+        flash('Please sign in.')
+        if request.referrer is not None:
+            return redirect(request.referrer)
+        else:
+            return redirect(url_for('contents'))
+
     if request.method == 'POST':
         session = DBSession()
         topic = session.query(Topic).filter_by(id=topic_id).one()
@@ -250,6 +266,13 @@ def editSection(topic_id, section_id):
 @app.route('/topics/<int:topic_id>/<int:section_id>/delete/',
            methods=['GET', 'POST'])
 def deleteSection(topic_id, section_id):
+    if 'credentials' not in signed_session:
+        flash('Please sign in.')
+        if request.referrer is not None:
+            return redirect(request.referrer)
+        else:
+            return redirect(url_for('contents'))
+
     if request.method == 'POST':
         session = DBSession()  # open session
         topic = session.query(Topic).filter_by(id=topic_id).one()
