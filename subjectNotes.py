@@ -45,6 +45,14 @@ def signedIn():
     return 'credentials' in signed_session
 
 
+# Method that returns Google account 'given_name' if user is signed in.
+def gagn():
+    if 'credentials' in signed_session:
+        return signed_session['userinfo']['given_name']
+    else:
+        return None
+
+
 # Route for sign in desk
 @app.route('/signindesk/')
 def signInDesk():
@@ -160,8 +168,8 @@ def contents():
         order_by(Section.id.desc())[0:5]
     session.close()
     return render_template(
-        'contents.html', subject=subject(), signedIn=signedIn(), topics=topics,
-        latest_sections=latest_sections)
+        'contents.html', subject=subject(), signedIn=signedIn(), uname=gagn(),
+        topics=topics, latest_sections=latest_sections)
 
 
 # Route for viewing a topic's contents in terms of sections (GET Request)
@@ -171,8 +179,9 @@ def topicContents(topic_id):
     topic = session.query(Topic).filter_by(id=topic_id).one()
     sections = session.query(Section).filter_by(topic_id=topic.id).all()
     session.close()
-    return render_template('topicContents.html', subject=subject(),
-                           signedIn=signedIn(), topic=topic, sections=sections)
+    return render_template(
+        'topicContents.html', subject=subject(), signedIn=signedIn(),
+        uname=gagn(), topic=topic, sections=sections)
 
 
 # Route for adding a new topic section
@@ -226,11 +235,11 @@ def viewSection(topic_id, section_id):
         # view. Then, render the associated topic contents view.
         return render_template(
             'topicContents.html', subject=subject(), signedIn=signedIn(),
-            topic=topic, sections=sections)
+            uname=gagn(), topic=topic, sections=sections)
     else:
         return render_template(
             'viewSection.html', subject=subject(), signedIn=signedIn(),
-            topic=topic, sections=sections, section=section)
+            uname=gagn(), topic=topic, sections=sections, section=section)
 
 
 # Route for updating a topic section

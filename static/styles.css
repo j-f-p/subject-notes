@@ -73,6 +73,18 @@ header > form {
   align-self: center;
 }
 
+header > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+header > div > p {
+  padding: 0 8px;
+  text-align: center;
+  font-family: Roboto, sans-serif;
+}
+
 .pane_row {
   display: flex;
   justify-content: flex-start;
@@ -99,7 +111,6 @@ header > form {
   flex: auto;
 }
 
-/* Classes specific to topicContents.html, which has URL .../topics/#/ */
 .flash_ul {
   background-color: black; /* banner color */
   margin: 0; /* remove default: 16px 0; */
@@ -112,16 +123,15 @@ header > form {
   text-align: center;
 }
 
-.selected {
-  background-color: #eee;
-}
-
 .hover:hover {
   background-color: #eee;
   cursor: pointer;
 }
 
-/* other classes */
+.selected {
+  background-color: #eee;
+}
+
 .text_area {
   width: 100%;
   font-weight: 400;

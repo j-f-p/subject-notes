@@ -14,9 +14,12 @@
         <mark>{{subject}} Notes</mark>
       </h1>
     {% if signedIn %}
-      <form action="{{url_for('signOut')}}">
-        <input type="submit" value="Sign Out">
-      </form>
+      <div>
+        <p>Signed in as<br>{{uname}}</p>
+        <form action="{{url_for('signOut')}}">
+          <input type="submit" value="Sign Out">
+        </form>
+      </div>
     {% else %}
       <form action="{{url_for('signInDesk')}}">
         <input type="submit" value="Sign In">
