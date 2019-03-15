@@ -38,6 +38,13 @@ def credentials_to_dict(credentials):
             'scopes': credentials.scopes}
 
 
+# Method that returns a Boolean that indicates whether user is signed or not.
+def signedIn():
+    # Since 'userinfo' depends on 'credentials', only a check for 'credentials'
+    # is made.
+    return 'credentials' in signed_session
+
+
 # Route for sign in desk
 @app.route('/signindesk/')
 def signInDesk():
@@ -109,8 +116,6 @@ def oauth2callback():
 # Route for sigining out
 @app.route('/signout/')
 def signOut():
-    # Since 'userinfo' depends on 'credentials', only a check for 'credentials'
-    # is made.
     if 'credentials' in signed_session:
         credentials = google.oauth2.credentials.Credentials(
             **signed_session['credentials'])
@@ -154,8 +159,9 @@ def contents():
         filter(Section.topic_id == Topic.id).\
         order_by(Section.id.desc())[0:5]
     session.close()
-    return render_template('contents.html', subject=subject(), topics=topics,
-                           latest_sections=latest_sections)
+    return render_template(
+        'contents.html', subject=subject(), signedIn=signedIn(), topics=topics,
+        latest_sections=latest_sections)
 
 
 # Route for viewing a topic's contents in terms of sections (GET Request)
@@ -166,7 +172,7 @@ def topicContents(topic_id):
     sections = session.query(Section).filter_by(topic_id=topic.id).all()
     session.close()
     return render_template('topicContents.html', subject=subject(),
-                           topic=topic, sections=sections)
+                           signedIn=signedIn(), topic=topic, sections=sections)
 
 
 # Route for adding a new topic section
@@ -218,11 +224,13 @@ def viewSection(topic_id, section_id):
     if section.id == sections[0].id:
         # It's possible that an intro section is selected from the contents
         # view. Then, render the associated topic contents view.
-        return render_template('topicContents.html', subject=subject(),
-                               topic=topic, sections=sections)
+        return render_template(
+            'topicContents.html', subject=subject(), signedIn=signedIn(),
+            topic=topic, sections=sections)
     else:
-        return render_template('viewSection.html', subject=subject(),
-                               topic=topic, sections=sections, section=section)
+        return render_template(
+            'viewSection.html', subject=subject(), signedIn=signedIn(),
+            topic=topic, sections=sections, section=section)
 
 
 # Route for updating a topic section
