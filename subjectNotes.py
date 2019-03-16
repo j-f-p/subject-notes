@@ -268,8 +268,8 @@ def editSection(topic_id, section_id):
                 section.notes = request.form['notes']
             session.add(section)
             session.commit()
-            flashMessage = 'Section "{}" of topic "{}" was updated.'\
-                .format(section.name, topic.name)
+            flashMessage = 'Section "{}" of topic "{}" was updated by {}.'\
+                .format(section.name, topic.name, gagn())
             flash(flashMessage)
         session.close()
         return redirect(url_for('viewSection', topic_id=topic_id,
@@ -302,8 +302,8 @@ def deleteSection(topic_id, section_id):
         session.commit()
         # At this point, section is not tied to a session and can be employed
         # outside the session, however, topic is tied to the session.
-        flashMessage = ('Section "{}" was deleted from topic "{}".'
-                        .format(section.name, topic.name))
+        flashMessage = ('Section "{}" was deleted from topic "{}" by {}.'
+                        .format(section.name, topic.name, gagn()))
         session.close()
         flash(flashMessage)
         return redirect(url_for('topicContents', topic_id=topic_id))

@@ -7,13 +7,12 @@ html {
   max-width: 1280px;
 }
 
+body {
+  background-color: gainsboro;
+}
 body,
 .body_font_fam {
   font-family: Roboto, sans-serif;
-}
-
-body {
-  background-color: gainsboro;
 }
 
 h1,
@@ -26,7 +25,6 @@ h4 {
 h1 {
   font-family: Montserrat, sans-serif;
 }
-
 h1 > mark,
 h1 > a:hover {
   background-color: #eee;
@@ -41,7 +39,6 @@ h3,
 .h3_font_size {
   font-size: 1.17rem; /* This is the h3 specification by W3C. */
 }
-
 h3,
 .h3_margin { /*
   h3 font-size and margin are set to known values, those specified by W3C, so
@@ -68,17 +65,14 @@ header {
   display: flex;
   justify-content: space-between;
 }
-
 header > form {
   align-self: center;
 }
-
 header > div {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-
 header > div > p {
   padding: 0 8px;
   text-align: center;
@@ -110,13 +104,19 @@ header > div > p {
 .content_pane {
   flex: auto;
 }
+.content_pane > h2 {
+  margin-bottom: 0;
+}
+.edit_button_div {
+  display: flex;
+  justify-content: flex-end;
+}
 
 .flash_ul {
   background-color: black; /* banner color */
   margin: 0; /* remove default: 16px 0; */
   padding: 8px 0; /* banner spacing, replace default: 0 0 0 40px; */
 }
-
 .flash_li {
   color: gainsboro;
   list-style-type: none; /* remove default: disc; */
@@ -127,7 +127,6 @@ header > div > p {
   background-color: #eee;
   cursor: pointer;
 }
-
 .selected {
   background-color: #eee;
 }
