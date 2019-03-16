@@ -51,6 +51,11 @@
         </h3>
         {% endfor %}
       {% endif %}
+      {% if signedIn and sections|length < maxNumSecs %}
+        <form action="{{url_for('newSection', topic_id=topic.id)}}">
+          <input type="submit" value="add section">
+        </form>
+      {% endif %}
       </nav>
       <section class="content_pane pane_padding">
       <!-- Every topic must have one section, something like an intro section.

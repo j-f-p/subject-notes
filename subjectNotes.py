@@ -181,7 +181,8 @@ def topicContents(topic_id):
     session.close()
     return render_template(
         'topicContents.html', subject=subject(), signedIn=signedIn(),
-        uname=gagn(), topic=topic, sections=sections)
+        uname=gagn(), maxNumSecs=maxSectionsPerTopic(),
+        topic=topic, sections=sections)
 
 
 # Route for adding a new topic section
@@ -204,11 +205,12 @@ def newSection(topic_id):
             topic_id=topic_id, id=lastTopicSec_id+1)
         session.add(new_section)
         session.commit()
-        flashMessage = 'Section "{}" was added to topic "{}".'\
-            .format(new_section.name, topic.name)
+        flashMessage = 'Section "{}" was added to topic "{}" by {}.'\
+            .format(new_section.name, topic.name, gagn())
         session.close()
         flash(flashMessage)
-        return redirect(url_for('topicContents', topic_id=topic_id))
+        return redirect(url_for(
+            'viewSection', topic_id=topic_id, section_id=new_section.id))
     else:
         session = DBSession()
         nTopSecs = session.query(Section).filter_by(topic_id=topic_id).count()
@@ -235,11 +237,13 @@ def viewSection(topic_id, section_id):
         # view. Then, render the associated topic contents view.
         return render_template(
             'topicContents.html', subject=subject(), signedIn=signedIn(),
-            uname=gagn(), topic=topic, sections=sections)
+            uname=gagn(), maxNumSecs=maxSectionsPerTopic(),
+            topic=topic, sections=sections)
     else:
         return render_template(
             'viewSection.html', subject=subject(), signedIn=signedIn(),
-            uname=gagn(), topic=topic, sections=sections, section=section)
+            uname=gagn(), maxNumSecs=maxSectionsPerTopic(),
+            topic=topic, sections=sections, section=section)
 
 
 # Route for updating a topic section

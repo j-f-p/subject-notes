@@ -57,6 +57,11 @@
         </h3>
         {% endif %}
       {% endfor %}
+      {% if signedIn and sections|length < maxNumSecs %}
+        <form action="{{url_for('newSection', topic_id=topic.id)}}">
+          <input type="submit" value="add section">
+        </form>
+      {% endif %}
       </nav>
       <section class="content_pane pane_padding">
         <h2>{{section.name}}</h2>
