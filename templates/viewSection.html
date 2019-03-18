@@ -79,6 +79,14 @@
       {% else %}
         <p>{{section.notes}}</p>
       {% endif %}
+      {% if signedIn %}
+        <div class="delete_button_div">
+          <form action="{{url_for('deleteSection', topic_id=topic.id,
+                section_id=section.id)}}" class="delete_section_button">
+            <input type="submit" value="delete section">
+          </form>
+        </div>
+      {% endif %}
       </section>
     </main>
   </body>

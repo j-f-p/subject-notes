@@ -21,7 +21,7 @@
       </form>
       <form id="edit" class="h3_margin" method="POST"
           action="{{url_for('editSection', topic_id=topic.id,
-                            section_id=section.id)}}"> <!--
+                            section_id=section.id)}}"><!--
 Style class h3_margin is employed to match h3 margin-top positioned below the
 cancel button button in the delete section form page. Otherwise, there is no
 spacing between the surrounding buttons and the form. -->
@@ -34,16 +34,9 @@ spacing between the surrounding buttons and the form. -->
           minlength="6" maxlength="800" placeholder="{{section.notes}}"
           class="p_font text_area"></textarea><!--
 A maxlength of 800 is set for development. maxlength would be set to a higher
-number for exhibition or publication.-->
+number for exhibition or publication. --><br><br>
+        <input type="submit" value="submit edit">
       </form>
-      <div class="row_2buttons">
-        <button type="submit" form="edit">submit edit</button>
-        <form action="{{url_for('deleteSection', topic_id=topic.id,
-                        section_id=section.id)}}" class="delete_section_button">
-          <input type="submit" value="delete section">
-        </form>
-      </div>
-
     </main>
   </body>
 </html>

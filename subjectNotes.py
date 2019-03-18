@@ -235,7 +235,7 @@ def viewSection(topic_id, section_id):
     session.close()
     if section.id == sections[0].id:
         # It's possible that an intro section is selected from the contents
-        # view. Then, render the associated topic contents view.
+        # view via url. Then, render the associated topic contents view.
         return render_template(
             'topicContents.html', subject=subject(), signedIn=signedIn(),
             uname=gagn(), maxNumSecs=maxSectionsPerTopic(),
@@ -288,6 +288,12 @@ def editSection(topic_id, section_id):
 def deleteSection(topic_id, section_id):
     if 'credentials' not in signed_session:
         flash('Please sign in.')
+        if request.referrer is not None:
+            return redirect(request.referrer)
+        else:
+            return redirect(url_for('contents'))
+    if section_id % maxSectionsPerTopic() == 0:
+        flash('Procedure to delete first section of topic not defined.')
         if request.referrer is not None:
             return redirect(request.referrer)
         else:

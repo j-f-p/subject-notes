@@ -15,9 +15,9 @@
     </header>
     <main class="pane_padding">
       <h2>Delete Section from {{topic.name}}</h2>
-      <form action="{{url_for('editSection', topic_id=topic.id,
+      <form action="{{url_for('viewSection', topic_id=topic.id,
                               section_id=section.id)}}">
-        <input type="submit" value="cancel">
+        <input type="submit" value="cancel delete">
       </form>
       <h3>Section to delete:</h3>
       <div class="indent_1">

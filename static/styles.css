@@ -79,6 +79,17 @@ header > div > p {
   font-family: Roboto, sans-serif;
 }
 
+.flash_ul {
+  background-color: black; /* banner color */
+  margin: 0; /* remove default: 16px 0; */
+  padding: 8px 0; /* banner spacing, replace default: 0 0 0 40px; */
+}
+.flash_li {
+  color: gainsboro;
+  list-style-type: none; /* remove default: disc; */
+  text-align: center;
+}
+
 .pane_row {
   display: flex;
   justify-content: flex-start;
@@ -104,23 +115,13 @@ header > div > p {
 .content_pane {
   flex: auto;
 }
-.content_pane > h2 {
-  margin-bottom: 0;
-}
 .edit_button_div {
   display: flex;
+  justify-content: flex-start;
+}
+.delete_button_div {
+  display: flex;
   justify-content: flex-end;
-}
-
-.flash_ul {
-  background-color: black; /* banner color */
-  margin: 0; /* remove default: 16px 0; */
-  padding: 8px 0; /* banner spacing, replace default: 0 0 0 40px; */
-}
-.flash_li {
-  color: gainsboro;
-  list-style-type: none; /* remove default: disc; */
-  text-align: center;
 }
 
 .hover:hover {
@@ -135,15 +136,6 @@ header > div > p {
   width: 100%;
   font-weight: 400;
   /* At html min-width, this area can hold about 75 characters per line. */
-}
-
-.row_2buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-.delete_section_button {
-  display: inline-block;
 }
 
 .indent_1 {
