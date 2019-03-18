@@ -73,7 +73,8 @@
           </form>
         </div>
       {% endif %}
-      {% if section.notes == None %}
+      {% if section.notes == None or not section.notes
+          or section.notes.isspace() %}
         <p>&#8212;This section has no notes.&#8212;</p>
       {% else %}
         <p>{{section.notes}}</p>

@@ -69,7 +69,8 @@ topic's first section here. -->
           </form>
         </div>
       {% endif %}
-      {% if sections[0].notes == None %}
+      {% if sections[0].notes == None or not sections[0].notes
+          or sections[0].notes.isspace() %}
         <p>&#8212;This section has no notes.&#8212;</p>
       {% else %}
         <p>{{sections[0].notes}}</p>

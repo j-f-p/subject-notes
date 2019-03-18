@@ -203,18 +203,19 @@ def newSection(topic_id):
         new_section = Section(
             name=request.form['name'], notes=request.form['notes'],
             topic_id=topic_id, id=lastTopicSec_id+1)
+        print(new_section.notes)
         session.add(new_section)
         session.commit()
-        flashMessage = 'Section "{}" was added to topic "{}" by {}.'\
-            .format(new_section.name, topic.name, gagn())
+        flash('Section "{}" was added to topic "{}" by {}.'
+              .format(new_section.name, topic.name, gagn()))
         session.close()
-        flash(flashMessage)
         return redirect(url_for(
             'viewSection', topic_id=topic_id, section_id=new_section.id))
     else:
         session = DBSession()
         nTopSecs = session.query(Section).filter_by(topic_id=topic_id).count()
         if nTopSecs == maxSectionsPerTopic():
+            session.close()
             flash('Number of sections of topic is at maximum.')
             return redirect(url_for('topicContents', topic_id=topic_id))
         else:
@@ -268,9 +269,8 @@ def editSection(topic_id, section_id):
                 section.notes = request.form['notes']
             session.add(section)
             session.commit()
-            flashMessage = 'Section "{}" of topic "{}" was updated by {}.'\
-                .format(section.name, topic.name, gagn())
-            flash(flashMessage)
+            flash('Section "{}" of topic "{}" was updated by {}.'
+                  .format(section.name, topic.name, gagn()))
         session.close()
         return redirect(url_for('viewSection', topic_id=topic_id,
                                 section_id=section_id))
@@ -301,11 +301,13 @@ def deleteSection(topic_id, section_id):
         session.delete(section)
         session.commit()
         # At this point, section is not tied to a session and can be employed
-        # outside the session, however, topic is tied to the session.
-        flashMessage = ('Section "{}" was deleted from topic "{}" by {}.'
-                        .format(section.name, topic.name, gagn()))
+        # outside the session, however, topic is tied to the session. Thus,
+        # flash message is generated prior to session.close(). Note that
+        # session.close() is not needed after session.commit(), though, kept
+        # here for clarity.
+        flash('Section "{}" was deleted from topic "{}" by {}.'
+              .format(section.name, topic.name, gagn()))
         session.close()
-        flash(flashMessage)
         return redirect(url_for('topicContents', topic_id=topic_id))
     else:
         session = DBSession()  # open session
