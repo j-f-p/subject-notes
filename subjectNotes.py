@@ -267,7 +267,6 @@ def editSection(topic_id, section_id):
                 section.name = request.form['name']
             if request.form['notes'] != "":
                 section.notes = request.form['notes']
-            session.add(section)
             session.commit()
             flash('Section "{}" of topic "{}" was updated by {}.'
                   .format(section.name, topic.name, gagn()))
@@ -307,6 +306,23 @@ def deleteSection(topic_id, section_id):
         # here for clarity.
         flash('Section "{}" was deleted from topic "{}" by {}.'
               .format(section.name, topic.name, gagn()))
+
+        # Close any gaps in the set of section ids of this topic so that this
+        # set comprises an arithmetic sequence of integers with common
+        # difference of 1. Begin by checking whether there are more than 1
+        # sections of the topic.
+        if session.query(Section).filter_by(topic_id=topic_id).count() > 1:
+            lastTopicSec_id = session.query(Section).\
+                filter_by(topic_id=topic_id).\
+                order_by(Section.id.desc()).first().id
+            if section_id < lastTopicSec_id:
+                first = section_id + 1
+                upper = lastTopicSec_id + 1
+                for index in range(first, upper):
+                    section = session.query(Section).filter_by(id=index).one()
+                    section.id = index - 1
+                    session.commit()
+
         session.close()
         return redirect(url_for('topicContents', topic_id=topic_id))
     else:
