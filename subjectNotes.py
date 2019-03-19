@@ -165,7 +165,7 @@ def contents():
     # Each double is a section and its associated topic name.
     latest_sections = session.query(Section, Topic.name).\
         filter(Section.topic_id == Topic.id).\
-        order_by(Section.id.desc())[0:5]
+        order_by(Section.utc.desc())[0:5]
     session.close()
     return render_template(
         'contents.html', subject=subject(), signedIn=signedIn(), uname=gagn(),
@@ -203,7 +203,6 @@ def newSection(topic_id):
         new_section = Section(
             name=request.form['name'], notes=request.form['notes'],
             topic_id=topic_id, id=lastTopicSec_id+1)
-        print(new_section.notes)
         session.add(new_section)
         session.commit()
         flash('Section "{}" was added to topic "{}" by {}.'

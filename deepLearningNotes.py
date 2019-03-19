@@ -61,7 +61,6 @@ section.notes = ' '.join('''
     march of this history. Simultaneously, deep learning mathematical model
     sizes have continued to increase. Logically, the accuracy of this analyses
     have continued to improve.'''.split())
-session.add(section)
 session.commit()
 
 section = session.query(Section).filter_by(id=11).one()
@@ -69,7 +68,6 @@ section.notes = ' '.join('''
     What we now know as deep learning was introduced as cybernetics circa 1940.
     It began being called connectionism or neural networks circa 1980. The rise
     of the current name began circa 2006.'''.split())
-session.add(section)
 session.commit()
 
 section = session.query(Section).filter_by(id=12).one()
@@ -77,7 +75,6 @@ section.notes = ' '.join('''
     Increases in computer memory have resulted in commensurate increases in
     digital data. Larger data sets have enabled deep learning algorithms to be
     applied to increasingly complex applications.'''.split())
-session.add(section)
 session.commit()
 
 section = session.query(Section).filter_by(id=13).one()
@@ -87,14 +84,12 @@ section.notes = ' '.join('''
     artificial neural network has doubled about every 2.5 years since their
     inception.  Additionally, the number of connections per model neuron has
     risen.'''.split())
-session.add(section)
 session.commit()
 
 section = session.query(Section).filter_by(id=14).one()
 section.notes = ' '.join('''
     Image recognition error rate steadily dropped annually from 28% in 2010 to
     4% in 2015.'''.split())
-session.add(section)
 session.commit()
 
 topics = session.query(Topic).all()
@@ -102,6 +97,6 @@ for topic in topics:
     print("{} {}".format(topic.id, topic.name))
     sections = session.query(Section).filter_by(topic_id=topic.id)
     for section in sections:
-        print("\t{} {}".format(section.id, section.name))
+        print("\t{} {} {}".format(section.id, section.name, section.utc))
 
 session.close()

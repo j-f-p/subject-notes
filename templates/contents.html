@@ -47,7 +47,7 @@
       {% endfor %}
       </nav>
       <section class="content_pane pane_padding">
-        <h2>Latest Five Topic Sections</h2>
+        <h2>Latest {{latest_sections|length}} Sections Added or Updated</h2>
       {% for s in latest_sections %}
         <h3><span class="hover">
           <a href="{{url_for('viewSection', topic_id=s[0].topic_id,

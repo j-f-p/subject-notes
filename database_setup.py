@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String
+from datetime import datetime
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -26,6 +27,7 @@ class Section(Base):
     name = Column(String(50), nullable=False)
     notes = Column(String(800))
     id = Column(Integer, primary_key=True)
+    utc = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     topic_id = Column(Integer, ForeignKey('topic.id'))
     topic = relationship(Topic)
 
