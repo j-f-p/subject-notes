@@ -20,13 +20,7 @@ session.add_all([Topic(name="Historical Trends"),
 session.commit()
 
 # Sections of Topics (Subtopics)
-
 # Note that the app assumes each topic has something like an intro section.
-
-# For development and testing purposes the max number of sections is set to a
-# relatively small number. 10 is employed as  convenient number. With this
-# limit, each topic's first section's id can be conveniently set to an integer
-# ending with 0.
 session.add_all([Section(name="Intro", topic_id=1, id=10),  # section id = 10
                  Section(name="Changing Names", topic_id=1),
                  Section(name="Increasing Data Set", topic_id=1),
@@ -59,8 +53,8 @@ section.notes = ' '.join('''
     Deep learning has been variously labelled in its relatively short history.
     The size of data sets analyzed by deep learning has increased with the
     march of this history. Simultaneously, deep learning mathematical model
-    sizes have continued to increase. Logically, the accuracy of this analyses
-    have continued to improve.'''.split())
+    sizes have continued to increase. Logically, the accuracy of analyses with
+    deep learning have continued to improve.'''.split())
 session.commit()
 
 section = session.query(Section).filter_by(id=11).one()

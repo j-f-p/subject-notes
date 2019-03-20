@@ -156,6 +156,12 @@ def signOut():
         return redirect(url_for('contents'))
 
 
+# Route for root
+@app.route('/')
+def root():
+    return redirect(url_for('contents'))
+
+
 # Route for viewing the subject's contents in terms of topics
 @app.route('/topics/')
 def contents():
@@ -172,7 +178,7 @@ def contents():
         topics=topics, latest_sections=latest_sections)
 
 
-# Route for viewing a topic's contents in terms of sections (GET Request)
+# Route for viewing a topic's contents in terms of sections
 @app.route('/topics/<int:topic_id>/')
 def topicContents(topic_id):
     session = DBSession()  # open session
@@ -224,7 +230,7 @@ def newSection(topic_id):
                                    topic=topic)
 
 
-# Route for viewing a topic section (GET Request)
+# Route for viewing a topic section
 @app.route('/topics/<int:topic_id>/<int:section_id>/')
 def viewSection(topic_id, section_id):
     session = DBSession()  # open session
@@ -235,15 +241,44 @@ def viewSection(topic_id, section_id):
     if section.id == sections[0].id:
         # It's possible that an intro section is selected from the contents
         # view via url. Then, render the associated topic contents view.
-        return render_template(
-            'topicContents.html', subject=subject(), signedIn=signedIn(),
-            uname=gagn(), maxNumSecs=maxSectionsPerTopic(),
-            topic=topic, sections=sections)
+        return redirect(url_for('topicContents', topic_id=topic_id))
     else:
         return render_template(
             'viewSection.html', subject=subject(), signedIn=signedIn(),
             uname=gagn(), maxNumSecs=maxSectionsPerTopic(),
             topic=topic, sections=sections, section=section)
+
+
+# Route for updating a topic's first section notes
+@app.route('/topics/<int:topic_id>/<int:section_id>/edit/',
+           methods=['GET', 'POST'])
+def editTopicSection0(topic_id, section_id):
+    if 'credentials' not in signed_session:
+        flash('Please sign in.')
+        if request.referrer is not None:
+            return redirect(request.referrer)
+        else:
+            return redirect(url_for('contents'))
+
+    if request.method == 'POST':
+        session = DBSession()
+        topic = session.query(Topic).filter_by(id=topic_id).one()
+        section = session.query(Section).filter_by(id=section_id).one()
+        if request.form['notes'] != "":
+            section.notes = request.form['notes']
+            session.commit()
+            flash('{} Section of topic "{}" was updated by {}.'
+                  .format(section.name, topic.name, gagn()))
+        session.close()
+        return redirect(url_for('viewSection', topic_id=topic_id,
+                                section_id=section_id))
+    else:
+        session = DBSession()
+        topic = session.query(Topic).filter_by(id=topic_id).one()
+        section = session.query(Section).filter_by(id=section_id).one()
+        session.close()
+        return render_template('editTopicSection0.html',
+                               subject=subject(), topic=topic, section=section)
 
 
 # Route for updating a topic section
@@ -339,10 +374,46 @@ def deleteSection(topic_id, section_id):
                                subject=subject(), topic=topic, section=section)
 
 
+# Route for viewing a topic section in JSON -- Section JSON API endpoint
+@app.route('/topics/<int:topic_id>/<int:section_id>/JSON')
+def sectionJSON(topic_id, section_id):
+    if 'credentials' not in signed_session:
+        flash('Please sign in.')
+        if request.referrer is not None:
+            return redirect(request.referrer)
+        else:
+            return redirect(url_for('contents'))
+    session = DBSession()
+    section = session.query(Section).filter_by(id=section_id).one()
+    session.close()
+    return jsonify(section.serialize)
+
+
+# Route for viewing a topic's sections in JSON -- Topic JSON API endpoint
+@app.route('/topics/<int:topic_id>/JSON')
+def topicJSON(topic_id):
+    if 'credentials' not in signed_session:
+        flash('Please sign in.')
+        if request.referrer is not None:
+            return redirect(request.referrer)
+        else:
+            return redirect(url_for('contents'))
+    session = DBSession()
+    sections = session.query(Section).filter_by(topic_id=topic_id).all()
+    sectionsArrOfDicts = []
+    for section in sections:
+        sectionsArrOfDicts.append(section.serialize)
+    topic = session.query(Topic).filter_by(id=topic_id).one()
+    topicDict = topic.serialize
+    topicDict.update({'k3 sections': sectionsArrOfDicts})
+    session.close()
+    return jsonify(topicDict)
+
+
 if __name__ == '__main__':
     # When running locally, disable OAuthlib's HTTPs verification.
-    # ACTION ITEM for developers:
-    #     When running in production *do not* leave this option enabled.
+    #   ACTION ITEM for developers:
+    #     Remove below line before deploying to production.
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     app.secret_key = hashlib.sha256(os.urandom(1024)).hexdigest()
     app.debug = True

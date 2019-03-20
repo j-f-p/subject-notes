@@ -117,7 +117,7 @@ header > div > p {
 }
 .edit_button_div {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
 }
 .delete_button_div {
   display: flex;

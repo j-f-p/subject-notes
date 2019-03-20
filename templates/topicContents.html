@@ -60,18 +60,23 @@
       <section class="content_pane pane_padding"><!--
 Every topic must have one section, something like an intro section. Render a
 topic's first section here. -->
-        <h2>{{sections[0].name}}</h2>
+        <h2>Topic {{sections[0].name}}</h2>
       {% if signedIn %}
         <div class="edit_button_div">
           <form action="{{url_for(
-              'editSection', topic_id=topic.id, section_id=sections[0].id)}}">
-            <input type="submit" value="edit section">
+              'editTopicSection0', topic_id=topic.id,
+              section_id=sections[0].id)}}">
+            <input type="submit"
+              value="edit {{sections[0].name.lower()}} notes">
+          </form>
+          <form action="{{url_for('topicJSON', topic_id=topic.id)}}">
+            <input type="submit" value="topic json">
           </form>
         </div>
       {% endif %}
       {% if sections[0].notes == None or not sections[0].notes
           or sections[0].notes.isspace() %}
-        <p>&#8212;This section has no notes.&#8212;</p>
+        <p>&#8212;{{sections[0].name}} has no notes.&#8212;</p>
       {% else %}
         <p>{{sections[0].notes}}</p>
       {% endif %}

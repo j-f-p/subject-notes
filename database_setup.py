@@ -13,11 +13,21 @@ class Topic(Base):
     __tablename__ = 'topic'
     name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
-    # Each topic must have an intro section.
-    # TODO: Add property serialize.
+    # Each topic must have one section.
+
+    @property
+    def serialize(self):
+        return {
+            'k1 topic': self.name,
+            'k2 id': self.id
+        }
 
 
 # Max number of sections a topic can have
+# For development and testing purposes the max number of sections per topic is
+# set to a relatively small number. 10 is employed as a convenient number. With
+# this limit, each topic's first section's id can be conveniently set to an
+# integer ending with 0, or more generally, num where nMaxSecs % num == 0.
 def maxSectionsPerTopic():
     return 10
 
@@ -34,9 +44,10 @@ class Section(Base):
     @property
     def serialize(self):
         return {
-            'name': self.name,
-            'description': self.description,
-            'id': self.id
+            'k1 section': self.name,
+            'k2 notes': self.notes,
+            'k3 id': self.id,
+            'k4 topic id': self.topic_id
         }
 
 
