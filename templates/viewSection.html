@@ -42,17 +42,17 @@
       <nav class="nav_pane pane_padding">
         <h2>Sections of Topic<br>
           <a href="{{url_for('topicContents', topic_id=topic.id)}}">
-            {{topic.name}}
+            {{topic.title}}
           </a>
         </h2>
       {% for index in range(1, sections|length) %}
         {% if sections[index].id == section.id %}
-        <h3 class="selected">{{section.name}}</h3>
+        <h3 class="selected">{{section.title}}</h3>
         {% else %}
         <h3 class="hover">
           <a href="{{url_for('viewSection', topic_id=topic.id,
                              section_id=sections[index].id)}}">
-            {{sections[index].name}}
+            {{sections[index].title}}
           </a>
         </h3>
         {% endif %}
@@ -64,16 +64,12 @@
       {% endif %}
       </nav>
       <section class="content_pane pane_padding">
-        <h2>{{section.name}}</h2>
+        <h2>{{section.title}}</h2>
       {% if signedIn %}
-        <div class="edit_button_div">
+        <div class="section_heading_button_div">
           <form action="{{url_for(
               'editSection', topic_id=topic.id, section_id=section.id)}}">
             <input type="submit" value="edit section">
-          </form>
-          <form action="{{url_for(
-              'sectionJSON', topic_id=topic.id, section_id=section.id)}}">
-            <input type="submit" value="section json">
           </form>
         </div>
       {% endif %}
@@ -84,7 +80,11 @@
         <p>{{section.notes}}</p>
       {% endif %}
       {% if signedIn %}
-        <div class="delete_button_div">
+        <div class="section_footer_button_div">
+          <form action="{{url_for(
+              'sectionJSON', topic_id=topic.id, section_id=section.id)}}">
+            <input type="submit" value="section json">
+          </form>
           <form action="{{url_for('deleteSection', topic_id=topic.id,
                 section_id=section.id)}}" class="delete_section_button">
             <input type="submit" value="delete section">

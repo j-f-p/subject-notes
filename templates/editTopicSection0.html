@@ -14,7 +14,7 @@
       <h1>{{subject}} Notes</h1>
     </header>
     <main class="pane_padding">
-      <h2>Edit {{section.name}} Notes for {{topic.name}}</h2>
+      <h2>Edit {{section.title}} Notes of {{topic.title}}</h2>
       <form action="{{url_for('viewSection', topic_id=topic.id,
                               section_id=section.id)}}">
         <input type="submit" value="cancel edit">

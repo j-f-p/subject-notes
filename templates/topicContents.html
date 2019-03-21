@@ -40,13 +40,13 @@
     </div>
     <main class="pane_row">
       <nav class="nav_pane pane_padding">
-        <h2>Sections of Topic<br><mark>{{topic.name}}</mark></h2>
+        <h2>Sections of Topic<br><mark>{{topic.title}}</mark></h2>
       {% if sections|length > 1 %}
         {% for index in range(1, sections|length) %}
         <h3 class="hover">
           <a href="{{url_for('viewSection', topic_id=topic.id,
                              section_id=sections[index].id)}}">
-            {{sections[index].name}}
+            {{sections[index].title}}
           </a>
         </h3>
         {% endfor %}
@@ -60,25 +60,29 @@
       <section class="content_pane pane_padding"><!--
 Every topic must have one section, something like an intro section. Render a
 topic's first section here. -->
-        <h2>Topic {{sections[0].name}}</h2>
+        <h2>Topic {{sections[0].title}}</h2>
       {% if signedIn %}
-        <div class="edit_button_div">
+        <div class="section_heading_button_div">
           <form action="{{url_for(
               'editTopicSection0', topic_id=topic.id,
               section_id=sections[0].id)}}">
             <input type="submit"
-              value="edit {{sections[0].name.lower()}} notes">
-          </form>
-          <form action="{{url_for('topicJSON', topic_id=topic.id)}}">
-            <input type="submit" value="topic json">
+              value="edit {{sections[0].title.lower()}} notes">
           </form>
         </div>
       {% endif %}
       {% if sections[0].notes == None or not sections[0].notes
           or sections[0].notes.isspace() %}
-        <p>&#8212;{{sections[0].name}} has no notes.&#8212;</p>
+        <p>&#8212;{{sections[0].title}} has no notes.&#8212;</p>
       {% else %}
         <p>{{sections[0].notes}}</p>
+      {% endif %}
+      {% if signedIn %}
+        <div class="section_footer_button_div">
+          <form action="{{url_for('topicJSON', topic_id=topic.id)}}">
+            <input type="submit" value="topic json">
+          </form>
+        </div>
       {% endif %}
       </section>
     </main>

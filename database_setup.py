@@ -11,15 +11,15 @@ Base = declarative_base()
 
 class Topic(Base):
     __tablename__ = 'topic'
-    name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
+    title = Column(String(80), nullable=False)
     # Each topic must have one section.
 
     @property
     def serialize(self):
         return {
-            'k1 topic': self.name,
-            'k2 id': self.id
+            'k1 id': self.id,
+            'k2 topic': self.title
         }
 
 
@@ -34,9 +34,9 @@ def maxSectionsPerTopic():
 
 class Section(Base):
     __tablename__ = 'section'
-    name = Column(String(50), nullable=False)
-    notes = Column(String(800))
     id = Column(Integer, primary_key=True)
+    title = Column(String(50), nullable=False)
+    notes = Column(String(800))
     utc = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     topic_id = Column(Integer, ForeignKey('topic.id'))
     topic = relationship(Topic)
@@ -44,9 +44,9 @@ class Section(Base):
     @property
     def serialize(self):
         return {
-            'k1 section': self.name,
-            'k2 notes': self.notes,
-            'k3 id': self.id,
+            'k1 id': self.id,
+            'k2 section': self.title,
+            'k3 notes': self.notes,
             'k4 topic id': self.topic_id
         }
 

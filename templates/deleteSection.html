@@ -14,14 +14,14 @@
       <h1>{{subject}} Notes</h1>
     </header>
     <main class="pane_padding">
-      <h2>Delete Section from {{topic.name}}</h2>
+      <h2>Delete Section from {{topic.title}}</h2>
       <form action="{{url_for('viewSection', topic_id=topic.id,
                               section_id=section.id)}}">
         <input type="submit" value="cancel delete">
       </form>
       <h3>Section to delete:</h3>
       <div class="indent_1">
-        <h4 class="h3_font_size">{{section.name}}</h4>
+        <h4 class="h3_font_size">{{section.title}}</h4>
       {% if section.notes == None or not section.notes
           or section.notes.isspace() %}
         <p>&#8212;This section has no notes.&#8212;</p>

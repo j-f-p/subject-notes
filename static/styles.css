@@ -115,13 +115,13 @@ header > div > p {
 .content_pane {
   flex: auto;
 }
-.edit_button_div {
+.section_heading_button_div {
+  display: flex;
+  justify-content: flex-start;
+}
+.section_footer_button_div {
   display: flex;
   justify-content: space-between;
-}
-.delete_button_div {
-  display: flex;
-  justify-content: flex-end;
 }
 
 .hover:hover {

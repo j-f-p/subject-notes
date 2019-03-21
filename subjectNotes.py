@@ -167,9 +167,9 @@ def root():
 def contents():
     session = DBSession()  # open session
     topics = session.query(Topic).all()
-    # latest_sections is an array of doubles: [(section, tname), ..., (...)].
-    # Each double is a section and its associated topic name.
-    latest_sections = session.query(Section, Topic.name).\
+    # latest_sections is an array of doubles: [(section, t.title), ..., (...)].
+    # Each double is a section and its associated topic title.
+    latest_sections = session.query(Section, Topic.title).\
         filter(Section.topic_id == Topic.id).\
         order_by(Section.utc.desc())[0:5]
     session.close()
@@ -207,12 +207,12 @@ def newSection(topic_id):
         lastTopicSec_id = session.query(Section).\
             filter_by(topic_id=topic_id).order_by(Section.id.desc()).first().id
         new_section = Section(
-            name=request.form['name'], notes=request.form['notes'],
+            title=request.form['title'], notes=request.form['notes'],
             topic_id=topic_id, id=lastTopicSec_id+1)
         session.add(new_section)
         session.commit()
         flash('Section "{}" was added to topic "{}" by {}.'
-              .format(new_section.name, topic.name, gagn()))
+              .format(new_section.title, topic.title, gagn()))
         session.close()
         return redirect(url_for(
             'viewSection', topic_id=topic_id, section_id=new_section.id))
@@ -250,7 +250,7 @@ def viewSection(topic_id, section_id):
 
 
 # Route for updating a topic's first section notes
-@app.route('/topics/<int:topic_id>/<int:section_id>/edit/',
+@app.route('/topics/<int:topic_id>/<int:section_id>/editTS0/',
            methods=['GET', 'POST'])
 def editTopicSection0(topic_id, section_id):
     if 'credentials' not in signed_session:
@@ -267,8 +267,8 @@ def editTopicSection0(topic_id, section_id):
         if request.form['notes'] != "":
             section.notes = request.form['notes']
             session.commit()
-            flash('{} Section of topic "{}" was updated by {}.'
-                  .format(section.name, topic.name, gagn()))
+            flash('{} section of topic "{}" was updated by {}.'
+                  .format(section.title, topic.title, gagn()))
         session.close()
         return redirect(url_for('viewSection', topic_id=topic_id,
                                 section_id=section_id))
@@ -296,14 +296,14 @@ def editSection(topic_id, section_id):
         session = DBSession()
         topic = session.query(Topic).filter_by(id=topic_id).one()
         section = session.query(Section).filter_by(id=section_id).one()
-        if request.form['name'] != "" or request.form['notes'] != "":
-            if request.form['name'] != "":
-                section.name = request.form['name']
+        if request.form['title'] != "" or request.form['notes'] != "":
+            if request.form['title'] != "":
+                section.title = request.form['title']
             if request.form['notes'] != "":
                 section.notes = request.form['notes']
             session.commit()
             flash('Section "{}" of topic "{}" was updated by {}.'
-                  .format(section.name, topic.name, gagn()))
+                  .format(section.title, topic.title, gagn()))
         session.close()
         return redirect(url_for('viewSection', topic_id=topic_id,
                                 section_id=section_id))
@@ -345,7 +345,7 @@ def deleteSection(topic_id, section_id):
         # session.close() is not needed after session.commit(), though, kept
         # here for clarity.
         flash('Section "{}" was deleted from topic "{}" by {}.'
-              .format(section.name, topic.name, gagn()))
+              .format(section.title, topic.title, gagn()))
 
         # Close any gaps in the set of section ids of this topic so that this
         # set comprises an arithmetic sequence of integers with common

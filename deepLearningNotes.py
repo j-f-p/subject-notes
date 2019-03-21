@@ -12,35 +12,35 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 # Deep Learning Topics
-session.add_all([Topic(name="Historical Trends"),
-                 Topic(name="Linear Algebra"),
-                 Topic(name="Probability"),
-                 Topic(name="Numerical Computation"),
-                 Topic(name="Learning Algorithms")])
+session.add_all([Topic(title="Historical Trends"),
+                 Topic(title="Linear Algebra"),
+                 Topic(title="Probability"),
+                 Topic(title="Numerical Computation"),
+                 Topic(title="Learning Algorithms")])
 session.commit()
 
 # Sections of Topics (Subtopics)
 # Note that the app assumes each topic has something like an intro section.
-session.add_all([Section(name="Intro", topic_id=1, id=10),  # section id = 10
-                 Section(name="Changing Names", topic_id=1),
-                 Section(name="Increasing Data Set", topic_id=1),
-                 Section(name="Increasing Model Size", topic_id=1),
-                 Section(name="Increasing Accuracy", topic_id=1),
-                 Section(name="Intro", topic_id=2, id=20),  # section id = 20
-                 Section(name="Variables", topic_id=2),
-                 Section(name="Operations", topic_id=2),
-                 Section(name="Linear Dependence", topic_id=2),
-                 Section(name="Intro", topic_id=3, id=30),
-                 Section(name="Random Variables", topic_id=3),
-                 Section(name="Distributions", topic_id=3),
-                 Section(name="Probability Types", topic_id=3),
-                 Section(name="Intro", topic_id=4, id=40),
-                 Section(name="Numerical Error", topic_id=4),
-                 Section(name="Conditioning", topic_id=4),
-                 Section(name="Intro", topic_id=5, id=50),
-                 Section(name="The Task", topic_id=5),
-                 Section(name="Performance Measure", topic_id=5),
-                 Section(name="Experience", topic_id=5)])  # section id = 53
+session.add_all([Section(title="Intro", topic_id=1, id=10),  # section id = 10
+                 Section(title="Changing Names", topic_id=1),
+                 Section(title="Increasing Data Set", topic_id=1),
+                 Section(title="Increasing Model Size", topic_id=1),
+                 Section(title="Increasing Accuracy", topic_id=1),
+                 Section(title="Intro", topic_id=2, id=20),  # section id = 20
+                 Section(title="Variables", topic_id=2),
+                 Section(title="Operations", topic_id=2),
+                 Section(title="Linear Dependence", topic_id=2),
+                 Section(title="Intro", topic_id=3, id=30),
+                 Section(title="Random Variables", topic_id=3),
+                 Section(title="Distributions", topic_id=3),
+                 Section(title="Probability Types", topic_id=3),
+                 Section(title="Intro", topic_id=4, id=40),
+                 Section(title="Numerical Error", topic_id=4),
+                 Section(title="Conditioning", topic_id=4),
+                 Section(title="Intro", topic_id=5, id=50),
+                 Section(title="The Task", topic_id=5),
+                 Section(title="Performance Measure", topic_id=5),
+                 Section(title="Experience", topic_id=5)])  # section id = 53
 session.commit()
 
 # Section notes
@@ -88,9 +88,9 @@ session.commit()
 
 topics = session.query(Topic).all()
 for topic in topics:
-    print("{} {}".format(topic.id, topic.name))
+    print("{} {}".format(topic.id, topic.title))
     sections = session.query(Section).filter_by(topic_id=topic.id)
     for section in sections:
-        print("\t{} {} {}".format(section.id, section.name, section.utc))
+        print("\t{} {} {}".format(section.id, section.title, section.utc))
 
 session.close()
