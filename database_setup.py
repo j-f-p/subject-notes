@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import sys
 from datetime import datetime
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base

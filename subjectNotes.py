@@ -411,6 +411,6 @@ if __name__ == '__main__':
     #   ACTION ITEM for developers:
     #     Remove below line before deploying to production.
     environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+    environ['FLASK_ENV'] = 'development'
     app.secret_key = sha256(urandom(1024)).hexdigest()
-    app.debug = True
     app.run(host='0.0.0.0', port=5000)
