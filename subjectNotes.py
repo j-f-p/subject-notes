@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-import hashlib
-import os
-import google_auth_oauthlib.flow
-import googleapiclient.discovery
-import google.oauth2.credentials
-import requests
+from hashlib import sha256
+from os import environ, urandom
+from requests import post
 from flask import Flask, render_template, url_for
 from flask import request, redirect, flash, jsonify
 from flask import session as signed_session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from google_auth_oauthlib.flow import Flow
+from googleapiclient.discovery import build
+from google.oauth2.credentials import Credentials
 from database_setup import Base, Topic, Section, maxSectionsPerTopic
 from app_consts import gapiOauth, gapiScopes, gpd, gpdFileName, subject
 
@@ -63,8 +63,7 @@ def signInDesk():
 @app.route('/authenticate/')
 def authenticate():
     # Initialize flow instance for managing the protocol flow.
-    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-        gpdFileName(), scopes=gapiScopes())
+    flow = Flow.from_client_secrets_file(gpdFileName(), scopes=gapiScopes())
 
     # Set redirect URI to that set in the Google API Console.
     flow.redirect_uri = gpd()['web']['redirect_uris'][0]
@@ -89,9 +88,8 @@ def authenticate():
 def oauth2callback():
     if request.args.get('code'):
         # Re-initialize flow instance with verification of session state.
-        flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-            gpdFileName(), scopes=gapiScopes(),
-            state=signed_session['state'])
+        flow = Flow.from_client_secrets_file(
+            gpdFileName(), scopes=gapiScopes(), state=signed_session['state'])
 
         # This is part of the re-initialization, by API design.
         flow.redirect_uri = gpd()['web']['redirect_uris'][0]
@@ -105,8 +103,7 @@ def oauth2callback():
         #       database.
         signed_session['credentials'] = credentials_to_dict(flow.credentials)
 
-        oauth2 = googleapiclient.discovery.build(
-            gapiOauth()['name'], gapiOauth()['version'],
+        oauth2 = build(gapiOauth()['name'], gapiOauth()['version'],
             credentials=flow.credentials)
 
         # Store userinfo in session.
@@ -125,11 +122,10 @@ def oauth2callback():
 @app.route('/signout/')
 def signOut():
     if 'credentials' in signed_session:
-        credentials = google.oauth2.credentials.Credentials(
-            **signed_session['credentials'])
+        credentials = Credentials(**signed_session['credentials'])
 
         # Revoke credentials
-        revoke = requests.post(
+        revoke = post(
             'https://accounts.google.com/o/oauth2/revoke',
             params={'token': credentials.token},
             headers={'content-type': 'application/x-www-form-urlencoded'})
@@ -414,7 +410,7 @@ if __name__ == '__main__':
     # When running locally, disable OAuthlib's HTTPs verification.
     #   ACTION ITEM for developers:
     #     Remove below line before deploying to production.
-    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-    app.secret_key = hashlib.sha256(os.urandom(1024)).hexdigest()
+    environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+    app.secret_key = sha256(urandom(1024)).hexdigest()
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
