@@ -15,7 +15,11 @@
     </header>
     <main class="pane_padding">
       <h2>New Section for {{topic.title}}</h2>
+    {% if request.referrer is not none %}
+      <form action="{{request.referrer}}">
+    {% else %}
       <form action="{{url_for('topicContents', topic_id=topic.id)}}">
+    {% endif %}
         <input type="submit" value="cancel">
       </form>
       <form action="{{url_for('newSection', topic_id=topic.id)}}" method="POST"
