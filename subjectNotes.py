@@ -56,8 +56,20 @@ def gagn():
 # Route for sign in desk
 @app.route('/signindesk/')
 def signInDesk():
-    return render_template('signInDesk.html', subject=subject())
+    if 'credentials' not in signed_session:
+        if request.referrer is not None:
+            signed_session['signInReferrer'] = request.referrer
+        else:
+            signed_session['signInReferrer'] = url_for('contents')
 
+        return render_template('signInDesk.html', subject=subject())
+
+    # Otherwise, user is already signed-in and method return quietly, without
+    # displaying a "flash" message.
+    if request.referrer is not None:
+        return redirect(request.referrer)
+    else:
+        return redirect(url_for('contents'))
 
 # Route for starting authentication by OAuth 2 framework protocol flow
 @app.route('/authenticate/')
@@ -104,7 +116,7 @@ def oauth2callback():
         signed_session['credentials'] = credentials_to_dict(flow.credentials)
 
         oauth2 = build(gapiOauth()['name'], gapiOauth()['version'],
-            credentials=flow.credentials)
+                       credentials=flow.credentials)
 
         # Store userinfo in session.
         # TODO: For production, store userinfo encrypted in a persistent
@@ -115,7 +127,7 @@ def oauth2callback():
               format(signed_session['userinfo']['given_name']))
     else:
         flash('Sign in aborted.')
-    return redirect(url_for('contents'))
+    return redirect(signed_session['signInReferrer'])
 
 
 # Route for sigining out

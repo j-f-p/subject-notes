@@ -1,7 +1,8 @@
 import json
 
 # App Constants
-#   Each is defined as a function return value so that it remains constant.
+#   Each constant below is defined as a function return value so that it
+# remains constant.
 
 
 # Google API project data file name
