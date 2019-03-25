@@ -115,6 +115,9 @@ header > div > p {
 .content_pane {
   flex: auto;
 }
+section > footer >  p {
+  font-family: Roboto, sans-serif;
+}
 .section_heading_button_div {
   display: flex;
   justify-content: flex-start;

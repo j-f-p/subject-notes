@@ -80,16 +80,22 @@
         <p>{{section.notes}}</p>
       {% endif %}
       {% if signedIn %}
-        <div class="section_footer_button_div">
-          <form action="{{url_for(
-              'sectionJSON', topic_id=topic.id, section_id=section.id)}}">
-            <input type="submit" value="section json">
-          </form>
-          <form action="{{url_for('deleteSection', topic_id=topic.id,
-                section_id=section.id)}}" class="delete_section_button">
-            <input type="submit" value="delete section">
-          </form>
-        </div>
+        <footer>
+          <p>Initialized by {{section.initiator}} at {{section.utc}}</p>
+        {% if section.editor is not none %}
+          <p>Last edited by {{section.editor}} at {{section.utc}}</p>
+        {% endif %}
+          <div class="section_footer_button_div">
+            <form action="{{url_for(
+                'sectionJSON', topic_id=topic.id, section_id=section.id)}}">
+              <input type="submit" value="section json">
+            </form>
+            <form action="{{url_for('deleteSection', topic_id=topic.id,
+                  section_id=section.id)}}" class="delete_section_button">
+              <input type="submit" value="delete section">
+            </form>
+          </div>
+        </footer>
       {% endif %}
       </section>
     </main>

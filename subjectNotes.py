@@ -45,6 +45,14 @@ def signedIn():
     return 'credentials' in signed_session
 
 
+# Method that returns Google account email if user is signed in.
+def gaem():
+    if 'credentials' in signed_session:
+        return signed_session['userinfo']['email']
+    else:
+        return None
+
+
 # Method that returns Google account 'given_name' if user is signed in.
 def gagn():
     if 'credentials' in signed_session:
@@ -216,7 +224,7 @@ def newSection(topic_id):
             filter_by(topic_id=topic_id).order_by(Section.id.desc()).first().id
         new_section = Section(
             title=request.form['title'], notes=request.form['notes'],
-            topic_id=topic_id, id=lastTopicSec_id+1)
+            initiator=gaem(), topic_id=topic_id, id=lastTopicSec_id+1)
         session.add(new_section)
         session.commit()
         flash('Section "{}" was added to topic "{}" by {}.'
@@ -274,6 +282,7 @@ def editTopicSection0(topic_id, section_id):
         section = session.query(Section).filter_by(id=section_id).one()
         if request.form['notes'] != "":
             section.notes = request.form['notes']
+            section.editor = gaem()
             session.commit()
             flash('{} section of topic "{}" was updated by {}.'
                   .format(section.title, topic.title, gagn()))
@@ -309,6 +318,7 @@ def editSection(topic_id, section_id):
                 section.title = request.form['title']
             if request.form['notes'] != "":
                 section.notes = request.form['notes']
+            section.editor = gaem()
             session.commit()
             flash('Section "{}" of topic "{}" was updated by {}.'
                   .format(section.title, topic.title, gagn()))
