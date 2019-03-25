@@ -20,27 +20,34 @@ session.add_all([Topic(title="Historical Trends"),
 session.commit()
 
 # Sections of Topics (Subtopics)
-# Note that the app assumes each topic has something like an intro section.
-session.add_all([Section(title="Intro", topic_id=1, id=10),  # section id = 10
-                 Section(title="Changing Names", topic_id=1),
-                 Section(title="Increasing Data Set", topic_id=1),
-                 Section(title="Increasing Model Size", topic_id=1),
-                 Section(title="Increasing Accuracy", topic_id=1),
-                 Section(title="Intro", topic_id=2, id=20),  # section id = 20
-                 Section(title="Variables", topic_id=2),
-                 Section(title="Operations", topic_id=2),
-                 Section(title="Linear Dependence", topic_id=2),
-                 Section(title="Intro", topic_id=3, id=30),
-                 Section(title="Random Variables", topic_id=3),
-                 Section(title="Distributions", topic_id=3),
-                 Section(title="Probability Types", topic_id=3),
-                 Section(title="Intro", topic_id=4, id=40),
-                 Section(title="Numerical Error", topic_id=4),
-                 Section(title="Conditioning", topic_id=4),
-                 Section(title="Intro", topic_id=5, id=50),
-                 Section(title="The Task", topic_id=5),
-                 Section(title="Performance Measure", topic_id=5),
-                 Section(title="Experience", topic_id=5)])  # section id = 53
+#   Each topic has: something like an intro section and an upper limit to the
+#     number of its sections.
+#   Every section is stored in one database table.
+#   The id of the initial section of a topic is constrained.
+#   Thus, a topic's initial section's id is manually defined and the number of
+#     sections initialized for each topic is limited.
+session.add_all([
+    Section(id=10, title="Intro", topic_id=1),
+    Section(title="Changing Names", topic_id=1),
+    Section(title="Increasing Data Set", topic_id=1),
+    Section(title="Increasing Model Size", topic_id=1),
+    Section(title="Increasing Accuracy", topic_id=1),
+    Section(id=20, title="Intro", topic_id=2),
+    Section(title="Variables", topic_id=2),
+    Section(title="Operations", topic_id=2),
+    Section(title="Linear Dependence", topic_id=2),
+    Section(id=30, title="Intro", topic_id=3),
+    Section(title="Random Variables", topic_id=3),
+    Section(title="Distributions", topic_id=3),
+    Section(title="Probability Types", topic_id=3),
+    Section(id=40, title="Intro", topic_id=4),
+    Section(title="Numerical Error", topic_id=4),
+    Section(title="Conditioning", topic_id=4),
+    Section(id=50, title="Intro", topic_id=5),
+    Section(title="The Task", topic_id=5),
+    Section(title="Performance Measure", topic_id=5),
+    Section(title="Experience", topic_id=5)])
+# Above, the last section id is 53. The actual number of sections is less.
 session.commit()
 
 # Section notes
