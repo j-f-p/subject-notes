@@ -78,11 +78,21 @@ topic's first section here. -->
         <p>{{sections[0].notes}}</p>
       {% endif %}
       {% if signedIn %}
-        <div class="section_footer_button_div">
-          <form action="{{url_for('topicJSON', topic_id=topic.id)}}">
-            <input type="submit" value="topic json">
-          </form>
-        </div>
+        <footer>
+          <p>Initialized by {{sections[0].initiator}} at
+            {{sections[0].utci.strftime('%-I:%M:%S %p')}} UTC on
+            {{sections[0].utci.strftime('%d %b %Y')}}</p>
+        {% if sections[0].editor is not none %}
+          <p>Last edited by {{sections[0].editor}} at
+            {{sections[0].utce.strftime('%-I:%M:%S %p')}} UTC on
+            {{sections[0].utce.strftime('%d %b %Y')}}</p>
+        {% endif %}
+          <div class="section_footer_button_div">
+            <form action="{{url_for('topicJSON', topic_id=topic.id)}}">
+              <input type="submit" value="topic json">
+            </form>
+          </div>
+        </footer>
       {% endif %}
       </section>
     </main>

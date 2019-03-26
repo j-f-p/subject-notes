@@ -99,8 +99,8 @@ for topic in topics:
     sections = session.query(Section).filter_by(topic_id=topic.id)
     for section in sections:
         print("\t{} {} {} UTC".format(section.id, section.title,
-              section.utc.strftime('%Y-%m-%d %-I:%M:%S.%f %p')))
-# section.utc is not aware of timezone. Thus, '%Z' format would return empty.
+              section.utci.strftime('%Y-%m-%d %-I:%M:%S.%f %p')))
+# section.utci is not aware of timezone. Thus, '%Z' format would return empty.
 # However, it is known to have been generated in UTC. Thus, 'UTC' can be added
 # manually.
 session.close()

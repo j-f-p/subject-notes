@@ -82,10 +82,12 @@
       {% if signedIn %}
         <footer>
           <p>Initialized by {{section.initiator}} at
-            {{section.utc.strftime('%-I:%M:%S %p')}} UTC on
-            {{section.utc.strftime('%d %b %Y')}}</p>
+            {{section.utci.strftime('%-I:%M:%S %p')}} UTC on
+            {{section.utci.strftime('%d %b %Y')}}</p>
         {% if section.editor is not none %}
-          <p>Last edited by {{section.editor}} at {{section.utc}}</p>
+          <p>Last edited by {{section.editor}} at
+            {{section.utce.strftime('%-I:%M:%S %p')}} UTC on
+            {{section.utce.strftime('%d %b %Y')}}</p>
         {% endif %}
           <div class="section_footer_button_div">
             <form action="{{url_for(

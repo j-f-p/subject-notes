@@ -187,7 +187,7 @@ def contents():
     # Each double is a section and its associated topic title.
     latest_sections = session.query(Section, Topic.title).\
         filter(Section.topic_id == Topic.id).\
-        order_by(Section.utc.desc())[0:5]
+        order_by(Section.utce.desc())[0:5]
     session.close()
     return render_template(
         'contents.html', subject=subject(), signedIn=signedIn(), uname=gagn(),

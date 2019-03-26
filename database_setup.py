@@ -35,24 +35,28 @@ def maxSectionsPerTopic():
 
 
 # Section of a Topic
-#   The id of the first Section of a Topic is constrained by:
+# * The id of the first Section of a Topic is constrained by:
 #     first_topic_section.id % maxSectionsPerTopic() == 0
-#   The id of the last Section of a Topic is constrained by:
+# * The id of the last Section of a Topic is constrained by:
 #     last_topic_section.id < first_topic_section.id + maxSectionsPerTopic()
-#   utc contains the time of initialization or last edit. Though the
-#     object itself does not contain timezone information, its time is in UTC.
-#   The initiator property is a string that holds the email address of the
+# * The initiator property is a string that holds the email address of the
 #     person who started the section.
-#   The editor property is a string that holds the email address of the person
+# * utci is the UTC time when the initiator started the Section.
+# * The editor property is a string that holds the email address of the person
 #     who last edited the section.
+# * utce is the UTC time when the editor last edited the Section.
+# * The datetime objects assigned to utci and utce do not contain timezone
+#   information. Since the function employed to generate them, utcnow,
+#   outputs its time in UTC, utci and utce are in the UTC timezone.
 class Section(Base):
     __tablename__ = 'section'
     id = Column(Integer, primary_key=True)
     title = Column(String(50), nullable=False)
     notes = Column(String(800))
-    utc = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     initiator = Column(String(50), nullable=False, default="admin@example.com")
+    utci = Column(DateTime, default=datetime.utcnow, nullable=False)
     editor = Column(String(50))
+    utce = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     topic_id = Column(Integer, ForeignKey('topic.id'))
     topic = relationship(Topic)
 
