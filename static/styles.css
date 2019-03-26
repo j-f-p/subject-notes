@@ -51,7 +51,7 @@ p,
 .p_font {
   font-family: "Roboto Slab", serif;
   font-size: 1rem; /* Based on the default p size by major browsers. */
-  font-weight: 300;
+  /* Imported only as font weight 300, Roboto Slab Light. */
 }
 
 a {
@@ -77,6 +77,7 @@ header > div > p {
   padding: 0 8px;
   text-align: center;
   font-family: Roboto, sans-serif;
+  font-weight: 300;
 }
 
 .flash_ul {
@@ -115,12 +116,16 @@ header > div > p {
 .content_pane {
   flex: auto;
 }
-section > footer >  p {
-  font-family: Roboto, sans-serif;
-}
 .section_heading_button_div {
   display: flex;
   justify-content: flex-start;
+}
+section > footer {
+  border-top: 1px solid black;
+}
+section > footer >  p {
+  font-family: Roboto, sans-serif;
+  font-weight: 300;
 }
 .section_footer_button_div {
   display: flex;
