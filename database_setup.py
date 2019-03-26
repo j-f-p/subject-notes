@@ -39,6 +39,8 @@ def maxSectionsPerTopic():
 #     first_topic_section.id % maxSectionsPerTopic() == 0
 #   The id of the last Section of a Topic is constrained by:
 #     last_topic_section.id < first_topic_section.id + maxSectionsPerTopic()
+#   utc contains the time of initialization or last edit. Though the
+#     object itself does not contain timezone information, its time is in UTC.
 #   The initiator property is a string that holds the email address of the
 #     person who started the section.
 #   The editor property is a string that holds the email address of the person

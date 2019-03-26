@@ -81,7 +81,9 @@
       {% endif %}
       {% if signedIn %}
         <footer>
-          <p>Initialized by {{section.initiator}} at {{section.utc}}</p>
+          <p>Initialized by {{section.initiator}} at
+            {{section.utc.strftime('%-I:%M:%S %p')}} UTC on
+            {{section.utc.strftime('%d %b %Y')}}</p>
         {% if section.editor is not none %}
           <p>Last edited by {{section.editor}} at {{section.utc}}</p>
         {% endif %}
