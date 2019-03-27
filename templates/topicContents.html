@@ -75,7 +75,7 @@ topic's first section here. -->
           or sections[0].notes.isspace() %}
         <p>&#8212;{{sections[0].title}} has no notes.&#8212;</p>
       {% else %}
-        <p>{{sections[0].notes}}</p>
+        <p class="section_notes">{{sections[0].notes}}</p>
       {% endif %}
       {% if signedIn %}
         <footer>

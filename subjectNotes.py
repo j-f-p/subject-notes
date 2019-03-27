@@ -243,7 +243,7 @@ def newSection(topic_id):
             topic = session.query(Topic).filter_by(id=topic_id).one()
             session.close()
             return render_template('newSection.html', subject=subject(),
-                                   topic=topic)
+                                   uname=gagn(), topic=topic)
 
 
 # Route for viewing a topic section
@@ -294,8 +294,8 @@ def editTopicSection0(topic_id, section_id):
         topic = session.query(Topic).filter_by(id=topic_id).one()
         section = session.query(Section).filter_by(id=section_id).one()
         session.close()
-        return render_template('editTopicSection0.html',
-                               subject=subject(), topic=topic, section=section)
+        return render_template('editTopicSection0.html', subject=subject(),
+                               uname=gagn(), topic=topic, section=section)
 
 
 # Route for updating a topic section
@@ -330,8 +330,8 @@ def editSection(topic_id, section_id):
         topic = session.query(Topic).filter_by(id=topic_id).one()
         section = session.query(Section).filter_by(id=section_id).one()
         session.close()
-        return render_template('editSection.html',
-                               subject=subject(), topic=topic, section=section)
+        return render_template('editSection.html', subject=subject(),
+                               uname=gagn(), topic=topic, section=section)
 
 
 # Route for deleting a topic section
@@ -388,8 +388,8 @@ def deleteSection(topic_id, section_id):
         topic = session.query(Topic).filter_by(id=topic_id).one()
         section = session.query(Section).filter_by(id=section_id).one()
         session.close()
-        return render_template('deleteSection.html',
-                               subject=subject(), topic=topic, section=section)
+        return render_template('deleteSection.html', subject=subject(),
+                               uname=gagn(), topic=topic, section=section)
 
 
 # Route for viewing a topic section in JSON -- Section JSON API endpoint

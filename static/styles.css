@@ -73,7 +73,7 @@ header > div {
   flex-direction: row;
   align-items: center;
 }
-header > div > p {
+header p {
   padding: 0 8px;
   text-align: center;
   font-family: Roboto, sans-serif;
@@ -119,6 +119,10 @@ header > div > p {
 .section_heading_button_div {
   display: flex;
   justify-content: flex-start;
+}
+.section_notes {
+  background-color: whitesmoke;
+  padding: 0 8px;
 }
 section > footer {
   border-top: 1px solid black;
