@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 from datetime import datetime
+from os import environ
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
+import psycopg2
 
 Base = declarative_base()
 
@@ -70,6 +72,10 @@ class Section(Base):
         }
 
 
-engine = create_engine('sqlite:///test.db')
+if environ.get('DATABASE_URL') is None:
+    engine = create_engine('postgresql:///deeplearning')
+else:
+    engine = create_engine(DATABASE_URL)
+
 Base.metadata.create_all(engine)
 # EOF
