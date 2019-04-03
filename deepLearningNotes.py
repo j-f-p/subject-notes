@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
+from os import environ
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Topic, Section
 
-engine = create_engine('sqlite:///test.db')
+if environ.get('DATABASE_URL') is None:
+    engine = create_engine('postgresql:///deeplearning')
+else:
+    engine = create_engine(DATABASE_URL)
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
 Base.metadata.bind = engine
@@ -24,29 +28,31 @@ session.commit()
 #     number of its sections.
 #   Every section is stored in one database table.
 #   The id of the initial section of a topic is constrained.
-#   Thus, a topic's initial section's id is manually defined and the number of
-#     sections initialized for each topic is limited.
+#   The default primary key sequencing in postgresql requires every section's
+#     primary key to be manually defined upon section initialization.
+#   Thus, a section's id is manually defined and the number of sections
+#     initialized for each topic is limited.
 session.add_all([
     Section(id=10, title="Intro", topic_id=1),
-    Section(title="Changing Names", topic_id=1),
-    Section(title="Increasing Data Set", topic_id=1),
-    Section(title="Increasing Model Size", topic_id=1),
-    Section(title="Increasing Accuracy", topic_id=1),
+    Section(id=11,   title="Changing Names", topic_id=1),
+    Section(id=12,   title="Increasing Data Set", topic_id=1),
+    Section(id=13,   title="Increasing Model Size", topic_id=1),
+    Section(id=14,   title="Increasing Accuracy", topic_id=1),
     Section(id=20, title="Intro", topic_id=2),
-    Section(title="Variables", topic_id=2),
-    Section(title="Operations", topic_id=2),
-    Section(title="Linear Dependence", topic_id=2),
+    Section(id=21,   title="Variables", topic_id=2),
+    Section(id=22,   title="Operations", topic_id=2),
+    Section(id=23,   title="Linear Dependence", topic_id=2),
     Section(id=30, title="Intro", topic_id=3),
-    Section(title="Random Variables", topic_id=3),
-    Section(title="Distributions", topic_id=3),
-    Section(title="Probability Types", topic_id=3),
+    Section(id=31,   title="Random Variables", topic_id=3),
+    Section(id=32,   title="Distributions", topic_id=3),
+    Section(id=33,   title="Probability Types", topic_id=3),
     Section(id=40, title="Intro", topic_id=4),
-    Section(title="Numerical Error", topic_id=4),
-    Section(title="Conditioning", topic_id=4),
+    Section(id=41,   title="Numerical Error", topic_id=4),
+    Section(id=42,   title="Conditioning", topic_id=4),
     Section(id=50, title="Intro", topic_id=5),
-    Section(title="The Task", topic_id=5),
-    Section(title="Performance Measure", topic_id=5),
-    Section(title="Experience", topic_id=5)])
+    Section(id=51,   title="The Task", topic_id=5),
+    Section(id=52,   title="Performance Measure", topic_id=5),
+    Section(id=53,   title="Experience", topic_id=5)])
 # Above, the last section id is 53. The actual number of sections is less.
 session.commit()
 
