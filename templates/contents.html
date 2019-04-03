@@ -53,9 +53,8 @@
           <a href="{{url_for('viewSection', topic_id=s[0].topic_id,
                              section_id=s[0].id)}}">
             {{s[0].title}} ({{s[1]}})
-          </a>
+          </a><!-- Section Name (Topic Name) -->
         </span></h3>
-        <!-- Section Name (Topic Name) -->
       {% endfor %}
       </section>
     </main>

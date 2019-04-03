@@ -15,7 +15,11 @@ from app_consts import gapiOauth, gapiScopes, gpd, gpdFileName, subject
 
 app = Flask(__name__)
 
-engine = create_engine('sqlite:///test.db')
+if environ.get('DATABASE_URL') is None:
+    engine = create_engine('postgresql:///deeplearning')
+else:
+    engine = create_engine(DATABASE_URL)
+
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)  # define a configured session class
@@ -199,7 +203,8 @@ def contents():
 def topicContents(topic_id):
     session = DBSession()  # open session
     topic = session.query(Topic).filter_by(id=topic_id).one()
-    sections = session.query(Section).filter_by(topic_id=topic.id).all()
+    sections = session.query(Section).filter_by(topic_id=topic.id).\
+        order_by(Section.id).all()
     session.close()
     return render_template(
         'topicContents.html', subject=subject(), signedIn=signedIn(),
@@ -251,7 +256,8 @@ def newSection(topic_id):
 def viewSection(topic_id, section_id):
     session = DBSession()  # open session
     topic = session.query(Topic).filter_by(id=topic_id).one()
-    sections = session.query(Section).filter_by(topic_id=topic.id).all()
+    sections = session.query(Section).filter_by(topic_id=topic.id).\
+        order_by(Section.id).all()
     section = session.query(Section).filter_by(id=section_id).one()
     session.close()
     if section.id == sections[0].id:
@@ -286,6 +292,8 @@ def editTopicSection0(topic_id, section_id):
             session.commit()
             flash('{} section of topic "{}" was updated by {}.'
                   .format(section.title, topic.title, gagn()))
+        else:
+            flash('There were no changes.')
         session.close()
         return redirect(url_for('viewSection', topic_id=topic_id,
                                 section_id=section_id))
@@ -322,6 +330,8 @@ def editSection(topic_id, section_id):
             session.commit()
             flash('Section "{}" of topic "{}" was updated by {}.'
                   .format(section.title, topic.title, gagn()))
+        else:
+            flash('There were no changes.')
         session.close()
         return redirect(url_for('viewSection', topic_id=topic_id,
                                 section_id=section_id))
@@ -368,7 +378,7 @@ def deleteSection(topic_id, section_id):
         # Close any gaps in the set of section ids of this topic so that this
         # set comprises an arithmetic sequence of integers with common
         # difference of 1. Begin by checking whether there are more than 1
-        # sections of the topic.
+        # sections of the topic since there is always a first section.
         if session.query(Section).filter_by(topic_id=topic_id).count() > 1:
             lastTopicSec_id = session.query(Section).\
                 filter_by(topic_id=topic_id).\
@@ -417,7 +427,8 @@ def topicJSON(topic_id):
         else:
             return redirect(url_for('contents'))
     session = DBSession()
-    sections = session.query(Section).filter_by(topic_id=topic_id).all()
+    sections = session.query(Section).filter_by(topic_id=topic_id).\
+        order_by(Section.id).all()
     sectionsArrOfDicts = []
     for section in sections:
         sectionsArrOfDicts.append(section.serialize)
