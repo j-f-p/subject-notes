@@ -15,6 +15,16 @@ from app_consts import gapiOauth, gapiScopes, gpd, gpdFileName, subject
 
 app = Flask(__name__)
 
+# For development or exhibition, disable OAuthlib's HTTPs verification. For a
+# production app, employ HTTPS; thus, remove the below line.
+environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+environ['FLASK_ENV'] = 'development'
+app.config['SECRET_KEY'] = sha256(urandom(1024)).hexdigest()
+# For development and exhibition, have JSON endpoints present JSON for human
+# readability. For a production, app present JSON minified, thus, remove the
+# below line.
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+
 if environ.get('DATABASE_URL') is None:
     engine = create_engine('postgresql:///deeplearning')
 else:
@@ -440,10 +450,4 @@ def topicJSON(topic_id):
 
 
 if __name__ == '__main__':
-    # When running locally, disable OAuthlib's HTTPs verification.
-    #   ACTION ITEM for developers:
-    #     Remove below line before deploying to production.
-    environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-    environ['FLASK_ENV'] = 'development'
-    app.secret_key = sha256(urandom(1024)).hexdigest()
     app.run(host='0.0.0.0', port=5000)
