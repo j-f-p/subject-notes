@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 from os import environ
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker

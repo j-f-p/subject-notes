@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 from datetime import datetime
 from os import environ
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
@@ -55,7 +55,8 @@ class Section(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String(50), nullable=False)
     notes = Column(String(800))
-    initiator = Column(String(50), nullable=False, default="admin@example.com")
+    initiator = Column(
+        String(50), nullable=False, default="emailreel@gmail.com")
     utci = Column(DateTime, default=datetime.utcnow, nullable=False)
     editor = Column(String(50))
     utce = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

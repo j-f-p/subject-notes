@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 from hashlib import sha256
 from os import environ, urandom
 from requests import post
@@ -15,10 +15,6 @@ from app_consts import gaj, gajFileName, gapiOauth, gapiScopes, subject
 
 app = Flask(__name__)
 
-# For development or exhibition, disable OAuthlib's HTTPs verification. For a
-# production app, employ HTTPS; thus, remove the below line.
-environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-environ['FLASK_ENV'] = 'development'
 app.config['SECRET_KEY'] = sha256(urandom(1024)).hexdigest()
 # For development and exhibition, have JSON endpoints present JSON for human
 # readability. For a production, app present JSON minified, thus, remove the
