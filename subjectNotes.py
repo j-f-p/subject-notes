@@ -11,7 +11,7 @@ from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from database_setup import Base, Topic, Section, maxSectionsPerTopic
-from app_consts import gapiOauth, gapiScopes, gpd, gpdFileName, subject
+from app_consts import gaj, gajFileName, gapiOauth, gapiScopes, subject
 
 app = Flask(__name__)
 
@@ -97,10 +97,10 @@ def signInDesk():
 @app.route('/authenticate/')
 def authenticate():
     # Initialize flow instance for managing the protocol flow.
-    flow = Flow.from_client_secrets_file(gpdFileName(), scopes=gapiScopes())
+    flow = Flow.from_client_secrets_file(gajFileName(), scopes=gapiScopes())
 
     # Set redirect URI to that set in the Google API Console.
-    flow.redirect_uri = gpd()['web']['redirect_uris'][0]
+    flow.redirect_uri = gaj()['web']['redirect_uris'][0]
 
     authorization_url, state = flow.authorization_url(
         # Enable incremental authorization. Recommended as a best practice.
@@ -123,10 +123,10 @@ def oauth2callback():
     if request.args.get('code'):
         # Re-initialize flow instance with verification of session state.
         flow = Flow.from_client_secrets_file(
-            gpdFileName(), scopes=gapiScopes(), state=signed_session['state'])
+            gajFileName(), scopes=gapiScopes(), state=signed_session['state'])
 
         # This is part of the re-initialization, by API design.
-        flow.redirect_uri = gpd()['web']['redirect_uris'][0]
+        flow.redirect_uri = gaj()['web']['redirect_uris'][0]
 
         # Use the authorization server's response to fetch the OAuth 2.0
         # tokens. This response is flask.request.url.
