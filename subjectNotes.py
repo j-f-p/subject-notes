@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from hashlib import sha256
 from os import environ, urandom
 from requests import post
@@ -24,7 +23,7 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 if environ.get('DATABASE_URL') is None:
     engine = create_engine('postgresql:///deeplearning')
 else:
-    engine = create_engine(DATABASE_URL)
+    engine = create_engine(environ.get('DATABASE_URL'))
 
 Base.metadata.bind = engine
 

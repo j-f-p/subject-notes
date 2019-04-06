@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from datetime import datetime
 from os import environ
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
@@ -76,7 +75,7 @@ class Section(Base):
 if environ.get('DATABASE_URL') is None:
     engine = create_engine('postgresql:///deeplearning')
 else:
-    engine = create_engine(DATABASE_URL)
+    engine = create_engine(environ.get('DATABASE_URL'))
 
 Base.metadata.create_all(engine)
 # EOF
