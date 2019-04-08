@@ -55,10 +55,3 @@ def gapiScopes():
 # Google Oauth2 API specs
 def gapiOauth():
     return {'name': 'oauth2', 'version': 'v2'}
-
-
-# Main subject of notes
-#   Return the subject of the notes as a string. This string is not defined in
-#   the database, until a feature is added to enable an admin to specify it.
-def subject():
-    return "Deep Learning"

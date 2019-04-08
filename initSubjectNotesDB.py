@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Topic, Section
 
+
 if environ.get('DATABASE_URL') is None:
     engine = create_engine('postgresql:///deeplearning')
 else:

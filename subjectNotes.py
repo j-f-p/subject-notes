@@ -9,8 +9,8 @@ from sqlalchemy.orm import sessionmaker
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
-from database_setup import Base, Topic, Section, maxSectionsPerTopic
-from app_consts import gaj, gajFileName, gapiOauth, gapiScopes, subject
+from database_setup import Base, subject, Topic, maxSectionsPerTopic, Section
+from gapi_consts import gaj, gajFileName, gapiOauth, gapiScopes
 
 app = Flask(__name__)
 
@@ -95,7 +95,7 @@ def authenticate():
     flow = Flow.from_client_secrets_file(gajFileName(), scopes=gapiScopes())
 
     # Set redirect URI to that set in the Google API Console.
-    flow.redirect_uri = gaj()['web']['redirect_uris'][2]
+    flow.redirect_uri = gaj()['web']['redirect_uris'][1]
 
     authorization_url, state = flow.authorization_url(
         # Enable incremental authorization. Recommended as a best practice.
@@ -121,7 +121,7 @@ def oauth2callback():
             gajFileName(), scopes=gapiScopes(), state=signed_session['state'])
 
         # This is part of the re-initialization, by API design.
-        flow.redirect_uri = gaj()['web']['redirect_uris'][2]
+        flow.redirect_uri = gaj()['web']['redirect_uris'][1]
 
         # Use the authorization server's response to fetch the OAuth 2.0
         # tokens. This response is flask.request.url.

@@ -9,6 +9,14 @@ import psycopg2
 Base = declarative_base()
 
 
+# Main subject of notes
+#   Return the subject of the notes as a string. This string is not defined in
+#   the database since, by design, the app supports only one subject. Also,
+#   this literal is not needed in the SQL processing of the database.
+def subject():
+    return "Deep Learning"
+
+
 # Topic of the Subject
 #   The number of Sections a Topic has ranges from 1 to maxSectionsPerTopic().
 #   There must be one Section assigned to a Topic.
