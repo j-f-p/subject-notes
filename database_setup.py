@@ -63,7 +63,7 @@ class Section(Base):
     title = Column(String(50), nullable=False)
     notes = Column(String(800))
     initiator = Column(
-        String(50), nullable=False, default="emailreel@gmail.com")
+        String(50), nullable=False, default="admin@example.com")
     utci = Column(DateTime, default=datetime.utcnow, nullable=False)
     editor = Column(String(50))
     utce = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

@@ -1,2 +1,2 @@
 web: gunicorn --preload subjectNotes:app
-init: python deepLearningNotes.py
+init: python initSubjectNotesDB.py
