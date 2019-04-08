@@ -21,8 +21,15 @@ app.config['SECRET_KEY'] = sha256(urandom(1024)).hexdigest()
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 if environ.get('DATABASE_URL') is None:
+    # Have the app run locally for development or testing.
+    # For development or exhibition, disable OAuthlib's HTTPS verification.
+    environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+    # Activate Flask's dev server debug mode by FLASK_ENV set to 'development'.
+    environ['FLASK_ENV'] = 'development'
     engine = create_engine('postgresql:///deeplearning')
 else:
+    # The App is being run on Heroku. Employ HTTPS and the default value for
+    # FLASK_ENV, 'production'.
     engine = create_engine(environ.get('DATABASE_URL'))
 
 Base.metadata.bind = engine
@@ -95,7 +102,10 @@ def authenticate():
     flow = Flow.from_client_secrets_file(gajFileName(), scopes=gapiScopes())
 
     # Set redirect URI to that set in the Google API Console.
-    flow.redirect_uri = gaj()['web']['redirect_uris'][1]
+    if environ.get('DATABASE_URL') is None:
+        flow.redirect_uri = gaj()['web']['redirect_uris'][0]
+    else:
+        flow.redirect_uri = gaj()['web']['redirect_uris'][1]
 
     authorization_url, state = flow.authorization_url(
         # Enable incremental authorization. Recommended as a best practice.
@@ -121,7 +131,10 @@ def oauth2callback():
             gajFileName(), scopes=gapiScopes(), state=signed_session['state'])
 
         # This is part of the re-initialization, by API design.
-        flow.redirect_uri = gaj()['web']['redirect_uris'][1]
+        if environ.get('DATABASE_URL') is None:
+            flow.redirect_uri = gaj()['web']['redirect_uris'][0]
+        else:
+            flow.redirect_uri = gaj()['web']['redirect_uris'][1]
 
         # Use the authorization server's response to fetch the OAuth 2.0
         # tokens. This response is flask.request.url.
