@@ -14,18 +14,24 @@
       <h1>
         <a href="{{url_for('contents')}}">{{subject}} Notes</a>
       </h1>
-    {% if signedIn %}
       <div>
+    {% if signedIn %}
         <p>Signed in as<br>{{uname}}</p>
+        <form action="{{url_for('about')}}">
+          <input type="submit" value="About">
+        </form>
         <form action="{{url_for('signOut')}}">
           <input type="submit" value="Sign Out">
         </form>
-      </div>
     {% else %}
-      <form action="{{url_for('signInDesk')}}">
-        <input type="submit" value="Sign In">
-      </form>
+        <form action="{{url_for('about')}}">
+          <input type="submit" value="About">
+        </form>
+        <form action="{{url_for('signInDesk')}}">
+          <input type="submit" value="Sign In">
+        </form>
     {% endif %}
+      </div>
     </header>
     <div class="flash">
     {% with messages = get_flashed_messages() %}

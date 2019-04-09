@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto+Slab:300">
+    <link rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="{{'sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2'
+        + '+nqUivzIebhndOJK28anvf'}}"
+      crossorigin="anonymous">
+    <title>Subject Notes - About</title>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="{{url_for('contents')}}">{{subject}} Notes</a>
+      </h1>
+    {% if signedIn %}
+      <div>
+        <p>Signed in as<br>{{uname}}</p>
+        <form action="{{url_for('signOut')}}">
+          <input type="submit" value="Sign Out">
+        </form>
+      </div>
+    {% else %}
+      <form action="{{url_for('signInDesk')}}">
+        <input type="submit" value="Sign In">
+      </form>
+    {% endif %}
+    </header>
+    <div class="flash">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul class="flash_ul">
+      {% for message in messages %}
+        <li class="flash_li">{{message}}</li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+    {% endwith %}
+    </div>
+    <main class="pane_padding">
+      <h2>About</h2>
+      <p class="about section_notes">
+This project is a web application for collaboratively compiling notes about
+various topics of a subject. The demonstration notes are taken from a book
+about <a href="http://www.deeplearningbook.org/">Deep Learning</a>. This app
+can authenticate any user with a Google account. Authenticated users are able
+to post, edit and delete notes. Components of this project were inspired by <a
+href="https://www.udacity.com/">Udacity</a> courses about web-server app
+development with Flask. This was the second of four primary projects completed
+toward achieving the <a href="{{'https://www.udacity.com/course/full-stack-web\
+-developer-nanodegree--nd004'}}">Full Stack Web Developer Nanodegree</a>.
+      </p>
+      <footer class="about_icon_links">
+        <a href="https://github.com/j-f-p/subject-notes">
+          <i class="fab fa-github-square"></i>
+        </a><!--
+     --><a href="mailto:emailreel@gmail.com">
+          <i class="fas fa-envelope-square"></i>
+        </a>
+      </footer>
+    </main>
+  </body>
+</html>

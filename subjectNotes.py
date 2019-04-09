@@ -38,7 +38,7 @@ DBSession = sessionmaker(bind=engine)  # define a configured session class
 
 
 # This app employs the following terms to label its contents in hierarchical
-# order: subect, topic, section and note. A note is some string literal or
+# order: subject, topic, section and note. A note is some string literal or
 # component thereof, defined by the user. A section comprises one or more
 # notes. A topic comprises one or more sections. And the subject comprises one
 # or more topics.
@@ -77,6 +77,13 @@ def gagn():
         return None
 
 
+# Route for about
+@app.route('/about/')
+def about():
+    return render_template(
+        'about.html', subject=subject(), signedIn=signedIn(), uname=gagn())
+
+
 # Route for sign in desk
 @app.route('/signindesk/')
 def signInDesk():
@@ -88,12 +95,13 @@ def signInDesk():
 
         return render_template('signInDesk.html', subject=subject())
 
-    # Otherwise, user is already signed-in and method return quietly, without
+    # Otherwise, user is already signed-in and method returns quietly, without
     # displaying a "flash" message.
     if request.referrer is not None:
         return redirect(request.referrer)
     else:
         return redirect(url_for('contents'))
+
 
 # Route for starting authentication by OAuth 2 framework protocol flow
 @app.route('/authenticate/')

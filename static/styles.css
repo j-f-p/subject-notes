@@ -41,17 +41,18 @@ h3,
 }
 h3,
 .h3_margin { /*
-  h3 font-size and margin are set to known values, those specified by W3C, so
-  that other spacing can be set based on them. Use of rem units ensures a result
-  that is browser self-consistent, tested on Chrome, Firefox and Edge. */
+h3 font-size and margin are set to known values, those specified by W3C, so
+that other spacing can be set based on them. Use of rem units ensures a result
+that is browser self-consistent, tested on Chrome, Firefox and Edge. */
   margin: 1.17rem 0;
 }
 
 p,
 .p_font {
   font-family: "Roboto Slab", serif;
-  font-size: 1rem; /* Based on the default p size by major browsers. */
-  /* Imported only as font weight 300, Roboto Slab Light. */
+  font-size: 1rem; /*
+Font size is the default p size in major browsers.  Font weight is 300 as
+imported. */
 }
 
 a {
@@ -80,14 +81,15 @@ header p {
   font-weight: 300;
 }
 
-.flash_ul {
-  background-color: black; /* banner color */
-  margin: 0; /* remove default: 16px 0; */
-  padding: 8px 0; /* banner spacing, replace default: 0 0 0 40px; */
+.flash_ul { /* These are the flash banner attributes. */
+  background-color: black; /* This is the banner color. */
+  margin: 0; /* Default was: 16px 0; */
+  padding: 8px 0; /* Default was: 0 0 0 40px;
+Margin and padding define the banner spacing. Defaults were undesireable. */
 }
 .flash_li {
   color: gainsboro;
-  list-style-type: none; /* remove default: disc; */
+  list-style-type: none; /* Default was: disc; */
   text-align: center;
 }
 
@@ -100,17 +102,46 @@ header p {
   padding: 0 8px;
 }
 
+.about > a:link {
+  text-decoration: underline;
+}
+.about > a:hover {
+  text-decoration: overline;
+  background-color: #eee;
+}
+
+.about_icon_links {
+  font-size: 2rem; /* This is the h1 specification by W3C. */
+  text-align: right;
+  /* margin-top: 16px; /*
+Margin was set to match margin-top at the default p font-size, and thus, to
+mirror the p margin-bottom of the about paragraph. */
+}
+.about_icon_links > a {
+  width: 38px; /*
+Width set to the calculated height of each icon's hover space, on major
+browsers, so that the hover space would be a square, approximately. */
+  margin-top: 1px; /*
+This margin is set to ensure that the icon background does not render over any
+part of the footer border.*/
+  display: inline-block;
+  text-align: center;
+}
+.about_icon_links > a:hover {
+  background-color: #eee;
+}
+
 .nav_pane {
   border-right: 2px solid black;
   flex: none;
   width: 216px; /*
-  Width of topics section is set to a constant. It is set to one-third of the
-  body content-width:
-    width = floor( (html min-width - default body margin)/3 )
+Width of topics section is set to a constant. It is set to one-third of the
+body content-width:
+  width = floor( (html min-width - default body margin)/3 )
             - border-right - topics padding-right
-          = 234 - 2 - 16  px
-  Box-sizing is the default content-box, thus, border and padding is subtracted
-  in this calculation. */
+        = (234 - 2 - 16)  px
+Box-sizing is the default content-box, thus, border and padding is subtracted
+in this calculation. */
 }
 
 .content_pane {
@@ -124,10 +155,10 @@ header p {
   background-color: whitesmoke;
   padding: 0 8px;
 }
-section > footer {
+footer {
   border-top: 1px solid black;
 }
-section > footer >  p {
+footer >  p {
   font-family: Roboto, sans-serif;
   font-weight: 300;
 }
@@ -146,13 +177,13 @@ section > footer >  p {
 
 .text_area {
   width: 100%;
-  font-weight: 400;
-  /* At html min-width, this area can hold about 75 characters per line. */
+  font-weight: 400; /*
+At html min-width, this area can hold about 75 characters per line. */
 }
 
 .indent_1 {
-  padding-left: 40px;
-  /* This value is the ol and ul default padding-left recommended by W3C. */
+  padding-left: 40px; /*
+40px is the ol and ul default padding-left recommended by W3C. */
 }
 
 /*
