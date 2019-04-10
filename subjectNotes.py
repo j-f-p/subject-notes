@@ -254,6 +254,8 @@ def newSection(topic_id):
         session.commit()
         flash('Section "{}" was added to topic "{}" by {}.'
               .format(new_section.title, topic.title, gagn()))
+        if (new_section.id + 1) % maxSectionsPerTopic() == 0:
+            flash('Number of sections of topic is now at maximum.')
         session.close()
         return redirect(url_for(
             'viewSection', topic_id=topic_id, section_id=new_section.id))
