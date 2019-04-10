@@ -1,4 +1,5 @@
 from os import environ
+from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Topic, Section
@@ -62,7 +63,6 @@ session.commit()
 # human readability of the code. The resulting newlines and indent spaces are
 # removed by employing the split() and join() methods.
 section = session.query(Section).filter_by(id=10).one()
-section.editor = "emailreel@gmail.com"
 section.notes = ' '.join('''
     There are four salient trends in the history of the study of deep learning.
     Deep learning has been variously labelled in its relatively short history.
@@ -70,39 +70,45 @@ section.notes = ' '.join('''
     march of this history. Simultaneously, deep learning mathematical model
     sizes have continued to increase. Logically, the accuracy of analyses with
     deep learning have continued to improve.'''.split())
+section.editor = "emailreel@gmail.com"
+section.utce = datetime.utcnow()
 session.commit()
 
 section = session.query(Section).filter_by(id=11).one()
-section.editor = "emailreel@gmail.com"
 section.notes = ' '.join('''
     What we now know as deep learning was introduced as cybernetics circa 1940.
     It began being called connectionism or neural networks circa 1980. The rise
     of the current name began circa 2006.'''.split())
+section.editor = "emailreel@gmail.com"
+section.utce = datetime.utcnow()
 session.commit()
 
 section = session.query(Section).filter_by(id=12).one()
-section.editor = "emailreel@gmail.com"
 section.notes = ' '.join('''
     Increases in computer memory have resulted in commensurate increases in
     digital data. Larger data sets have enabled deep learning algorithms to be
     applied to increasingly complex applications.'''.split())
+section.editor = "emailreel@gmail.com"
+section.utce = datetime.utcnow()
 session.commit()
 
 section = session.query(Section).filter_by(id=13).one()
-section.editor = "emailreel@gmail.com"
 section.notes = ' '.join('''
     Increases in computer performance have enabled commensurate increases in
     deep learning model sizes. Specifically, the number of neurons of an
     artificial neural network has doubled about every 2.5 years since their
     inception.  Additionally, the number of connections per model neuron has
     risen.'''.split())
+section.editor = "emailreel@gmail.com"
+section.utce = datetime.utcnow()
 session.commit()
 
 section = session.query(Section).filter_by(id=14).one()
-section.editor = "emailreel@gmail.com"
 section.notes = ' '.join('''
     Image recognition error rate steadily dropped annually from 28% in 2010 to
     4% in 2015.'''.split())
+section.editor = "emailreel@gmail.com"
+section.utce = datetime.utcnow()
 session.commit()
 
 topics = session.query(Topic).all()

@@ -1,5 +1,6 @@
-from hashlib import sha256
 from os import environ, urandom
+from datetime import datetime
+from hashlib import sha256
 from requests import post
 from flask import Flask, render_template, url_for
 from flask import request, redirect, flash, jsonify
@@ -37,13 +38,6 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)  # define a configured session class
 
 
-# This app employs the following terms to label its contents in hierarchical
-# order: subject, topic, section and note. A note is some string literal or
-# component thereof, defined by the user. A section comprises one or more
-# notes. A topic comprises one or more sections. And the subject comprises one
-# or more topics.
-
-
 # Place relevant Google API project credentials in Python dictionary.
 def credentials_to_dict(credentials):
     return {'token': credentials.token,
@@ -54,14 +48,14 @@ def credentials_to_dict(credentials):
             'scopes': credentials.scopes}
 
 
-# Method that returns a Boolean that indicates whether user is signed or not.
+# Return a Boolean that indicates whether user is signed or not.
 def signedIn():
     # Since 'userinfo' depends on 'credentials', only a check for 'credentials'
     # is made.
     return 'credentials' in signed_session
 
 
-# Method that returns Google account email if user is signed in.
+# Return Google account email if user is signed in.
 def gaem():
     if 'credentials' in signed_session:
         return signed_session['userinfo']['email']
@@ -69,7 +63,7 @@ def gaem():
         return None
 
 
-# Method that returns Google account 'given_name' if user is signed in.
+# Return Google account 'given_name' if user is signed in.
 def gagn():
     if 'credentials' in signed_session:
         return signed_session['userinfo']['given_name']
@@ -315,6 +309,7 @@ def editTopicSection0(topic_id, section_id):
         if request.form['notes'] != "":
             section.notes = request.form['notes']
             section.editor = gaem()
+            section.utce = datetime.utcnow()
             session.commit()
             flash('{} section of topic "{}" was updated by {}.'
                   .format(section.title, topic.title, gagn()))
@@ -353,6 +348,7 @@ def editSection(topic_id, section_id):
             if request.form['notes'] != "":
                 section.notes = request.form['notes']
             section.editor = gaem()
+            section.utce = datetime.utcnow()
             session.commit()
             flash('Section "{}" of topic "{}" was updated by {}.'
                   .format(section.title, topic.title, gagn()))

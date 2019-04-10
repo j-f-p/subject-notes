@@ -9,7 +9,14 @@ import psycopg2
 Base = declarative_base()
 
 
-# Main subject of notes
+# The Subject Notes app employs the following terms to label its contents in
+# hierarchical order: subject, topic, section and note. A note is some string
+# literal or component thereof, defined by the user. A section comprises one or
+# more notes. A topic comprises one or more sections. And the subject comprises
+# one or more topics.
+
+
+# Subject of notes
 #   Return the subject of the notes as a string. This string is not defined in
 #   the database since, by design, the app supports only one subject. Also,
 #   this literal is not needed in the SQL processing of the database.
@@ -17,7 +24,7 @@ def subject():
     return "Deep Learning"
 
 
-# Topic of the Subject
+# Topic of the subject
 #   The number of Sections a Topic has ranges from 1 to maxSectionsPerTopic().
 #   There must be one Section assigned to a Topic.
 class Topic(Base):
@@ -43,6 +50,13 @@ def maxSectionsPerTopic():
     return 10
 
 
+# Default value for edit UTC
+#   When initalized, a section's edit UTC equals its initial UTC. SQLAlchemy
+#   requires this kind of method to set the default value of one column to that
+#   of another. [https://stackoverflow.com/questions/36579355]
+def utceDefault(context):
+    return context.get_current_parameters()['utci']
+
 # Section of a Topic
 # * The id of the first Section of a Topic is constrained by:
 #     first_topic_section.id % maxSectionsPerTopic() == 0
@@ -66,7 +80,7 @@ class Section(Base):
         String(50), nullable=False, default="admin@example.com")
     utci = Column(DateTime, default=datetime.utcnow, nullable=False)
     editor = Column(String(50))
-    utce = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    utce = Column(DateTime, default=utceDefault)
     topic_id = Column(Integer, ForeignKey('topic.id'))
     topic = relationship(Topic)
 
