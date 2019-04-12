@@ -4,9 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto+Slab:300">
     <title>Subject Notes - Topic Sections</title>
   </head>
   <body>
@@ -15,22 +18,14 @@
         <a href="{{url_for('contents')}}">{{subject}} Notes</a>
       </h1>
       <div>
-    {% if signedIn %}
+      {% if signedIn %}
         <p>Signed in as<br>{{uname}}</p>
-        <form action="{{url_for('about')}}">
-          <input type="submit" value="About">
-        </form>
-        <form action="{{url_for('signOut')}}">
-          <input type="submit" value="Sign Out">
-        </form>
-    {% else %}
-        <form action="{{url_for('about')}}">
-          <input type="submit" value="About">
-        </form>
-        <form action="{{url_for('signInDesk')}}">
-          <input type="submit" value="Sign In">
-        </form>
-    {% endif %}
+        <a href="{{url_for('about')}}" class="link-button">About</a><div></div>
+        <a href="{{url_for('signOut')}}" class="link-button">Sign Out</a>
+      {% else %}
+        <a href="{{url_for('about')}}" class="link-button">About</a><div></div>
+        <a href="{{url_for('signInDesk')}}" class="link-button">Sign In</a>
+      {% endif %}
       </div>
     </header>
     <div class="flash">
@@ -49,7 +44,7 @@
         <h2>Sections of Topic<br><mark>{{topic.title}}</mark></h2>
       {% if sections|length > 1 %}
         {% for index in range(1, sections|length) %}
-        <h3 class="hover">
+        <h3>
           <a href="{{url_for('viewSection', topic_id=topic.id,
                              section_id=sections[index].id)}}">
             {{sections[index].title}}
@@ -58,9 +53,8 @@
         {% endfor %}
       {% endif %}
       {% if signedIn and sections|length < maxNumSecs %}
-        <form action="{{url_for('newSection', topic_id=topic.id)}}">
-          <input type="submit" value="add section">
-        </form>
+        <a href="{{url_for('newSection', topic_id=topic.id)}}"
+          class="link-button">add section</a>
       {% endif %}
       </nav>
       <section class="content_pane pane_padding"><!--
@@ -69,12 +63,10 @@ topic's first section here. -->
         <h2>Topic {{sections[0].title}}</h2>
       {% if signedIn %}
         <div class="section_heading_button_div">
-          <form action="{{url_for(
-              'editTopicSection0', topic_id=topic.id,
-              section_id=sections[0].id)}}">
-            <input type="submit"
-              value="edit {{sections[0].title.lower()}} notes">
-          </form>
+          <a href="{{url_for('editTopicSection0', topic_id=topic.id,
+              section_id=sections[0].id)}}" class="link-button">
+            edit {{sections[0].title.lower()}} notes
+          </a>
         </div>
       {% endif %}
       {% if sections[0].notes == None or not sections[0].notes
@@ -94,9 +86,8 @@ topic's first section here. -->
             {{sections[0].utce.strftime('%d %b %Y')}}</p>
         {% endif %}
           <div class="section_footer_button_div">
-            <form action="{{url_for('topicJSON', topic_id=topic.id)}}">
-              <input type="submit" value="topic json">
-            </form>
+            <a href="{{url_for('topicJSON', topic_id=topic.id)}}"
+              class="link-button">topic json</a>
           </div>
         </footer>
       {% endif %}

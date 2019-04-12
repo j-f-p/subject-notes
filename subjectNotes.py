@@ -16,6 +16,7 @@ from gapi_consts import gaj, gajFileName, gapiOauth, gapiScopes
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = sha256(urandom(1024)).hexdigest()
+
 # For development and exhibition, have JSON endpoints present JSON for human
 # readability. For a production, app present JSON minified, thus, remove the
 # below line.
@@ -35,7 +36,7 @@ else:
 
 Base.metadata.bind = engine
 
-DBSession = sessionmaker(bind=engine)  # define a configured session class
+DBSession = sessionmaker(bind=engine)  # Define a configured session class.
 
 
 # Place relevant Google API project credentials in Python dictionary.
@@ -72,14 +73,14 @@ def gagn():
 
 
 # Route for about
-@app.route('/about/')
+@app.route('/about')
 def about():
     return render_template(
         'about.html', subject=subject(), signedIn=signedIn(), uname=gagn())
 
 
 # Route for sign in desk
-@app.route('/signindesk/')
+@app.route('/signindesk')
 def signInDesk():
     if 'credentials' not in signed_session:
         if request.referrer is not None:
@@ -98,7 +99,7 @@ def signInDesk():
 
 
 # Route for starting authentication by OAuth 2 framework protocol flow
-@app.route('/authenticate/')
+@app.route('/authenticate')
 def authenticate():
     # Initialize flow instance for managing the protocol flow.
     flow = Flow.from_client_secrets_file(gajFileName(), scopes=gapiScopes())
@@ -163,7 +164,7 @@ def oauth2callback():
 
 
 # Route for sigining out
-@app.route('/signout/')
+@app.route('/signout')
 def signOut():
     if 'credentials' in signed_session:
         credentials = Credentials(**signed_session['credentials'])
@@ -203,7 +204,7 @@ def root():
 
 
 # Route for viewing the subject's contents in terms of topics
-@app.route('/topics/')
+@app.route('/topics')
 def contents():
     session = DBSession()  # open session
     topics = session.query(Topic).all()
@@ -219,7 +220,7 @@ def contents():
 
 
 # Route for viewing a topic's contents in terms of sections
-@app.route('/topics/<int:topic_id>/')
+@app.route('/topics/<int:topic_id>')
 def topicContents(topic_id):
     session = DBSession()  # open session
     topic = session.query(Topic).filter_by(id=topic_id).one()
@@ -233,7 +234,7 @@ def topicContents(topic_id):
 
 
 # Route for adding a new topic section
-@app.route('/topics/<int:topic_id>/new/', methods=['GET', 'POST'])
+@app.route('/topics/<int:topic_id>/new', methods=['GET', 'POST'])
 def newSection(topic_id):
     if 'credentials' not in signed_session:
         flash('Please sign in.')
@@ -274,7 +275,7 @@ def newSection(topic_id):
 
 
 # Route for viewing a topic section
-@app.route('/topics/<int:topic_id>/<int:section_id>/')
+@app.route('/topics/<int:topic_id>/<int:section_id>')
 def viewSection(topic_id, section_id):
     session = DBSession()  # open session
     topic = session.query(Topic).filter_by(id=topic_id).one()
@@ -294,7 +295,7 @@ def viewSection(topic_id, section_id):
 
 
 # Route for updating a topic's first section notes
-@app.route('/topics/<int:topic_id>/<int:section_id>/editTS0/',
+@app.route('/topics/<int:topic_id>/<int:section_id>/editTS0',
            methods=['GET', 'POST'])
 def editTopicSection0(topic_id, section_id):
     if 'credentials' not in signed_session:
@@ -330,7 +331,7 @@ def editTopicSection0(topic_id, section_id):
 
 
 # Route for updating a topic section
-@app.route('/topics/<int:topic_id>/<int:section_id>/edit/',
+@app.route('/topics/<int:topic_id>/<int:section_id>/edit',
            methods=['GET', 'POST'])
 def editSection(topic_id, section_id):
     if 'credentials' not in signed_session:
@@ -369,7 +370,7 @@ def editSection(topic_id, section_id):
 
 
 # Route for deleting a topic section
-@app.route('/topics/<int:topic_id>/<int:section_id>/delete/',
+@app.route('/topics/<int:topic_id>/<int:section_id>/delete',
            methods=['GET', 'POST'])
 def deleteSection(topic_id, section_id):
     if 'credentials' not in signed_session:

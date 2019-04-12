@@ -4,8 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400">
     <title>Subject Notes - Topics</title>
   </head>
   <body>
@@ -14,22 +16,14 @@
         <mark>{{subject}} Notes</mark>
       </h1>
       <div>
-    {% if signedIn %}
+      {% if signedIn %}
         <p>Signed in as<br>{{uname}}</p>
-        <form action="{{url_for('about')}}">
-          <input type="submit" value="About">
-        </form>
-        <form action="{{url_for('signOut')}}">
-          <input type="submit" value="Sign Out">
-        </form>
-    {% else %}
-        <form action="{{url_for('about')}}">
-          <input type="submit" value="About">
-        </form>
-        <form action="{{url_for('signInDesk')}}">
-          <input type="submit" value="Sign In">
-        </form>
-    {% endif %}
+        <a href="{{url_for('about')}}" class="link-button">About</a><div></div>
+        <a href="{{url_for('signOut')}}" class="link-button">Sign Out</a>
+      {% else %}
+        <a href="{{url_for('about')}}" class="link-button">About</a><div></div>
+        <a href="{{url_for('signInDesk')}}" class="link-button">Sign In</a>
+      {% endif %}
       </div>
     </header>
     <div class="flash">
@@ -47,7 +41,7 @@
       <nav class="nav_pane pane_padding">
         <h2>Topics</h2>
       {% for t in topics %}
-        <h3 class="hover">
+        <h3>
           <a href="{{url_for('topicContents', topic_id=t.id)}}">{{t.title}}</a>
         </h3>
       {% endfor %}
@@ -55,12 +49,12 @@
       <section class="content_pane pane_padding">
         <h2>Latest {{latest_sections|length}} Sections Added or Updated</h2>
       {% for s in latest_sections %}
-        <h3><span class="hover">
+        <h3>
           <a href="{{url_for('viewSection', topic_id=s[0].topic_id,
                              section_id=s[0].id)}}">
             {{s[0].title}} ({{s[1]}})
           </a><!-- Section Name (Topic Name) -->
-        </span></h3>
+        </h3>
       {% endfor %}
       </section>
     </main>

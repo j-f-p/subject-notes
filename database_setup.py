@@ -50,12 +50,13 @@ def maxSectionsPerTopic():
     return 10
 
 
-# Default value for edit UTC
+# Default value for edit Coordinated Universal Time (UTC)
 #   When initalized, a section's edit UTC equals its initial UTC. SQLAlchemy
 #   requires this kind of method to set the default value of one column to that
-#   of another. [https://stackoverflow.com/questions/36579355]
+#   of another.
 def utceDefault(context):
     return context.get_current_parameters()['utci']
+
 
 # Section of a Topic
 # * The id of the first Section of a Topic is constrained by:

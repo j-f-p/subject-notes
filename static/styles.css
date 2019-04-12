@@ -2,6 +2,12 @@
 This style sheet is configured for a "desktop" browser view, ideally having a
 screen width greater than 719 px. */
 
+*:focus {
+  outline: none; /*
+This cancels browser default focus outline. Other effects are specified for
+focus below. */
+}
+
 html {
   min-width: 720px;
   max-width: 1280px;
@@ -29,9 +35,17 @@ h1 > mark,
 h1 > a:hover {
   background-color: #eee;
 }
+h1 > a:focus {
+  border-bottom: 2px solid black;
+  background-color: #eee;
+}
 
 h2 > mark,
 h2 > a:hover {
+  background-color: #eee;
+}
+h2 > a:focus {
+  border-bottom: 2px solid black;
   background-color: #eee;
 }
 
@@ -46,13 +60,19 @@ that other spacing can be set based on them. Use of rem units ensures a result
 that is browser self-consistent, tested on Chrome, Firefox and Edge. */
   margin: 1.17rem 0;
 }
+h3 > a:hover {
+  background-color: #eee;
+}
+h3 > a:focus {
+  border-bottom: 1.5px solid black;
+  background-color: #eee;
+}
 
 p,
 .p_font {
   font-family: "Roboto Slab", serif;
-  font-size: 1rem; /*
-Font size is the default p size in major browsers.  Font weight is 300 as
-imported. */
+  font-size: 1rem; /* Font size is the default p size in major browsers.
+Font weight is 300 as imported. */
 }
 
 a {
@@ -74,6 +94,9 @@ header > div {
   flex-direction: row;
   align-items: center;
 }
+header > div > div {
+  width: 8px;
+}
 header p {
   padding: 0 8px;
   text-align: center;
@@ -83,13 +106,13 @@ header p {
 
 .flash_ul { /* These are the flash banner attributes. */
   background-color: black; /* This is the banner color. */
-  margin: 0; /* Default was: 16px 0; */
-  padding: 8px 0; /* Default was: 0 0 0 40px;
-Margin and padding define the banner spacing. Defaults were undesireable. */
+  margin: 0; /* Default is: 16px 0; */
+  padding: 8px 0; /* Default is: 0 0 0 40px;
+Margin and padding define the banner spacing. Defaults are undesireable. */
 }
 .flash_li {
   color: gainsboro;
-  list-style-type: none; /* Default was: disc; */
+  list-style-type: none; /* Default is: disc; */
   text-align: center;
 }
 
@@ -105,7 +128,8 @@ Margin and padding define the banner spacing. Defaults were undesireable. */
 .about > a:link {
   text-decoration: underline;
 }
-.about > a:hover {
+.about > a:hover,
+.about > a:focus {
   text-decoration: overline;
   background-color: #eee;
 }
@@ -113,22 +137,28 @@ Margin and padding define the banner spacing. Defaults were undesireable. */
 .about_icon_links {
   font-size: 2rem; /* This is the h1 specification by W3C. */
   text-align: right;
-  /* margin-top: 16px; /*
-Margin was set to match margin-top at the default p font-size, and thus, to
-mirror the p margin-bottom of the about paragraph. */
 }
 .about_icon_links > a {
   width: 38px; /*
-Width set to the calculated height of each icon's hover space, on major
-browsers, so that the hover space would be a square, approximately. */
+Width is set to the calculated height of each icon's hover space, found on
+major browsers, so that the hover space would be a square, approximately. */
   margin-top: 1px; /*
 This margin is set to ensure that the icon background does not render over any
 part of the footer border.*/
   display: inline-block;
-  text-align: center;
+  text-align: center; /*
+One icon glyph did not have its image centered. Thus, when rendered by default
+left-alignment, the hover highlight was asymmetrical about the image. Inline-
+block display with text centered fixed this without defining a container
+element. */
 }
-.about_icon_links > a:hover {
+.about_icon_links > a:hover,
+.about_icon_links > a:focus {
   background-color: #eee;
+  border-bottom: thin solid black;
+}
+.about_icon_links > a:active {
+  background-color: #e5e5e5;
 }
 
 .nav_pane {
@@ -167,12 +197,33 @@ footer >  p {
   justify-content: space-between;
 }
 
-.hover:hover {
-  background-color: #eee;
-  cursor: pointer;
-}
 .selected {
   background-color: #eee;
+}
+
+.link-button,
+.link-button:visited {
+  background-color: #e5e5e5; /* This is midway between gainsboro and #eee.
+  Thus, its brightness is midway between background and highlight. */
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 0.8rem;
+  border: thin solid black;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+.link-button:focus {
+  background-color: #eee;
+  box-shadow: inset 1px 1px black, inset -1px -1px black;
+}
+.link-button:hover {
+  background-color: #eee;
+}
+.link-button:active {
+  background-color: #e5e5e5; /* This adds a button pressing effect. */
+}
+.pointer-cursor {
+  cursor: pointer; /* This changes the <input> cursor from default arrow. */
 }
 
 .text_area {

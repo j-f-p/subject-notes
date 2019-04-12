@@ -4,9 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto+Slab">
     <title>Subject Notes - New</title>
   </head>
   <body>
@@ -17,20 +20,19 @@
     <main class="pane_padding">
       <h2>New Section for {{topic.title}}</h2>
     {% if request.referrer is not none %}
-      <form action="{{request.referrer}}">
+      <a href="{{request.referrer}}" class="link-button">cancel</a>
     {% else %}
-      <form action="{{url_for('topicContents', topic_id=topic.id)}}">
+      <a href="{{url_for('topicContents', topic_id=topic.id)}}"
+        class="link-button">cancel</a>
     {% endif %}
-        <input type="submit" value="cancel">
-      </form>
       <form action="{{url_for('newSection', topic_id=topic.id)}}" method="POST"
           class="h3_margin"><!--
 Style class h3_margin is employed to match h3 margin-top positioned below the
 cancel button button in the delete section form page. Otherwise, there is no
 spacing between the surrounding buttons and the form. -->
         <label for="nsTitle">Title</label><br>
-        <input id="nsTitle" type="text" name="title" size="50" autofocus required
-          minlength="1" maxlength="50" placeholder="1 to 50 chars"
+        <input id="nsTitle" type="text" name="title" size="50" autofocus
+          required minlength="1" maxlength="50" placeholder="1 to 50 chars"
           class="body_font_fam h3_font_size"><br><br>
         <label for="nsNotes">Notes</label><br>
         <textarea id="nsNotes" name="notes" rows="11"
@@ -38,7 +40,7 @@ spacing between the surrounding buttons and the form. -->
           class="p_font text_area"></textarea><!--
 A maxlength of 800 is set for development. maxlength would be set to a higher
 number for exhibition or publication.-->
-        <input type="submit" value="create">
+        <input type="submit" value="create" class="link-button pointer-cursor">
       </form>
     </main>
   </body>

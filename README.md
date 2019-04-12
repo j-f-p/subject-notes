@@ -33,7 +33,7 @@ Each public view has a sign-in button on the upper right corner of the page.  Cl
 For signing in through Google, the app employs [Google's AOuth 2.0 APIs](https://developers.google.com/identity/protocols/OpenIDConnect) for authentication. This authentication is implemented according to Google's [web server app authentication sequence][1]. The implementation employs Google's Python authentication library [web server implementation][2]. It employs [the Google AOuth2 API](https://developers.google.com/api-client-library/python/apis/oauth2/v2) for accessing a user's Google profile and email.
 
 ## Environment
-The environment for developing this project was a modified version of the Linux virtual machine defined by the [Udacity FSND Virtual Machine][3]. It was provisioned by Vagrant 2.2.4 and VirtualBox 6.0. The operating system of the virtual machine was Bento Ubuntu 18.10. The web app was tested on Chrome 73, Firefox 66 and Edge 42. The environment for deploying the project is the [Heroku](https://www.heroku.com/) platform with the Python 3.7.3 runtime and the [Green Unicorn](https://gunicorn.org/) server.
+The environment for developing this project was a modified version of the Linux virtual machine defined by the [Udacity FSND Virtual Machine][3]. It was provisioned by Vagrant 2.2.4 and VirtualBox 6.0. The operating system of the virtual machine was Bento Ubuntu 18.10. The web app was tested on Chrome 73, Firefox 66 and Edge 42 with EdgeHTML 17. The environment for deploying the project is the [Heroku](https://www.heroku.com/) platform with the Python 3.7.3 runtime and the [Green Unicorn](https://gunicorn.org/) server 19.9.0.
 
 ## Execution
 Subject Notes is deployed at https://subject-notes.herokuapp.com.
