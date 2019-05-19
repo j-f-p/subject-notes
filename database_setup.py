@@ -18,15 +18,15 @@ Base = declarative_base()
 
 # Subject of notes
 #   Return the subject of the notes as a string. This string is not defined in
-#   the database since, by design, the app supports only one subject. Also,
-#   this literal is not needed in the SQL processing of the database.
+# the database since, by design, the app supports only one subject. Also, this
+# literal is not needed in the SQL processing of the database.
 def subject():
     return "Deep Learning"
 
 
 # Topic of the subject
-#   The number of Sections a Topic has ranges from 1 to maxSectionsPerTopic().
-#   There must be one Section assigned to a Topic.
+# * There must be at least one topic.
+# * The number of Sections a Topic has ranges from 1 to maxSectionsPerTopic().
 class Topic(Base):
     __tablename__ = 'topic'
     id = Column(Integer, primary_key=True)
@@ -38,6 +38,15 @@ class Topic(Base):
             'k1 id': self.id,
             'k2 topic': self.title
         }
+
+
+# Editor
+# * An editor is any authenticated user.
+# * There must be at least one editor.
+class Editor(Base):
+    __tablename__ = 'editor'
+    id = Column(Integer, primary_key=True)
+    email = Column(String(50), nullable=False)
 
 
 # Max number of Sections a Topic can have
@@ -52,38 +61,37 @@ def maxSectionsPerTopic():
 
 # Default value for edit Coordinated Universal Time (UTC)
 #   When initalized, a section's edit UTC equals its initial UTC. SQLAlchemy
-#   requires this kind of method to set the default value of one column to that
-#   of another.
+# requires this kind of method to set the default value of one column to that
+# of another.
 def utceDefault(context):
     return context.get_current_parameters()['utci']
 
 
 # Section of a Topic
+# * By app design, each topic must have at least one section assigned to it.
 # * The id of the first Section of a Topic is constrained by:
 #     first_topic_section.id % maxSectionsPerTopic() == 0
 # * The id of the last Section of a Topic is constrained by:
 #     last_topic_section.id < first_topic_section.id + maxSectionsPerTopic()
-# * The initiator property is a string that holds the email address of the
-#     person who started the section.
+# * The initiator_id is the id of the editor who started the section.
 # * utci is the UTC time when the initiator started the Section.
-# * The editor property is a string that holds the email address of the person
-#     who last edited the section.
+# * The editor_id is the id of the editor who last edited the section.
 # * utce is the UTC time when the editor last edited the Section.
 # * The datetime objects assigned to utci and utce do not contain timezone
-#   information. Since the function employed to generate them, utcnow,
-#   outputs its time in UTC, utci and utce are in the UTC timezone.
+#     information. Since the function employed to generate them, utcnow,
+#     outputs its time in UTC, utci and utce are in the UTC timezone.
 class Section(Base):
     __tablename__ = 'section'
     id = Column(Integer, primary_key=True)
     title = Column(String(50), nullable=False)
     notes = Column(String(800))
-    initiator = Column(
-        String(50), nullable=False, default="admin@example.com")
     utci = Column(DateTime, default=datetime.utcnow, nullable=False)
-    editor = Column(String(50))
     utce = Column(DateTime, default=utceDefault)
-    topic_id = Column(Integer, ForeignKey('topic.id'))
+    topic_id = Column(Integer, ForeignKey('topic.id'), nullable=False)
+    editor_id = Column(Integer, ForeignKey('editor.id'), default=1,
+                       nullable=False)
     topic = relationship(Topic)
+    editor = relationship(Editor)
 
     @property
     def serialize(self):
