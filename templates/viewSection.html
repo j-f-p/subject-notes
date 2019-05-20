@@ -79,14 +79,10 @@
       {% endif %}
       {% if signedIn %}
         <footer>
-          <p>Initialized by {{section.initiator}} at
-            {{section.utci.strftime('%-I:%M:%S %p')}} UTC on
-            {{section.utci.strftime('%d %b %Y')}}</p>
-        {% if section.editor is not none %}
-          <p>Last edited by {{section.editor}} at
+          <p>Latest edit time:
             {{section.utce.strftime('%-I:%M:%S %p')}} UTC on
             {{section.utce.strftime('%d %b %Y')}}</p>
-        {% endif %}
+          <p>Editor email: {{edEmails[section.editor_id - 1]}}</p>
           <div class="section_footer_button_div">
             <a href="{{url_for('sectionJSON', topic_id=topic.id,
               section_id=section.id)}}" class="link-button">section json</a>

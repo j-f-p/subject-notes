@@ -10,7 +10,8 @@ from sqlalchemy.orm import sessionmaker
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
-from database_setup import Base, subject, Topic, maxSectionsPerTopic, Section
+from database_setup import Base, Topic, Editor, Section
+from database_setup import subject, maxSectionsPerTopic
 from gapi_consts import gaj, gajFileName, gapiOauth, gapiScopes
 
 app = Flask(__name__)
@@ -224,13 +225,16 @@ def contents():
 def topicContents(topic_id):
     session = DBSession()  # open session
     topic = session.query(Topic).filter_by(id=topic_id).one()
-    sections = session.query(Section).filter_by(topic_id=topic.id).\
-        order_by(Section.id).all()
+    sections = session.query(Section).\
+        filter_by(topic_id=topic.id).order_by(Section.id).all()
+    edEmails = []  # an array containing every editor's email
+    for value in session.query(Editor.email):
+        edEmails.append(value[0])
     session.close()
     return render_template(
         'topicContents.html', subject=subject(), signedIn=signedIn(),
         uname=gagn(), maxNumSecs=maxSectionsPerTopic(),
-        topic=topic, sections=sections)
+        topic=topic, sections=sections, edEmails=edEmails)
 
 
 # Route for adding a new topic section
@@ -248,9 +252,22 @@ def newSection(topic_id):
         topic = session.query(Topic).filter_by(id=topic_id).one()
         lastTopicSec_id = session.query(Section).\
             filter_by(topic_id=topic_id).order_by(Section.id.desc()).first().id
+        edEmail = gaem()
+        # If editor email exists,
+        if session.query(Editor.id).filter_by(email=edEmail).scalar():
+            # retrieve editor_id from editor table.
+            editor_id = session.query(Editor.id).\
+                filter_by(email=edEmail).one().id
+        else:
+            # Otherwise, add user email to editor table.
+            session.add(Editor(email=edEmail))
+            session.commit()
+            # Then, retrieve editor_id.
+            editor_id = session.query(Editor).count()
+            flash("{} is now an editor of the app.".format(gagn()))
         new_section = Section(
             title=request.form['title'], notes=request.form['notes'],
-            initiator=gaem(), topic_id=topic_id, id=lastTopicSec_id+1)
+            topic_id=topic_id, editor_id=editor_id, id=lastTopicSec_id+1)
         session.add(new_section)
         session.commit()
         flash('Section "{}" was added to topic "{}" by {}.'
@@ -281,6 +298,9 @@ def viewSection(topic_id, section_id):
     topic = session.query(Topic).filter_by(id=topic_id).one()
     sections = session.query(Section).filter_by(topic_id=topic.id).\
         order_by(Section.id).all()
+    edEmails = []  # an array containing every editor's email
+    for value in session.query(Editor.email):
+        edEmails.append(value[0])
     section = session.query(Section).filter_by(id=section_id).one()
     session.close()
     if section.id == sections[0].id:
@@ -291,7 +311,7 @@ def viewSection(topic_id, section_id):
         return render_template(
             'viewSection.html', subject=subject(), signedIn=signedIn(),
             uname=gagn(), maxNumSecs=maxSectionsPerTopic(),
-            topic=topic, sections=sections, section=section)
+            topic=topic, sections=sections, edEmails=edEmails, section=section)
 
 
 # Route for updating a topic's first section notes
