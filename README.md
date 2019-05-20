@@ -1,7 +1,5 @@
 # Subject Notes
-Objective: Udacity Student Project Submission of Item Catalog Project<br>
-Developer: JF Padilla<br>
-Contact: emailreel@gmail.com
+Objective: Udacity Student Project Submission of Item Catalog Project
 
 ## Description
 This project is a web application for collaboratively compiling notes about various topics of a subject. The app is developed with [Flask](http://flask.pocoo.org/) and [Python 3.X syntax](https://en.wikipedia.org/wiki/History_of_Python#Version_3). It has a database managed by [SQLAlchemy](https://www.sqlalchemy.org/) and [PostgreSQL](https://www.postgresql.org/). The app is deployed on the [Heroku](https://www.heroku.com/) platform. The demonstration database involves notes taken from a book about [Deep Learning](http://www.deeplearningbook.org/). This app can authenticate any user with a Google account. Authentication occurs through [Google's AOuth 2.0 APIs](https://developers.google.com/identity/protocols/OpenIDConnect). Authenticated users are able to post, edit and delete notes. Components of this project were inspired by [Udacity](https://www.udacity.com/) courses about web-server app development with Flask. This was the second of three primary projects completed toward achieving the [Full Stack Web Developer Nanodegree](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd004).
