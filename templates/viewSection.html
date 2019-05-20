@@ -65,7 +65,7 @@
       </nav>
       <section class="content_pane pane_padding">
         <h2>{{section.title}}</h2>
-      {% if signedIn %}
+      {% if signedIn and userIsSecEditor %}
         <div class="section_heading_button_div">
           <a href="{{url_for('editSection', topic_id=topic.id,
             section_id=section.id)}}" class="link-button">edit section</a>
@@ -82,12 +82,14 @@
           <p>Latest edit time:
             {{section.utce.strftime('%-I:%M:%S %p')}} UTC on
             {{section.utce.strftime('%d %b %Y')}}</p>
-          <p>Editor email: {{edEmails[section.editor_id - 1]}}</p>
+          <p>Editor email: {{secEdEmail}}</p>
           <div class="section_footer_button_div">
             <a href="{{url_for('sectionJSON', topic_id=topic.id,
               section_id=section.id)}}" class="link-button">section json</a>
+          {% if userIsSecEditor %}
             <a href="{{url_for('deleteSection', topic_id=topic.id,
               section_id=section.id)}}" class="link-button">delete section</a>
+          {% endif %}
           </div>
         </footer>
       {% endif %}

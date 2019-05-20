@@ -61,12 +61,11 @@
 Every topic must have one section, something like an intro section. Render a
 topic's first section here. -->
         <h2>Topic {{sections[0].title}}</h2>
-      {% if signedIn %}
+      {% if signedIn and userIsSecEditor %}
         <div class="section_heading_button_div">
           <a href="{{url_for('editTopicSection0', topic_id=topic.id,
               section_id=sections[0].id)}}" class="link-button">
-            edit {{sections[0].title.lower()}} notes
-          </a>
+            edit {{sections[0].title.lower()}} notes</a>
         </div>
       {% endif %}
       {% if sections[0].notes == None or not sections[0].notes
@@ -80,7 +79,7 @@ topic's first section here. -->
           <p>Latest edit time:
             {{sections[0].utce.strftime('%-I:%M:%S %p')}} UTC on
             {{sections[0].utce.strftime('%d %b %Y')}}</p>
-          <p>Editor email: {{edEmails[sections[0].editor_id - 1]}}</p>
+          <p>Editor email: {{secEdEmail}}</p>
           <div class="section_footer_button_div">
             <a href="{{url_for('topicJSON', topic_id=topic.id)}}"
               class="link-button">topic json</a>

@@ -227,14 +227,15 @@ def topicContents(topic_id):
     topic = session.query(Topic).filter_by(id=topic_id).one()
     sections = session.query(Section).\
         filter_by(topic_id=topic.id).order_by(Section.id).all()
-    edEmails = []  # an array containing every editor's email
-    for value in session.query(Editor.email):
-        edEmails.append(value[0])
+    secEdEmail = session.query(Editor.email).\
+        filter_by(id=sections[0].editor_id).one().email
     session.close()
+    userIsSecEditor = gaem() == secEdEmail
     return render_template(
-        'topicContents.html', subject=subject(), signedIn=signedIn(),
-        uname=gagn(), maxNumSecs=maxSectionsPerTopic(),
-        topic=topic, sections=sections, edEmails=edEmails)
+        'topicContents.html', subject=subject(), topic=topic,
+        sections=sections, maxNumSecs=maxSectionsPerTopic(),
+        secEdEmail=secEdEmail, signedIn=signedIn(), uname=gagn(),
+        userIsSecEditor=userIsSecEditor)
 
 
 # Route for adding a new topic section
@@ -298,20 +299,22 @@ def viewSection(topic_id, section_id):
     topic = session.query(Topic).filter_by(id=topic_id).one()
     sections = session.query(Section).filter_by(topic_id=topic.id).\
         order_by(Section.id).all()
-    edEmails = []  # an array containing every editor's email
-    for value in session.query(Editor.email):
-        edEmails.append(value[0])
     section = session.query(Section).filter_by(id=section_id).one()
+    secEdEmail = session.query(Editor.email).\
+        filter_by(id=section.editor_id).one().email
     session.close()
+    userIsSecEditor = gaem() == secEdEmail
     if section.id == sections[0].id:
         # It's possible that an intro section is selected from the contents
         # view via url. Then, render the associated topic contents view.
         return redirect(url_for('topicContents', topic_id=topic_id))
     else:
         return render_template(
-            'viewSection.html', subject=subject(), signedIn=signedIn(),
-            uname=gagn(), maxNumSecs=maxSectionsPerTopic(),
-            topic=topic, sections=sections, edEmails=edEmails, section=section)
+            'viewSection.html', subject=subject(), topic=topic,
+            sections=sections, section=section,
+            maxNumSecs=maxSectionsPerTopic(),
+            secEdEmail=secEdEmail, signedIn=signedIn(), uname=gagn(),
+            userIsSecEditor=userIsSecEditor)
 
 
 # Route for updating a topic's first section notes
