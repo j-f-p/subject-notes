@@ -253,13 +253,13 @@ def newSection(topic_id):
         lastTopicSec_id = session.query(Section).\
             filter_by(topic_id=topic_id).order_by(Section.id.desc()).first().id
         edEmail = gaem()
-        # If editor email exists,
+        # If session user's email is recorded in the editor's table,
         if session.query(Editor.id).filter_by(email=edEmail).scalar():
-            # retrieve editor_id from editor table.
+            # retrieve editor_id from editor's table.
             editor_id = session.query(Editor.id).\
                 filter_by(email=edEmail).one().id
         else:
-            # Otherwise, add user email to editor table.
+            # Otherwise, add user email to editor's table.
             session.add(Editor(email=edEmail))
             session.commit()
             # Then, retrieve editor_id.
@@ -345,7 +345,27 @@ def editTopicSection0(topic_id, section_id):
         session = DBSession()
         topic = session.query(Topic).filter_by(id=topic_id).one()
         section = session.query(Section).filter_by(id=section_id).one()
+        secEdEmail = session.query(Editor.email).\
+            filter_by(id=section.editor_id).one().email
+        edEmail = gaem()
+        candidate = False
+        # Determine edit authority.
+        # If session user's email is recorded in the editor's table,
+        if session.query(Editor.id).filter_by(email=edEmail).scalar():
+            # retrieve editor_id from editor's table.
+            editor_id = session.query(Editor.id).\
+                filter_by(email=edEmail).one().id
+            # This user is, thus, a candidate editor of this section.
+            candidate = True
         session.close()
+        if not candidate or editor_id != section.editor_id:
+            # Session user is not this section's editor.
+            flash('Contact {} to suggest an edit.'.format(secEdEmail))
+            if request.referrer is not None:
+                return redirect(request.referrer)
+            else:
+                return redirect(url_for('contents'))
+        # Otherwise, session user is this section's editor.
         return render_template('editTopicSection0.html', subject=subject(),
                                uname=gagn(), topic=topic, section=section)
 
@@ -384,7 +404,23 @@ def editSection(topic_id, section_id):
         session = DBSession()
         topic = session.query(Topic).filter_by(id=topic_id).one()
         section = session.query(Section).filter_by(id=section_id).one()
+        secEdEmail = session.query(Editor.email).\
+            filter_by(id=section.editor_id).one().email
+        edEmail = gaem()
+        candidate = False
+        # Determine edit authority by same logic found in editTopicSection0().
+        #   See comments there for further explanation.
+        if session.query(Editor.id).filter_by(email=edEmail).scalar():
+            editor_id = session.query(Editor.id).\
+                filter_by(email=edEmail).one().id
+            candidate = True
         session.close()
+        if not candidate or editor_id != section.editor_id:
+            flash('Contact {} to suggest an edit.'.format(secEdEmail))
+            if request.referrer is not None:
+                return redirect(request.referrer)
+            else:
+                return redirect(url_for('contents'))
         return render_template('editSection.html', subject=subject(),
                                uname=gagn(), topic=topic, section=section)
 
@@ -485,4 +521,4 @@ def topicJSON(topic_id):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8000)

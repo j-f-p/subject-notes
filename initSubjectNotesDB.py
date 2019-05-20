@@ -18,7 +18,7 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 # The Initial Editors
-session.add_all([Editor(email="editor@example.com"),  # default editor
+session.add_all([Editor(email="alter_ego@example.com"),  # default editor
                  Editor(email="emailreel@gmail.com")])
 
 # Deep Learning Topics
@@ -39,7 +39,7 @@ session.commit()
 #   Thus, a section's id is manually defined and the number of sections
 #     initialized for each topic is limited.
 session.add_all([
-    Section(id=10, title="Intro", topic_id=1),
+    Section(id=10, title="Intro", topic_id=1, editor_id=2),
     Section(id=11,   title="Changing Names", topic_id=1, editor_id=2),
     Section(id=12,   title="Increasing Data Set", topic_id=1, editor_id=2),
     Section(id=13,   title="Increasing Model Size", topic_id=1, editor_id=2),
