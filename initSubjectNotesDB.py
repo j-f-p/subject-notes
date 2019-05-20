@@ -56,9 +56,9 @@ session.add_all([
     Section(id=41,   title="Numerical Error", topic_id=4, editor_id=2),
     Section(id=42,   title="Conditioning", topic_id=4, editor_id=2),
     Section(id=50, title="Intro", topic_id=5),
-    Section(id=51,   title="The Task", topic_id=5, editor_id=2),
-    Section(id=52,   title="Performance Measure", topic_id=5, editor_id=2),
-    Section(id=53,   title="Experience", topic_id=5, editor_id=2)])
+    Section(id=51,   title="The Task", topic_id=5),
+    Section(id=52,   title="Performance Measure", topic_id=5),
+    Section(id=53,   title="Experience", topic_id=5)])
 # Above, the last section id is 53. The actual number of sections is less.
 session.commit()
 

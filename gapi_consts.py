@@ -24,9 +24,9 @@ if environ.get(gajEVName()) is None:
         with open(gajFileName(), 'r') as inFile:
             GAJdict = load(inFile)
     except FileNotFoundError:
-        print("\nException: \n"
-              + "There was no environment variable \"{}\"".format(gajEVName())
-              + " and the file \"{}\" was not found.\n".format(gajFileName()))
+        print("\nException: \n" +
+              "There was no environment variable \"{}\"".format(gajEVName()) +
+              " and the file \"{}\" was not found.\n".format(gajFileName()))
         raise SystemExit
 else:
     # Convert environment variable holding GAJ into a Python dictionary.

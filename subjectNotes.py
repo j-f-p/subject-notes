@@ -451,6 +451,10 @@ def deleteSection(topic_id, section_id):
         section = session.query(Section).filter_by(id=section_id).one()
         session.delete(section)
         session.commit()
+        # Flash placed above re-sequencing, to correctly record the section to
+        # be deleted.
+        flash('Section "{}" was deleted from topic "{}" by {}.'
+              .format(section.title, topic.title, gagn()))
         # Close any gaps in the set of section ids of this topic so that this
         # set comprises an arithmetic sequence of integers with common
         # difference of 1. Begin by checking whether there are more than 1
@@ -466,8 +470,6 @@ def deleteSection(topic_id, section_id):
                     section = session.query(Section).filter_by(id=index).one()
                     section.id = index - 1
                     session.commit()
-        flash('Section "{}" was deleted from topic "{}" by {}.'
-              .format(section.title, topic.title, gagn()))
         session.close()
         return redirect(url_for('topicContents', topic_id=topic_id))
     else:
@@ -487,12 +489,12 @@ def deleteSection(topic_id, section_id):
         session.close()
         if not candidate or editor_id != section.editor_id:
             if request.referrer is not None:
-                flash('Contact {} to suggest the deletion of this section.'.\
-                    format(secEdEmail))
+                flash('Contact {} to suggest the deletion of this section.'.
+                      format(secEdEmail))
                 return redirect(request.referrer)
             else:
-                flash('Contact {} to suggest that deletion.'.\
-                    format(secEdEmail))
+                flash('Contact {} to suggest that deletion.'.
+                      format(secEdEmail))
                 return redirect(url_for('contents'))
         return render_template('deleteSection.html', subject=subject(),
                                uname=gagn(), topic=topic, section=section)

@@ -99,7 +99,8 @@ class Section(Base):
             'k1 id': self.id,
             'k2 section': self.title,
             'k3 notes': self.notes,
-            'k4 topic id': self.topic_id
+            'k4 topic id': self.topic_id,
+            'k5 editor id': self.editor_id
         }
 
 
