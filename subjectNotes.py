@@ -262,7 +262,7 @@ def newSection(topic_id):
             # Otherwise, add user email to editor's table.
             session.add(Editor(email=edEmail))
             session.commit()
-            # Then, retrieve editor_id.
+            # Then, retrieve editor_id. The latest primary key id is the count.
             editor_id = session.query(Editor).count()
             flash("{} is now an editor of the app.".format(gagn()))
         new_section = Section(
@@ -331,7 +331,6 @@ def editTopicSection0(topic_id, section_id):
         section = session.query(Section).filter_by(id=section_id).one()
         if request.form['notes'] != "":
             section.notes = request.form['notes']
-            section.editor = gaem()
             section.utce = datetime.utcnow()
             session.commit()
             flash('{} section of topic "{}" was updated by {}.'
@@ -345,11 +344,11 @@ def editTopicSection0(topic_id, section_id):
         session = DBSession()
         topic = session.query(Topic).filter_by(id=topic_id).one()
         section = session.query(Section).filter_by(id=section_id).one()
+        # Determine edit authority.
         secEdEmail = session.query(Editor.email).\
             filter_by(id=section.editor_id).one().email
         edEmail = gaem()
         candidate = False
-        # Determine edit authority.
         # If session user's email is recorded in the editor's table,
         if session.query(Editor.id).filter_by(email=edEmail).scalar():
             # retrieve editor_id from editor's table.
@@ -360,10 +359,11 @@ def editTopicSection0(topic_id, section_id):
         session.close()
         if not candidate or editor_id != section.editor_id:
             # Session user is not this section's editor.
-            flash('Contact {} to suggest an edit.'.format(secEdEmail))
             if request.referrer is not None:
+                flash('Contact {} to suggest an edit.'.format(secEdEmail))
                 return redirect(request.referrer)
             else:
+                flash('Contact {} to suggest that edit.'.format(secEdEmail))
                 return redirect(url_for('contents'))
         # Otherwise, session user is this section's editor.
         return render_template('editTopicSection0.html', subject=subject(),
@@ -390,7 +390,6 @@ def editSection(topic_id, section_id):
                 section.title = request.form['title']
             if request.form['notes'] != "":
                 section.notes = request.form['notes']
-            section.editor = gaem()
             section.utce = datetime.utcnow()
             session.commit()
             flash('Section "{}" of topic "{}" was updated by {}.'
@@ -404,22 +403,23 @@ def editSection(topic_id, section_id):
         session = DBSession()
         topic = session.query(Topic).filter_by(id=topic_id).one()
         section = session.query(Section).filter_by(id=section_id).one()
+        # Determine edit authority by same logic found in editTopicSection0().
+        #   See comments there for further explanation.
         secEdEmail = session.query(Editor.email).\
             filter_by(id=section.editor_id).one().email
         edEmail = gaem()
         candidate = False
-        # Determine edit authority by same logic found in editTopicSection0().
-        #   See comments there for further explanation.
         if session.query(Editor.id).filter_by(email=edEmail).scalar():
             editor_id = session.query(Editor.id).\
                 filter_by(email=edEmail).one().id
             candidate = True
         session.close()
         if not candidate or editor_id != section.editor_id:
-            flash('Contact {} to suggest an edit.'.format(secEdEmail))
             if request.referrer is not None:
+                flash('Contact {} to suggest an edit.'.format(secEdEmail))
                 return redirect(request.referrer)
             else:
+                flash('Contact {} to suggest that edit.'.format(secEdEmail))
                 return redirect(url_for('contents'))
         return render_template('editSection.html', subject=subject(),
                                uname=gagn(), topic=topic, section=section)
@@ -448,14 +448,6 @@ def deleteSection(topic_id, section_id):
         section = session.query(Section).filter_by(id=section_id).one()
         session.delete(section)
         session.commit()
-        # At this point, section is not tied to a session and can be employed
-        # outside the session, however, topic is tied to the session. Thus,
-        # flash message is generated prior to session.close(). Note that
-        # session.close() is not needed after session.commit(), though, kept
-        # here for clarity.
-        flash('Section "{}" was deleted from topic "{}" by {}.'
-              .format(section.title, topic.title, gagn()))
-
         # Close any gaps in the set of section ids of this topic so that this
         # set comprises an arithmetic sequence of integers with common
         # difference of 1. Begin by checking whether there are more than 1
@@ -471,14 +463,34 @@ def deleteSection(topic_id, section_id):
                     section = session.query(Section).filter_by(id=index).one()
                     section.id = index - 1
                     session.commit()
-
+        flash('Section "{}" was deleted from topic "{}" by {}.'
+              .format(section.title, topic.title, gagn()))
         session.close()
         return redirect(url_for('topicContents', topic_id=topic_id))
     else:
         session = DBSession()  # open session
         topic = session.query(Topic).filter_by(id=topic_id).one()
         section = session.query(Section).filter_by(id=section_id).one()
+        # Determine delete authority. See comments in editTopicSection0() about
+        # determination of edit authority for explanation of procedure.
+        secEdEmail = session.query(Editor.email).\
+            filter_by(id=section.editor_id).one().email
+        edEmail = gaem()
+        candidate = False
+        if session.query(Editor.id).filter_by(email=edEmail).scalar():
+            editor_id = session.query(Editor.id).\
+                filter_by(email=edEmail).one().id
+            candidate = True
         session.close()
+        if not candidate or editor_id != section.editor_id:
+            if request.referrer is not None:
+                flash('Contact {} to suggest the deletion of this section.'.\
+                    format(secEdEmail))
+                return redirect(request.referrer)
+            else:
+                flash('Contact {} to suggest that deletion.'.\
+                    format(secEdEmail))
+                return redirect(url_for('contents'))
         return render_template('deleteSection.html', subject=subject(),
                                uname=gagn(), topic=topic, section=section)
 
