@@ -19,6 +19,8 @@
   </head>
   <body>
     <header>
+    {% set url4contents = url_for('contents', _external=True) %}
+    {% if request.referrer==None or request.referrer==url4contents %}
       <h1>
         <a href="{{url_for('contents')}}">{{subject}} Notes</a>
       </h1>
@@ -30,6 +32,23 @@
         <a href="{{url_for('signInDesk')}}" class="link-button">Sign In</a>
       {% endif %}
       </div>
+    {% else %}
+      <h1>
+        {{subject}} Notes
+      </h1>
+      <div>
+      {% if signedIn %}
+        <p>Signed in as<br>{{uname}}</p>
+        <a href="{{request.referrer}}" class="link-button">Return</a>
+        <div></div>
+        <a href="{{url_for('signOut')}}" class="link-button">Sign Out</a>
+      {% else %}
+        <a href="{{request.referrer}}" class="link-button">Return</a>
+        <div></div>
+        <a href="{{url_for('signInDesk')}}" class="link-button">Sign In</a>
+      {% endif %}
+      </div>
+    {% endif %}
     </header>
     <div class="flash">
     {% with messages = get_flashed_messages() %}
