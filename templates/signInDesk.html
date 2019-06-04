@@ -17,9 +17,26 @@
   </head>
   <body>
     <header>
+    {% set url4contents = url_for('contents', _external=True) %}
+    {% set url4about = url_for('about', _external=True) %}
+    {% if request.referrer==None or request.referrer==url4contents
+                                 or request.referrer==url4about %}
       <h1>
         <a href="{{url_for('contents')}}">{{subject}} Notes</a>
       </h1>
+      <div>
+        <a href="{{url_for('about')}}" class="link-button">About</a><div></div>
+      </div>
+    {% else %}
+      <h1>
+        {{subject}} Notes
+      </h1>
+      <div>
+        <a href="{{request.referrer}}" class="link-button">Return</a>
+        <div></div>
+        <a href="{{url_for('about')}}" class="link-button">About</a><div></div>
+      </div>
+    {% endif %}
     </header>
     <main class="pane_padding">
       <h2>Sign In Desk</h2>

@@ -20,7 +20,9 @@
   <body>
     <header>
     {% set url4contents = url_for('contents', _external=True) %}
-    {% if request.referrer==None or request.referrer==url4contents %}
+    {% set url4signInDesk = url_for('signInDesk', _external=True) %}
+    {% if request.referrer==None or request.referrer==url4contents
+                                 or request.referrer==url4signInDesk %}
       <h1>
         <a href="{{url_for('contents')}}">{{subject}} Notes</a>
       </h1>
