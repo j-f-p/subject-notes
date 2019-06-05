@@ -73,6 +73,15 @@ def gagn():
         return None
 
 
+# Check whether referrer is a GAPI OAuth2 URL (gou).
+# This is a custom Jinja2 template test.
+@app.template_test("gou")
+def is_gou(referrer):
+    if referrer.find('google') != -1:
+        return True  # URL contains 'google'
+    return False
+
+
 # Route for about
 @app.route('/about')
 def about():
